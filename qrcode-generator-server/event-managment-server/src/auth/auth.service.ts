@@ -7,12 +7,14 @@ import {
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from 'src/users/users.service';
 import * as bcrypt from 'bcrypt';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
+    private readonly configService: ConfigService,
   ) {}
 
   async register(username: string, password: string) {
@@ -86,6 +88,7 @@ export class AuthService {
     const accessToken = this.jwtService.sign(
       { sub: userId, username, role },
       {
+        secret: this.configService.get<string>('JWT_SECRET'),
         expiresIn: '15m',
       },
     );
@@ -93,6 +96,7 @@ export class AuthService {
     const refreshToken = this.jwtService.sign(
       { sub: userId, username, role },
       {
+        secret: this.configService.get<string>('JWT_SECRET'),
         expiresIn: '7d',
       },
     );

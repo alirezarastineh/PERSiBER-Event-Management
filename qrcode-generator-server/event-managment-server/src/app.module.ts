@@ -4,6 +4,7 @@ import { UsersModule } from './users/users.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AdminController } from './admin/admin.controller';
+import { GuestsModule } from './guests/guests.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { AdminController } from './admin/admin.controller';
     }),
     AuthModule,
     UsersModule,
+    GuestsModule,
   ],
   controllers: [AdminController],
 })
