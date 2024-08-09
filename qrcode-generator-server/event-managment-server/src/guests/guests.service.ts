@@ -70,6 +70,18 @@ export class GuestsService {
     return guest;
   }
 
+  async createPaidGuest(name: string): Promise<Guest> {
+    return this.create({ name, alreadyPaid: true });
+  }
+
+  async findByName(name: string): Promise<Guest> {
+    const guest = await this.guestModel.findOne({ name }).exec();
+    if (!guest) {
+      throw new NotFoundException(`Guest with name "${name}" not found`);
+    }
+    return guest;
+  }
+
   async getStatistics(): Promise<{ attended: number; total: number }> {
     const total = await this.guestModel.countDocuments().exec();
     const attended = await this.guestModel

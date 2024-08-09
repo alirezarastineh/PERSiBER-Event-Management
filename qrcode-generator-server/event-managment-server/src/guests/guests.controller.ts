@@ -26,11 +26,21 @@ export class GuestsController {
     return { guests, statistics };
   }
 
+  @Get(':name')
+  async getGuestByName(@Param('name') name: string) {
+    return this.guestsService.findByName(name);
+  }
+
   @Post('add')
   @Roles('admin', 'master')
   @UseGuards(RolesGuard)
   async createGuest(@Body() createGuestDto: CreateGuestDto) {
     return this.guestsService.create(createGuestDto);
+  }
+
+  @Post('add-paid')
+  async createPaidGuest(@Body('name') name: string) {
+    return this.guestsService.create({ name, alreadyPaid: true });
   }
 
   @Patch(':id')
