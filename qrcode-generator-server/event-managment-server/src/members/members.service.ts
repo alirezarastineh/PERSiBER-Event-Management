@@ -68,6 +68,33 @@ export class MembersService {
       throw new NotFoundException(`Member with ID "${id}" not found`);
     }
     member.attended = attended;
+    await member.save();
+
+    await this.getAttendanceStatistics();
+
+    return member;
+  }
+
+  async updateHasLeft(id: string, hasLeft: boolean): Promise<Member> {
+    const member = await this.memberModel.findById(id).exec();
+    if (!member) {
+      throw new NotFoundException(`Member with ID "${id}" not found`);
+    }
+    member.hasLeft = hasLeft;
+    return member.save();
+  }
+
+  async updateStudentStatus(
+    id: string,
+    isStudent: boolean,
+    untilWhen: Date | null,
+  ): Promise<Member> {
+    const member = await this.memberModel.findById(id).exec();
+    if (!member) {
+      throw new NotFoundException(`Member with ID "${id}" not found`);
+    }
+    member.isStudent = isStudent;
+    member.untilWhen = isStudent ? untilWhen : null;
     return member.save();
   }
 

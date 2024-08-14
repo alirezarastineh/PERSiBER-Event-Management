@@ -18,6 +18,15 @@ export class Member {
 
   @Prop({ default: 0 })
   membersInvited: number;
+
+  @Prop({ default: false })
+  hasLeft: boolean;
+
+  @Prop({ default: false })
+  isStudent: boolean;
+
+  @Prop({ type: Date, default: null })
+  untilWhen: Date | null;
 }
 
 export const MemberSchema = SchemaFactory.createForClass(Member);

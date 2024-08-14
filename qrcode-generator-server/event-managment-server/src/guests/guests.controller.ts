@@ -61,6 +61,21 @@ export class GuestsController {
     return this.guestsService.updateAttended(guestId, attended);
   }
 
+  @Patch(':id/student')
+  @Roles('admin', 'master')
+  @UseGuards(RolesGuard)
+  async updateStudentStatus(
+    @Param('id') guestId: string,
+    @Body('isStudent') isStudent: boolean,
+    @Body('untilWhen') untilWhen: Date | null,
+  ) {
+    return this.guestsService.updateStudentStatus(
+      guestId,
+      isStudent,
+      untilWhen,
+    );
+  }
+
   @Delete(':id')
   @Roles('admin', 'master')
   @UseGuards(RolesGuard)

@@ -51,6 +51,31 @@ export class MembersController {
     return this.membersService.updateAttended(memberId, attended);
   }
 
+  @Patch(':id/hasLeft')
+  @Roles('admin', 'master')
+  @UseGuards(RolesGuard)
+  async updateHasLeftStatus(
+    @Param('id') memberId: string,
+    @Body('hasLeft') hasLeft: boolean,
+  ) {
+    return this.membersService.updateHasLeft(memberId, hasLeft);
+  }
+
+  @Patch(':id/student')
+  @Roles('admin', 'master')
+  @UseGuards(RolesGuard)
+  async updateStudentStatus(
+    @Param('id') memberId: string,
+    @Body('isStudent') isStudent: boolean,
+    @Body('untilWhen') untilWhen: Date | null,
+  ) {
+    return this.membersService.updateStudentStatus(
+      memberId,
+      isStudent,
+      untilWhen,
+    );
+  }
+
   @Delete(':id')
   @Roles('admin', 'master')
   @UseGuards(RolesGuard)

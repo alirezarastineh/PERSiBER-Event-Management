@@ -70,6 +70,20 @@ export class GuestsService {
     return guest;
   }
 
+  async updateStudentStatus(
+    id: string,
+    isStudent: boolean,
+    untilWhen: Date | null,
+  ): Promise<Guest> {
+    const guest = await this.guestModel.findById(id).exec();
+    if (!guest) {
+      throw new NotFoundException(`Guest with ID "${id}" not found`);
+    }
+    guest.isStudent = isStudent;
+    guest.untilWhen = isStudent ? untilWhen : null;
+    return guest.save();
+  }
+
   async createPaidGuest(name: string): Promise<Guest> {
     return this.create({ name, alreadyPaid: true });
   }

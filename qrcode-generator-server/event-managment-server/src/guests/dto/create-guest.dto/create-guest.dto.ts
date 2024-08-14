@@ -1,4 +1,4 @@
-import { IsString, IsOptional, IsBoolean } from 'class-validator';
+import { IsString, IsOptional, IsBoolean, IsDateString } from 'class-validator';
 
 export class CreateGuestDto {
   @IsString()
@@ -19,4 +19,12 @@ export class CreateGuestDto {
   @IsOptional()
   @IsString()
   readonly invitedFrom?: string;
+
+  @IsOptional()
+  @IsBoolean()
+  readonly isStudent?: boolean = false;
+
+  @IsOptional()
+  @IsDateString()
+  readonly untilWhen?: Date | null;
 }

@@ -12,6 +12,8 @@ import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard/jwt-auth.guard';
 import { Request } from 'express';
 import { RequestWithUser } from 'src/common/interfaces/request-with-user.interface';
 import { JwtService } from '@nestjs/jwt';
+import { RolesGuard } from 'src/common/guards/roles/roles.guard';
+import { Roles } from 'src/common/decorators/roles.decorator';
 
 @Controller('auth')
 export class AuthController {
@@ -21,10 +23,12 @@ export class AuthController {
   ) {}
 
   @Post('register')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin', 'master')
   async register(
     @Body('username') username: string,
     @Body('password') password: string,
-    @Req() request: Request,
+    @Req() request: RequestWithUser,
   ) {
     const tokens = await this.authService.register(username, password);
 

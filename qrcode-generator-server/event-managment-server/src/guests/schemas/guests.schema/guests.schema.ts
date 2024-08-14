@@ -21,6 +21,12 @@ export class Guest {
 
   @Prop({ default: '' })
   invitedFrom: string;
+
+  @Prop({ default: false })
+  isStudent: boolean;
+
+  @Prop({ type: Date, default: null })
+  untilWhen: Date | null;
 }
 
 export const GuestSchema = SchemaFactory.createForClass(Guest);
