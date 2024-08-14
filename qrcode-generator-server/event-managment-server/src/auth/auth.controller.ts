@@ -48,16 +48,28 @@ export class AuthController {
     @Body('password') password: string,
     @Req() request: Request,
   ) {
-    const tokens = await this.authService.login(username, password);
+    const { accessToken, refreshToken, user } = await this.authService.login(
+      username,
+      password,
+    );
 
     const options = {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
     };
-    request.res.cookie('auth-cookie', tokens.accessToken, options);
-    request.res.cookie('refresh-cookie', tokens.refreshToken, options);
 
-    return { message: 'Login successful' };
+    request.res.cookie('auth-cookie', accessToken, options);
+    request.res.cookie('refresh-cookie', refreshToken, options);
+
+    return {
+      message: 'Login successful',
+      accessToken: accessToken,
+      refreshToken: refreshToken,
+      user: {
+        username: user.username,
+        role: user.role,
+      },
+    };
   }
 
   @Post('logout')
