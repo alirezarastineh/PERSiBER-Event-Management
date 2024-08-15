@@ -8,12 +8,13 @@ async function bootstrap() {
 
   const configService = app.get(ConfigService);
 
-  const corsOrigin = configService.get<string>(
-    'CORS_ORIGIN',
-    'http://localhost:3000',
-  );
+  const isProduction = process.env.NODE_ENV === 'production';
 
-  const allowedOrigins = corsOrigin.split(',');
+  const frontendUrl = isProduction
+    ? configService.get<string>('FRONTEND_URL_PRODUCTION')
+    : configService.get<string>('FRONTEND_URL_LOCAL');
+
+  const allowedOrigins = frontendUrl ? frontendUrl.split(',') : [];
 
   app.enableCors({
     origin: (origin, callback) => {
