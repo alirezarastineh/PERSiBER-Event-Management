@@ -7,7 +7,7 @@ export class Guest {
   @Prop({ required: true })
   name: string;
 
-  @Prop({ default: false })
+  @Prop({ default: true })
   alreadyPaid: boolean;
 
   @Prop({ default: false })
@@ -24,6 +24,9 @@ export class Guest {
 
   @Prop({ default: false })
   isStudent: boolean;
+
+  @Prop({ default: false })
+  isLady: boolean;
 
   @Prop({ type: Date, default: null })
   untilWhen: Date | null;

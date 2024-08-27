@@ -6,10 +6,6 @@ export class CreateGuestDto {
 
   @IsOptional()
   @IsBoolean()
-  readonly alreadyPaid?: boolean;
-
-  @IsOptional()
-  @IsBoolean()
   readonly freeEntry?: boolean;
 
   @IsOptional()
@@ -23,6 +19,10 @@ export class CreateGuestDto {
   @IsOptional()
   @IsBoolean()
   readonly isStudent?: boolean = false;
+
+  @IsOptional()
+  @IsBoolean()
+  readonly isLady?: boolean = false;
 
   @IsOptional()
   @IsDateString()

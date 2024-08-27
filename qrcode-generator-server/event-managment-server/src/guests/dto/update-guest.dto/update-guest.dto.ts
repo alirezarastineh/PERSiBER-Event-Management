@@ -26,6 +26,10 @@ export class UpdateGuestDto {
   readonly isStudent?: boolean;
 
   @IsOptional()
+  @IsBoolean()
+  readonly isLady?: boolean;
+
+  @IsOptional()
   @IsDateString()
   readonly untilWhen?: Date | null;
 }

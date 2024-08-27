@@ -38,11 +38,6 @@ export class GuestsController {
     return this.guestsService.create(createGuestDto);
   }
 
-  @Post('add-paid')
-  async createPaidGuest(@Body('name') name: string) {
-    return this.guestsService.create({ name, alreadyPaid: true });
-  }
-
   @Patch(':id')
   @Roles('admin', 'master')
   @UseGuards(RolesGuard)
@@ -74,6 +69,36 @@ export class GuestsController {
       isStudent,
       untilWhen,
     );
+  }
+
+  @Patch(':id/lady')
+  @Roles('admin', 'master')
+  @UseGuards(RolesGuard)
+  async updateLadyStatus(
+    @Param('id') guestId: string,
+    @Body('isLady') isLady: boolean,
+  ) {
+    return this.guestsService.updateLadyStatus(guestId, isLady);
+  }
+
+  @Patch('discounts/toggle-student')
+  @Roles('admin', 'master')
+  @UseGuards(RolesGuard)
+  async toggleStudentDiscount(@Body('active') active: boolean) {
+    this.guestsService.toggleStudentDiscount(active);
+    return {
+      message: `Student discount is now ${active ? 'active' : 'inactive'}`,
+    };
+  }
+
+  @Patch('discounts/toggle-lady')
+  @Roles('admin', 'master')
+  @UseGuards(RolesGuard)
+  async toggleLadyDiscount(@Body('active') active: boolean) {
+    this.guestsService.toggleLadyDiscount(active);
+    return {
+      message: `Lady discount is now ${active ? 'active' : 'inactive'}`,
+    };
   }
 
   @Delete(':id')
