@@ -11,19 +11,38 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+    --background-start-rgb: 22, 40, 48;
+    --background-end-rgb: 22, 40, 48;
   }
 }
 
 body {
+  background-color: #162830;
+
+  background-image: linear-gradient(
+    to bottom,
+    transparent,
+    rgb(var(--background-end-rgb))
+  );
+  background-repeat: no-repeat;
+  background-position: top;
+  background-size: cover;
+
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+}
+
+button {
+  @apply bg-custom-button text-white;
+
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+button:hover {
+  background-color: #ffdc9a;
+}
+
+button:hover {
+  color: #162830;
 }
 
 @layer utilities {

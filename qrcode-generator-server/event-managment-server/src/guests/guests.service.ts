@@ -31,7 +31,7 @@ export class GuestsService {
       await this.incrementDrinksCoupon(createGuestDto.invitedFrom);
     }
 
-    await this.recalculateDrinksCoupons();
+    await this.applyDiscounts(guest);
     return guest;
   }
 
@@ -46,8 +46,6 @@ export class GuestsService {
     }
 
     await guest.deleteOne();
-
-    await this.recalculateDrinksCoupons();
   }
 
   async update(id: string, updateGuestDto: UpdateGuestDto): Promise<Guest> {
@@ -56,19 +54,45 @@ export class GuestsService {
       throw new NotFoundException(`Guest with ID "${id}" not found`);
     }
 
+    const previousInvitedFrom = guest.invitedFrom;
+
+    if (
+      updateGuestDto.invitedFrom &&
+      updateGuestDto.invitedFrom === guest.name
+    ) {
+      throw new Error('A guest cannot invite themselves.');
+    }
+
+    if (updateGuestDto.invitedFrom) {
+      const inviterExists = await this.guestModel
+        .findOne({ name: updateGuestDto.invitedFrom })
+        .exec();
+      if (!inviterExists) {
+        throw new Error(
+          `Inviter "${updateGuestDto.invitedFrom}" does not exist in the guest list.`,
+        );
+      }
+    }
+
     if (
       updateGuestDto.invitedFrom &&
       updateGuestDto.invitedFrom !== guest.invitedFrom
     ) {
       await this.incrementDrinksCoupon(updateGuestDto.invitedFrom);
-      if (guest.invitedFrom) {
-        await this.decrementDrinksCoupon(guest.invitedFrom);
+
+      if (previousInvitedFrom) {
+        await this.decrementDrinksCoupon(previousInvitedFrom);
       }
+    }
+
+    if (!updateGuestDto.invitedFrom && previousInvitedFrom) {
+      await this.decrementDrinksCoupon(previousInvitedFrom);
     }
 
     Object.assign(guest, updateGuestDto);
     await guest.save();
-    await this.recalculateDrinksCoupons();
+
+    await this.applyDiscounts(guest);
 
     return guest;
   }
@@ -193,6 +217,19 @@ export class GuestsService {
     });
   }
 
+  private async applyDiscounts(guest: GuestDocument): Promise<void> {
+    // Apply discounts based on the current state of the discounts
+    if (this.studentDiscountActive && guest.isStudent) {
+      guest.drinksCoupon += 1;
+    }
+
+    if (this.ladyDiscountActive && guest.isLady) {
+      guest.drinksCoupon += 1;
+    }
+
+    await guest.save();
+  }
+
   private async recalculateDrinksCoupons(): Promise<void> {
     const guests = await this.guestModel.find().exec();
 
@@ -225,7 +262,7 @@ export class GuestsService {
         discountCoupons += 1;
       }
 
-      const newDrinksCoupon = Math.max(0, guest.drinksCoupon + discountCoupons);
+      const newDrinksCoupon = Math.max(0, discountCoupons);
       await this.guestModel.updateOne(
         { _id: guest._id },
         { drinksCoupon: newDrinksCoupon },

@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { ReactNode } from "react";
+import CustomProvider from "@/redux/provider";
+import Setup from "./utils/Setup";
+import NavBar from "./components/Common/NavBar";
 
 export const metadata: Metadata = {
-  title: "QR Code Generator",
-  description: "Generate QR codes and download them as PDFs",
+  title: "PERSiBER Event Management",
+  description: "Manage events with ease",
 };
 
 export default function RootLayout({
@@ -13,8 +16,14 @@ export default function RootLayout({
   children: ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body>{children}</body>
+    <html lang="en" suppressHydrationWarning>
+      <body className="min-h-screen flex flex-col">
+        <CustomProvider>
+          <Setup />
+          <NavBar />
+          <div className="flex-grow">{children}</div>
+        </CustomProvider>
+      </body>
     </html>
   );
 }

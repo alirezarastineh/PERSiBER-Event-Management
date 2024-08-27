@@ -10,7 +10,11 @@ export class Member {
   @Prop({ default: 'No', enum: ['No', 'Yes'] })
   attended: string;
 
-  @Prop({ default: '' })
+  @Prop({
+    default: '',
+    enum: ['Kourosh', 'Sobhan', 'Mutual'],
+    required: true,
+  })
   organizer: string;
 
   @Prop({ default: '' })

@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import {
   Member,
@@ -25,6 +29,22 @@ export class MembersService {
   }
 
   async create(createMemberDto: CreateMemberDto): Promise<Member> {
+    if (
+      createMemberDto.organizer &&
+      !['Kourosh', 'Sobhan', 'Mutual'].includes(createMemberDto.organizer)
+    ) {
+      throw new BadRequestException(
+        'Organizer must be either "Kourosh", "Sobhan", or "Mutual".',
+      );
+    }
+
+    if (
+      createMemberDto.invitedFrom &&
+      createMemberDto.invitedFrom === createMemberDto.name
+    ) {
+      throw new BadRequestException('A member cannot invite themselves.');
+    }
+
     const createdMember = new this.memberModel(createMemberDto);
     const member = await createdMember.save();
 
@@ -36,10 +56,16 @@ export class MembersService {
   }
 
   async delete(id: string): Promise<void> {
-    const result = await this.memberModel.findByIdAndDelete(id).exec();
-    if (!result) {
+    const member = await this.memberModel.findById(id).exec();
+    if (!member) {
       throw new NotFoundException(`Member with ID "${id}" not found`);
     }
+
+    if (member.invitedFrom) {
+      await this.decrementMembersInvited(member.invitedFrom);
+    }
+
+    await member.deleteOne();
   }
 
   async update(id: string, updateMemberDto: UpdateMemberDto): Promise<Member> {
@@ -49,13 +75,35 @@ export class MembersService {
     }
 
     if (
+      updateMemberDto.organizer &&
+      !['Kourosh', 'Sobhan', 'Mutual'].includes(updateMemberDto.organizer)
+    ) {
+      throw new BadRequestException(
+        'Organizer must be either "Kourosh", "Sobhan", or "Mutual".',
+      );
+    }
+
+    if (
+      updateMemberDto.invitedFrom &&
+      updateMemberDto.invitedFrom === member.name
+    ) {
+      throw new BadRequestException('A member cannot invite themselves.');
+    }
+
+    const previousInvitedFrom = member.invitedFrom;
+
+    if (
       updateMemberDto.invitedFrom &&
       updateMemberDto.invitedFrom !== member.invitedFrom
     ) {
       await this.incrementMembersInvited(updateMemberDto.invitedFrom);
-      if (member.invitedFrom) {
-        await this.decrementMembersInvited(member.invitedFrom);
+      if (previousInvitedFrom) {
+        await this.decrementMembersInvited(previousInvitedFrom);
       }
+    }
+
+    if (!updateMemberDto.invitedFrom && previousInvitedFrom) {
+      await this.decrementMembersInvited(previousInvitedFrom);
     }
 
     Object.assign(member, updateMemberDto);
@@ -121,7 +169,7 @@ export class MembersService {
       .findOne({ name: inviterName })
       .exec();
     if (inviter) {
-      inviter.membersInvited -= 1;
+      inviter.membersInvited = Math.max(0, inviter.membersInvited - 1);
       await inviter.save();
     }
   }

@@ -1,4 +1,10 @@
-import { IsBoolean, IsDateString, IsOptional, IsString } from 'class-validator';
+import {
+  IsBoolean,
+  IsDateString,
+  IsIn,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 
 export class UpdateMemberDto {
   @IsOptional()
@@ -11,6 +17,9 @@ export class UpdateMemberDto {
 
   @IsOptional()
   @IsString()
+  @IsIn(['Kourosh', 'Sobhan', 'Mutual'], {
+    message: 'Organizer must be either "Kourosh", "Sobhan", or "Mutual".',
+  })
   readonly organizer?: string;
 
   @IsOptional()
