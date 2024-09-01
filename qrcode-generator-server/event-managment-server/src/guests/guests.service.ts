@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Guest, GuestDocument } from './schemas/guests.schema/guests.schema';
-import { Model } from 'mongoose';
+import { Model} from 'mongoose';
 import { CreateGuestDto } from './dto/create-guest.dto/create-guest.dto';
 import { UpdateGuestDto } from './dto/update-guest.dto/update-guest.dto';
 
@@ -14,16 +14,23 @@ export class GuestsService {
     @InjectModel(Guest.name) private guestModel: Model<GuestDocument>,
   ) {}
 
-  async findAll(): Promise<{
-    guests: Guest[];
-    statistics: { attendedCount: number; totalCount: number };
+  async findAll(userRole: string): Promise<{
+    guests: GuestDocument[];
+    statistics: {
+      attendedCount: number;
+      totalCount: number;
+      studentsCount?: number;
+      ladiesCount?: number;
+      drinksCouponsCount?: number;
+      freeEntryCount?: number;
+    };
   }> {
     const guests = await this.guestModel.find().exec();
-    const statistics = await this.getAttendanceStatistics();
+    const statistics = await this.getAttendanceStatistics(userRole);
     return { guests, statistics };
   }
 
-  async create(createGuestDto: CreateGuestDto): Promise<Guest> {
+  async create(createGuestDto: CreateGuestDto): Promise<GuestDocument> {
     const createdGuest = new this.guestModel(createGuestDto);
     const guest = await createdGuest.save();
 
@@ -32,7 +39,18 @@ export class GuestsService {
     }
 
     await this.applyDiscounts(guest);
+    await this.recalculateDrinksCoupons();
     return guest;
+  }
+
+  async findOrCreateGuest(name: string): Promise<GuestDocument> {
+    let guest = await this.guestModel.findOne({ name }).exec();
+
+    if (!guest) {
+      const createGuestDto: CreateGuestDto = { name };
+      guest = await this.create(createGuestDto);
+    }
+    return guest as GuestDocument;
   }
 
   async delete(id: string): Promise<void> {
@@ -46,9 +64,13 @@ export class GuestsService {
     }
 
     await guest.deleteOne();
+    await this.recalculateDrinksCoupons();
   }
 
-  async update(id: string, updateGuestDto: UpdateGuestDto): Promise<Guest> {
+  async update(
+    id: string,
+    updateGuestDto: UpdateGuestDto,
+  ): Promise<GuestDocument> {
     const guest = await this.guestModel.findById(id).exec();
     if (!guest) {
       throw new NotFoundException(`Guest with ID "${id}" not found`);
@@ -74,30 +96,35 @@ export class GuestsService {
       }
     }
 
-    if (
-      updateGuestDto.invitedFrom &&
-      updateGuestDto.invitedFrom !== guest.invitedFrom
-    ) {
-      await this.incrementDrinksCoupon(updateGuestDto.invitedFrom);
+    if (updateGuestDto.invitedFrom !== guest.invitedFrom) {
+      if (updateGuestDto.invitedFrom) {
+        await this.incrementDrinksCoupon(updateGuestDto.invitedFrom);
+      }
 
       if (previousInvitedFrom) {
         await this.decrementDrinksCoupon(previousInvitedFrom);
       }
     }
 
-    if (!updateGuestDto.invitedFrom && previousInvitedFrom) {
-      await this.decrementDrinksCoupon(previousInvitedFrom);
-    }
-
     Object.assign(guest, updateGuestDto);
+
     await guest.save();
 
-    await this.applyDiscounts(guest);
+    if (
+      updateGuestDto.isStudent !== undefined ||
+      updateGuestDto.isLady !== undefined
+    ) {
+      await this.applyDiscounts(guest);
+    }
 
     return guest;
   }
 
-  async updateAttended(id: string, attended: string): Promise<Guest> {
+  async updateAttended(
+    id: string,
+    attended: string,
+    userRole: string,
+  ): Promise<GuestDocument> {
     const guest = await this.guestModel.findById(id).exec();
     if (!guest) {
       throw new NotFoundException(`Guest with ID "${id}" not found`);
@@ -105,7 +132,7 @@ export class GuestsService {
     guest.attended = attended;
     await guest.save();
 
-    await this.getAttendanceStatistics();
+    await this.getAttendanceStatistics(userRole);
     return guest;
   }
 
@@ -113,7 +140,7 @@ export class GuestsService {
     id: string,
     isStudent: boolean,
     untilWhen: Date | null,
-  ): Promise<Guest> {
+  ): Promise<GuestDocument> {
     const guest = await this.guestModel.findById(id).exec();
     if (!guest) {
       throw new NotFoundException(`Guest with ID "${id}" not found`);
@@ -131,7 +158,7 @@ export class GuestsService {
     return guest;
   }
 
-  async updateLadyStatus(id: string, isLady: boolean): Promise<Guest> {
+  async updateLadyStatus(id: string, isLady: boolean): Promise<GuestDocument> {
     const guest = await this.guestModel.findById(id).exec();
     if (!guest) {
       throw new NotFoundException(`Guest with ID "${id}" not found`);
@@ -148,10 +175,18 @@ export class GuestsService {
     return guest;
   }
 
-  async findByName(name: string): Promise<Guest> {
+  async findByName(name: string): Promise<GuestDocument> {
     const guest = await this.guestModel.findOne({ name }).exec();
     if (!guest) {
       throw new NotFoundException(`Guest with name "${name}" not found`);
+    }
+    return guest;
+  }
+
+  async findById(id: string): Promise<GuestDocument> {
+    const guest = await this.guestModel.findById(id).exec();
+    if (!guest) {
+      throw new NotFoundException(`Guest with ID "${id}" not found`);
     }
     return guest;
   }
@@ -218,16 +253,20 @@ export class GuestsService {
   }
 
   private async applyDiscounts(guest: GuestDocument): Promise<void> {
-    // Apply discounts based on the current state of the discounts
+    let discountCoupons = 0;
+
     if (this.studentDiscountActive && guest.isStudent) {
-      guest.drinksCoupon += 1;
+      discountCoupons += 1;
     }
 
     if (this.ladyDiscountActive && guest.isLady) {
-      guest.drinksCoupon += 1;
+      discountCoupons += 1;
     }
 
-    await guest.save();
+    if (guest.drinksCoupon !== discountCoupons) {
+      guest.drinksCoupon = discountCoupons;
+      await guest.save();
+    }
   }
 
   private async recalculateDrinksCoupons(): Promise<void> {
@@ -245,7 +284,7 @@ export class GuestsService {
     });
 
     for (const [name, count] of Object.entries(invitedMap)) {
-      await this.guestModel.updateMany(
+      await this.guestModel.updateOne(
         { name },
         { $inc: { drinksCoupon: count } },
       );
@@ -262,22 +301,59 @@ export class GuestsService {
         discountCoupons += 1;
       }
 
-      const newDrinksCoupon = Math.max(0, discountCoupons);
+      const totalDrinksCoupon = guest.drinksCoupon + discountCoupons;
       await this.guestModel.updateOne(
         { _id: guest._id },
-        { drinksCoupon: newDrinksCoupon },
+        { drinksCoupon: totalDrinksCoupon },
       );
     });
   }
 
-  async getAttendanceStatistics(): Promise<{
+  async getAttendanceStatistics(userRole?: string): Promise<{
     attendedCount: number;
     totalCount: number;
+    studentsCount?: number;
+    ladiesCount?: number;
+    drinksCouponsCount?: number;
+    freeEntryCount?: number;
   }> {
     const totalCount = await this.guestModel.countDocuments().exec();
     const attendedCount = await this.guestModel
       .countDocuments({ attended: 'Yes' })
       .exec();
+
+    if (userRole === 'admin' || userRole === 'master') {
+      const studentsCount = await this.guestModel
+        .countDocuments({ isStudent: true })
+        .exec();
+      const ladiesCount = await this.guestModel
+        .countDocuments({ isLady: true })
+        .exec();
+      const drinksCouponsCount = await this.guestModel
+        .aggregate([
+          {
+            $group: {
+              _id: null,
+              totalDrinks: { $sum: '$drinksCoupon' },
+            },
+          },
+        ])
+        .exec()
+        .then((result) => (result[0] ? result[0].totalDrinks : 0));
+      const freeEntryCount = await this.guestModel
+        .countDocuments({ freeEntry: true })
+        .exec();
+
+      return {
+        attendedCount,
+        totalCount,
+        studentsCount,
+        ladiesCount,
+        drinksCouponsCount,
+        freeEntryCount,
+      };
+    }
+
     return { attendedCount, totalCount };
   }
 }

@@ -23,6 +23,12 @@ const guestsApiSlice = apiSlice.injectEndpoints({
         method: "GET",
       }),
     }),
+    getGuestById: builder.query<Guest, string>({
+      query: (id) => ({
+        url: `/guests/${id}`,
+        method: "GET",
+      }),
+    }),
     createGuest: builder.mutation<Guest, CreateGuestDto>({
       query: (newGuest) => ({
         url: "/guests/add",
@@ -84,12 +90,20 @@ const guestsApiSlice = apiSlice.injectEndpoints({
         method: "DELETE",
       }),
     }),
+    findOrCreateGuest: builder.mutation<Guest, string>({
+      query: (name) => ({
+        url: `/guests/find-or-create`,
+        method: "POST",
+        body: { name },
+      }),
+    }),
   }),
 });
 
 export const {
   useGetAllGuestsQuery,
   useGetGuestByNameQuery,
+  useGetGuestByIdQuery,
   useCreateGuestMutation,
   useUpdateGuestMutation,
   useUpdateAttendedStatusMutation,
@@ -98,6 +112,7 @@ export const {
   useToggleStudentDiscountMutation,
   useToggleLadyDiscountMutation,
   useDeleteGuestMutation,
+  useFindOrCreateGuestMutation,
 } = guestsApiSlice;
 
 export default guestsApiSlice;

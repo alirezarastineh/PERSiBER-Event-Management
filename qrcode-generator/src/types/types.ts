@@ -118,6 +118,10 @@ export interface UpdateGuestDto {
 export interface GuestStatistics {
   attendedCount: number;
   totalCount: number;
+  studentsCount: number;
+  ladiesCount: number;
+  drinksCouponsCount: number;
+  freeEntryCount: number;
 }
 
 export interface QRCodeProps {

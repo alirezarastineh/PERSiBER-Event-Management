@@ -3,11 +3,14 @@
 import { useState, useRef, useEffect } from "react";
 import QRCode from "qrcode";
 import jsPDF from "jspdf";
+import { useFindOrCreateGuestMutation } from "@/redux/features/guests/guestsApiSlice"; // Import the mutation
 
 const QRCodeComponent = () => {
   const [text, setText] = useState("");
   const [qrCodeUrl, setQrCodeUrl] = useState("");
   const qrCodeRef = useRef<HTMLCanvasElement | null>(null);
+  const [findOrCreateGuest] = useFindOrCreateGuestMutation(); // Hook for mutation
+  const [loading, setLoading] = useState(false); // State to manage loading
 
   useEffect(() => {
     if (qrCodeUrl && qrCodeRef.current) {
@@ -25,11 +28,30 @@ const QRCodeComponent = () => {
   }, [qrCodeUrl]);
 
   const generateQRCode = async () => {
+    if (!text.trim()) {
+      alert("Please enter a guest's name.");
+      return;
+    }
+
+    setLoading(true); // Set loading to true while generating QR code
     try {
-      const url = await QRCode.toDataURL(text, { width: 800, margin: 2 });
+      // Find or create the guest and get the response
+      const guestResponse = await findOrCreateGuest(text.trim()).unwrap();
+
+      // Construct a URL for accessing the guest's information
+      const guestUrl = `${window.location.origin}/guests/${guestResponse._id}`;
+
+      // Generate the QR code with the guest URL
+      const url = await QRCode.toDataURL(guestUrl, { width: 800, margin: 2 });
       setQrCodeUrl(url);
     } catch (error) {
-      console.error(error);
+      console.error(
+        "Error generating QR code or finding/creating guest:",
+        error
+      );
+      alert("Failed to generate QR code or find/create guest.");
+    } finally {
+      setLoading(false); // Set loading to false after process completes
     }
   };
 
@@ -70,9 +92,11 @@ const QRCodeComponent = () => {
       />
       <button
         onClick={generateQRCode}
+        disabled={loading} // Disable button while loading
         className="mb-4 p-2 bg-cyan-800 text-white rounded w-full max-w-md"
       >
-        Generate QR Code
+        {loading ? "Generating..." : "Generate QR Code"}{" "}
+        {/* Show loading state */}
       </button>
       {qrCodeUrl && (
         <div className="flex flex-col items-center">

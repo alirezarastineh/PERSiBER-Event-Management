@@ -1,7 +1,18 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document, Types } from 'mongoose';
 
-export type GuestDocument = Guest & Document;
+export interface GuestDocument extends Document<Types.ObjectId> {
+  _id: Types.ObjectId;
+  name: string;
+  alreadyPaid: boolean;
+  freeEntry: boolean;
+  drinksCoupon: number;
+  attended: string;
+  invitedFrom: string;
+  isStudent: boolean;
+  isLady: boolean;
+  untilWhen: Date | null;
+}
 
 @Schema()
 export class Guest {

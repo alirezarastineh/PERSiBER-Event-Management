@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Request,
   UseGuards,
 } from '@nestjs/common';
 import { Roles } from 'src/common/decorators/roles.decorator';
@@ -21,9 +22,15 @@ export class GuestsController {
   constructor(private readonly guestsService: GuestsService) {}
 
   @Get()
-  async getAllGuests() {
-    const { guests, statistics } = await this.guestsService.findAll();
+  async getAllGuests(@Request() req) {
+    const userRole = req.user.role;
+    const { guests, statistics } = await this.guestsService.findAll(userRole);
     return { guests, statistics };
+  }
+
+  @Get(':id')
+  async getGuestById(@Param('id') id: string) {
+    return this.guestsService.findById(id);
   }
 
   @Get(':name')
@@ -36,6 +43,11 @@ export class GuestsController {
   @UseGuards(RolesGuard)
   async createGuest(@Body() createGuestDto: CreateGuestDto) {
     return this.guestsService.create(createGuestDto);
+  }
+
+  @Post('find-or-create')
+  async findOrCreateGuest(@Body('name') name: string) {
+    return this.guestsService.findOrCreateGuest(name);
   }
 
   @Patch(':id')
@@ -52,8 +64,10 @@ export class GuestsController {
   async updateAttendedStatus(
     @Param('id') guestId: string,
     @Body('attended') attended: string,
+    @Request() req,
   ) {
-    return this.guestsService.updateAttended(guestId, attended);
+    const userRole = req.user.role;
+    return this.guestsService.updateAttended(guestId, attended, userRole);
   }
 
   @Patch(':id/student')

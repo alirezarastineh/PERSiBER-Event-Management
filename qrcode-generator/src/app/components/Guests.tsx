@@ -14,6 +14,7 @@ import {
 import { Guest, UpdateGuestDto } from "@/types/types";
 import { useAppSelector } from "@/redux/hooks";
 import Spinner from "./Common/Spinner";
+import Link from "next/link";
 
 export default function Guests() {
   const {
@@ -38,6 +39,8 @@ export default function Guests() {
     isLady: false,
     freeEntry: false, // Add freeEntry to the state
   });
+
+  const [searchTerm, setSearchTerm] = useState<string>(""); // State for search term
 
   const userRole = useAppSelector((state) => state.auth.user?.role);
 
@@ -68,9 +71,36 @@ export default function Guests() {
 
   const handleUpdateGuest = async () => {
     if (!editingGuest) return;
+    const updatedFields: Partial<UpdateGuestDto> = {};
+
+    if (editData.name !== editingGuest.name) {
+      updatedFields.name = editData.name;
+    }
+    if (editData.invitedFrom !== editingGuest.invitedFrom) {
+      updatedFields.invitedFrom = editData.invitedFrom;
+    }
+    if (editData.isStudent !== editingGuest.isStudent) {
+      updatedFields.isStudent = editData.isStudent;
+    }
+    if (editData.untilWhen !== editingGuest.untilWhen) {
+      updatedFields.untilWhen = editData.untilWhen;
+    }
+    if (editData.isLady !== editingGuest.isLady) {
+      updatedFields.isLady = editData.isLady;
+    }
+    if (editData.freeEntry !== editingGuest.freeEntry) {
+      updatedFields.freeEntry = editData.freeEntry;
+    }
+
+    // Only proceed if there are changes to update
+    if (Object.keys(updatedFields).length === 0) {
+      alert("No changes to update.");
+      return;
+    }
 
     try {
-      await updateGuest({ id: editingGuest._id, data: editData }).unwrap();
+      // Call the updateGuest mutation with only the changed fields
+      await updateGuest({ id: editingGuest._id, data: updatedFields }).unwrap();
       alert("Guest updated successfully!");
       refetch();
       setEditingGuest(null);
@@ -79,6 +109,8 @@ export default function Guests() {
       alert("Failed to update guest.");
     }
   };
+
+
 
   const handleToggleStudentDiscount = async (active: boolean) => {
     try {
@@ -141,6 +173,11 @@ export default function Guests() {
     }
   };
 
+  // Filter guests based on search term (case-insensitive)
+  const filteredGuests = guestsData?.guests.filter((guest) =>
+    guest.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   if (isLoading) {
     return <Spinner lg />;
   }
@@ -153,6 +190,17 @@ export default function Guests() {
     <div className="max-w-6xl mx-auto py-8 px-4">
       <h1 className="text-3xl font-bold mb-6 text-center">Guest Management</h1>
 
+      {/* Search Input */}
+      <div className="mb-6">
+        <input
+          type="text"
+          placeholder="Search by name..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)} // Update search term on input change
+          className="text-black w-full p-2 border border-gray-300 rounded-lg"
+        />
+      </div>
+
       {/* Display Statistics */}
       {guestsData?.statistics && (
         <div className="mb-6 text-center">
@@ -162,6 +210,23 @@ export default function Guests() {
           <p className="text-lg font-semibold">
             Attended Guests: {guestsData.statistics.attendedCount}
           </p>
+          {(userRole === "admin" || userRole === "master") && (
+            <>
+              <p className="text-lg font-semibold">
+                Students Count: {guestsData.statistics.studentsCount || 0}
+              </p>
+              <p className="text-lg font-semibold">
+                Ladies Count: {guestsData.statistics.ladiesCount || 0}
+              </p>
+              <p className="text-lg font-semibold">
+                Drinks Coupons Count:{" "}
+                {guestsData.statistics.drinksCouponsCount || 0}
+              </p>
+              <p className="text-lg font-semibold">
+                Free Entry Count: {guestsData.statistics.freeEntryCount || 0}
+              </p>
+            </>
+          )}
         </div>
       )}
 
@@ -195,19 +260,22 @@ export default function Guests() {
         </div>
       )}
 
-      {guestsData?.guests.length === 0 ? (
+      {filteredGuests?.length === 0 ? (
         <p>No guests found.</p>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {guestsData?.guests.map((guest) => (
+          {filteredGuests?.map((guest) => (
             <div
               key={guest._id}
               className="bg-white p-6 rounded-lg shadow-lg space-y-4"
             >
               <div>
-                <h2 className="text-black text-xl font-semibold text-center">
-                  {guest.name}
-                </h2>
+                {/* Wrap guest name with Link */}
+                <Link href={`/guests/${guest._id}`}>
+                  <h2 className="text-black text-xl font-semibold text-center cursor-pointer">
+                    {guest.name}
+                  </h2>
+                </Link>
                 <p className="text-black text-center">
                   Attended: {guest.attended}
                 </p>
