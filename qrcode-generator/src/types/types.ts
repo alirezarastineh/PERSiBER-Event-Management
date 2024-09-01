@@ -122,6 +122,8 @@ export interface GuestStatistics {
   ladiesCount: number;
   drinksCouponsCount: number;
   freeEntryCount: number;
+  studentDiscountActive: boolean;
+  ladyDiscountActive: boolean;
 }
 
 export interface QRCodeProps {

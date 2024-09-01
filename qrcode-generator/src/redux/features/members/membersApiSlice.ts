@@ -7,6 +7,7 @@ import {
 } from "@/types/types";
 
 const membersApiSlice = apiSlice.injectEndpoints({
+  overrideExisting: true,
   endpoints: (builder) => ({
     getAllMembers: builder.query<
       { members: Member[]; statistics: MemberStatistics },
@@ -72,6 +73,7 @@ const membersApiSlice = apiSlice.injectEndpoints({
     }),
   }),
 });
+
 
 export const {
   useGetAllMembersQuery,

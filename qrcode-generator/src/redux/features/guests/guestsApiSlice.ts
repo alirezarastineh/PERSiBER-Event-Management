@@ -7,6 +7,7 @@ import {
 import { apiSlice } from "./../../api/apiSlice";
 
 const guestsApiSlice = apiSlice.injectEndpoints({
+  overrideExisting: true,
   endpoints: (builder) => ({
     getAllGuests: builder.query<
       { guests: Guest[]; statistics: GuestStatistics },

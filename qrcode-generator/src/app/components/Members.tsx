@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   useGetAllMembersQuery,
   useCreateMemberMutation,
@@ -53,24 +53,61 @@ export default function Members() {
 
   // State for searchable dropdown
   const [searchTerm, setSearchTerm] = useState<string>("");
-  const [showDropdown, setShowDropdown] = useState<boolean>(false); // State to control dropdown visibility
+  const [showDropdown, setShowDropdown] = useState<boolean>(false);
 
   // State for global search
   const [globalSearchTerm, setGlobalSearchTerm] = useState<string>("");
 
+  const [toggleStatuses, setToggleStatuses] = useState<{
+    [key: string]: { attended: boolean; hasLeft: boolean; isStudent: boolean };
+  }>({});
+
+  const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
+  const [memberIdToDelete, setMemberIdToDelete] = useState<string | null>(null);
+
   const userRole = useAppSelector((state) => state.auth.user?.role);
 
-  const handleDeleteMember = async (id: string) => {
-    if (confirm("Are you sure you want to delete this member?")) {
+  useEffect(() => {
+    if (membersData?.members) {
+      const initialToggleStatuses: {
+        [key: string]: {
+          attended: boolean;
+          hasLeft: boolean;
+          isStudent: boolean;
+        };
+      } = {};
+      membersData.members.forEach((member) => {
+        initialToggleStatuses[member._id] = {
+          attended: member.attended === "Yes",
+          hasLeft: member.hasLeft,
+          isStudent: member.isStudent,
+        };
+      });
+      setToggleStatuses(initialToggleStatuses);
+    }
+  }, [membersData]);
+
+  const handleDeleteMember = async () => {
+    if (memberIdToDelete) {
       try {
-        await deleteMember(id).unwrap();
-        alert("Member deleted successfully!");
+        await deleteMember(memberIdToDelete).unwrap();
         refetch();
+        setShowDeleteModal(false);
+        setMemberIdToDelete(null);
       } catch (error) {
         console.error("Failed to delete member:", error);
-        alert("Failed to delete member.");
       }
     }
+  };
+
+  const openDeleteModal = (id: string) => {
+    setMemberIdToDelete(id);
+    setShowDeleteModal(true);
+  };
+
+  const closeDeleteModal = () => {
+    setShowDeleteModal(false);
+    setMemberIdToDelete(null);
   };
 
   const handleEditMember = (member: Member) => {
@@ -84,7 +121,7 @@ export default function Members() {
       isStudent: member.isStudent,
       untilWhen: member.untilWhen || null,
     });
-    setSearchTerm(member.invitedFrom || ""); // Initialize search term with current invitedFrom value
+    setSearchTerm(member.invitedFrom || "");
   };
 
   const handleUpdateMember = async () => {
@@ -92,19 +129,16 @@ export default function Members() {
 
     try {
       await updateMember({ id: editingMember._id, data: editData }).unwrap();
-      alert("Member updated successfully!");
       refetch();
       setEditingMember(null);
     } catch (error) {
       console.error("Failed to update member:", error);
-      alert("Failed to update member.");
     }
   };
 
   const handleCreateMember = async () => {
     try {
       await createMember(newMemberData).unwrap();
-      alert("Member created successfully!");
       refetch();
       setNewMemberData({
         name: "",
@@ -117,44 +151,73 @@ export default function Members() {
       });
     } catch (error) {
       console.error("Failed to create member:", error);
-      alert("Failed to create member.");
     }
   };
 
-  const handleUpdateAttendedStatus = async (id: string, attended: string) => {
+  const handleToggleAttendedStatus = async (id: string) => {
     try {
-      await updateAttendedStatus({ id, attended }).unwrap();
-      alert("Attended status updated successfully!");
+      const newAttendedStatus = !toggleStatuses[id].attended;
+      setToggleStatuses((prevState) => ({
+        ...prevState,
+        [id]: { ...prevState[id], attended: newAttendedStatus },
+      }));
+
+      await updateAttendedStatus({
+        id,
+        attended: newAttendedStatus ? "Yes" : "No",
+      }).unwrap();
+
       refetch();
     } catch (error) {
       console.error("Failed to update attended status:", error);
-      alert("Failed to update attended status.");
+      setToggleStatuses((prevState) => ({
+        ...prevState,
+        [id]: { ...prevState[id], attended: !prevState[id].attended },
+      }));
     }
   };
 
-  const handleUpdateHasLeftStatus = async (id: string, hasLeft: boolean) => {
+  const handleToggleHasLeftStatus = async (id: string) => {
     try {
-      await updateHasLeftStatus({ id, hasLeft }).unwrap();
-      alert("Has Left status updated successfully!");
+      const newHasLeftStatus = !toggleStatuses[id].hasLeft;
+      setToggleStatuses((prevState) => ({
+        ...prevState,
+        [id]: { ...prevState[id], hasLeft: newHasLeftStatus },
+      }));
+
+      await updateHasLeftStatus({ id, hasLeft: newHasLeftStatus }).unwrap();
+
       refetch();
     } catch (error) {
       console.error("Failed to update has left status:", error);
-      alert("Failed to update has left status.");
+      setToggleStatuses((prevState) => ({
+        ...prevState,
+        [id]: { ...prevState[id], hasLeft: !prevState[id].hasLeft },
+      }));
     }
   };
 
-  const handleUpdateStudentStatus = async (
-    id: string,
-    isStudent: boolean,
-    untilWhen: Date | null
-  ) => {
+  const handleToggleStudentStatus = async (id: string) => {
     try {
-      await updateStudentStatus({ id, isStudent, untilWhen }).unwrap();
-      alert("Student status updated successfully!");
+      const newStudentStatus = !toggleStatuses[id].isStudent;
+      setToggleStatuses((prevState) => ({
+        ...prevState,
+        [id]: { ...prevState[id], isStudent: newStudentStatus },
+      }));
+
+      await updateStudentStatus({
+        id,
+        isStudent: newStudentStatus,
+        untilWhen: newStudentStatus ? new Date() : null,
+      }).unwrap();
+
       refetch();
     } catch (error) {
       console.error("Failed to update student status:", error);
-      alert("Failed to update student status.");
+      setToggleStatuses((prevState) => ({
+        ...prevState,
+        [id]: { ...prevState[id], isStudent: !prevState[id].isStudent },
+      }));
     }
   };
 
@@ -185,7 +248,7 @@ export default function Members() {
         <input
           type="text"
           placeholder="Search for a member..."
-          value={globalSearchTerm}
+          value={globalSearchTerm || ""} // Provide default value
           onChange={(e) => setGlobalSearchTerm(e.target.value)}
           className="text-black w-full p-2 border border-gray-300 rounded-lg"
         />
@@ -194,10 +257,12 @@ export default function Members() {
       {/* Display Statistics */}
       <div className="mb-4 text-center">
         <p className="text-lg font-semibold">
-          Total Members: {membersData?.statistics.totalCount}
+          Total Members: {membersData?.statistics?.totalCount ?? 0}{" "}
+          {/* Ensure controlled value */}
         </p>
         <p className="text-lg font-semibold">
-          Attended: {membersData?.statistics.attendedCount}
+          Attended: {membersData?.statistics?.attendedCount ?? 0}{" "}
+          {/* Ensure controlled value */}
         </p>
       </div>
 
@@ -209,21 +274,21 @@ export default function Members() {
             <input
               type="text"
               placeholder="Name"
-              value={newMemberData.name}
+              value={newMemberData.name || ""}
               onChange={(e) =>
                 setNewMemberData({ ...newMemberData, name: e.target.value })
               }
-              className="text-black w-full p-2 border rounded"
+              className="text-black w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
             />
             <select
-              value={newMemberData.organizer}
+              value={newMemberData.organizer ?? ""}
               onChange={(e) =>
                 setNewMemberData({
                   ...newMemberData,
                   organizer: e.target.value,
                 })
               }
-              className="text-black w-full p-2 border rounded"
+              className="text-black w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
             >
               <option value="">Select Organizer</option>
               <option value="Kourosh">Kourosh</option>
@@ -232,7 +297,7 @@ export default function Members() {
             </select>
             <button
               onClick={handleCreateMember}
-              className="w-full bg-green-500 text-white py-2 rounded hover:bg-green-600"
+              className="w-full bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600 transition duration-300 focus:outline-none focus:ring-2 focus:ring-blue-400"
             >
               Add Member
             </button>
@@ -248,180 +313,281 @@ export default function Members() {
           {globallyFilteredMembers?.map((member) => (
             <div
               key={member._id}
-              className="bg-white p-6 rounded-lg shadow-lg space-y-4"
+              className="bg-white rounded-lg shadow-md p-6 flex flex-col items-center"
             >
-              <div>
-                <h2 className="text-black text-xl font-semibold text-center">
-                  {member.name}
-                </h2>
-                <p className="text-black text-center">
-                  Attended: {member.attended}
-                </p>
-                <p className="text-black text-center">
-                  Organizer: {member.organizer || "N/A"}
-                </p>
-                <p className="text-black text-center">
+              {/* Member Name as the Main Focus */}
+              <h2 className="text-xl font-bold text-gray-900 mb-2">
+                {member.name}
+              </h2>
+              <p className="text-sm text-gray-500">
+                {member.organizer || "N/A"}
+              </p>
+
+              {/* Additional Member Details */}
+              <div className="mt-4 text-center space-y-1">
+                <p className="text-gray-700">
                   Invited From: {member.invitedFrom || "N/A"}
                 </p>
-                <p className="text-black text-center">
-                  Members Invited: {member.membersInvited}
+                <p className="text-gray-700">
+                  Members Invited: {member.membersInvited || 0}
                 </p>
-                <p className="text-black text-center">
+                <p className="text-gray-700">
+                  Attended: {member.attended || "No"}
+                </p>
+                <p className="text-gray-700">
                   Has Left: {member.hasLeft ? "Yes" : "No"}
                 </p>
-                <p className="text-black text-center">
+                <p className="text-gray-700">
                   Is Student: {member.isStudent ? "Yes" : "No"}
                 </p>
                 {member.isStudent && member.untilWhen && (
-                  <p className="text-black text-center">
-                    Until When:{" "}
-                    {new Date(member.untilWhen).toLocaleDateString()}
+                  <p className="text-gray-700">
+                    Until: {new Date(member.untilWhen).toLocaleDateString()}
                   </p>
                 )}
               </div>
 
               {/* Action Buttons */}
-              <div className="mt-4 flex justify-between">
+              <div className="flex w-full mt-4">
                 {(userRole === "admin" || userRole === "master") && (
                   <>
                     <button
                       onClick={() => handleEditMember(member)}
-                      className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300 w-full sm:w-auto"
+                      className="flex-1 bg-blue-500 text-white py-2 rounded-l-lg hover:bg-blue-600 transition duration-300"
                     >
                       Edit
                     </button>
                     <button
-                      onClick={() => handleDeleteMember(member._id)}
-                      className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition duration-300 w-full sm:w-auto"
+                      onClick={() => openDeleteModal(member._id)} // Open modal instead of confirm
+                      className="flex-1 bg-red-500 text-white py-2 rounded-r-lg hover:bg-red-600 transition duration-300"
                     >
                       Delete
                     </button>
-                    <button
-                      onClick={() =>
-                        handleUpdateAttendedStatus(
-                          member._id,
-                          member.attended === "No" ? "Yes" : "No"
-                        )
-                      }
-                      className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300 w-full sm:w-auto"
-                    >
-                      Toggle Attended
-                    </button>
-                    <button
-                      onClick={() =>
-                        handleUpdateHasLeftStatus(member._id, !member.hasLeft)
-                      }
-                      className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300 w-full sm:w-auto"
-                    >
-                      Toggle Has Left
-                    </button>
-                    <button
-                      onClick={() =>
-                        handleUpdateStudentStatus(
-                          member._id,
-                          !member.isStudent,
-                          member.untilWhen
-                        )
-                      }
-                      className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300 w-full sm:w-auto"
-                    >
-                      Toggle Student Status
-                    </button>
                   </>
-                )}
-
-                {userRole === "user" && (
-                  <button
-                    onClick={() =>
-                      handleUpdateAttendedStatus(
-                        member._id,
-                        member.attended === "No" ? "Yes" : "No"
-                      )
-                    }
-                    className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300 w-full sm:w-auto"
-                  >
-                    Toggle Attended
-                  </button>
                 )}
               </div>
 
-              {/* Editing Form */}
-              {editingMember?._id === member._id && (
-                <div className="mt-4 space-y-4">
-                  <input
-                    type="text"
-                    placeholder="Name"
-                    value={editData.name}
-                    onChange={(e) =>
-                      setEditData({ ...editData, name: e.target.value })
-                    }
-                    className="text-black w-full p-2 border rounded"
-                  />
-                  <select
-                    value={editData.organizer}
-                    onChange={(e) =>
-                      setEditData({ ...editData, organizer: e.target.value })
-                    }
-                    className="text-black w-full p-2 border rounded"
+              {/* Toggle Switches */}
+              <div className="flex justify-around w-full mt-4">
+                <div className="flex items-center space-x-2">
+                  <span className="text-sm font-medium text-gray-700">
+                    Attended
+                  </span>
+                  <label
+                    htmlFor={`attended-toggle-${member._id}`}
+                    className="relative inline-flex items-center cursor-pointer"
                   >
-                    <option value="">Select Organizer</option>
-                    <option value="Kourosh">Kourosh</option>
-                    <option value="Sobhan">Sobhan</option>
-                    <option value="Mutual">Mutual</option>
-                  </select>
-
-                  {/* Searchable Dropdown for Invited From */}
-                  <div className="relative">
                     <input
-                      type="text"
-                      placeholder="Search Invited From"
-                      value={searchTerm}
-                      onChange={(e) => {
-                        setSearchTerm(e.target.value);
-                        setShowDropdown(e.target.value !== ""); // Show dropdown only if there is text in the input
-                      }}
-                      className="text-black w-full p-2 border rounded"
+                      id={`attended-toggle-${member._id}`}
+                      type="checkbox"
+                      checked={toggleStatuses[member._id]?.attended || false} // Ensure controlled input
+                      onChange={() => handleToggleAttendedStatus(member._id)}
+                      className="sr-only peer"
                     />
-                    {showDropdown && (
-                      <div className="absolute z-10 bg-white w-full border rounded mt-1 max-h-40 overflow-y-auto">
-                        {filteredMembers?.map((m) => (
-                          <button
-                            key={m._id}
-                            className="cursor-pointer p-2 hover:bg-gray-200 text-left w-full"
-                            onClick={() => {
-                              setEditData({
-                                ...editData,
-                                invitedFrom: m.name,
-                              });
-                              setSearchTerm(m.name); // Update search term to the selected member
-                              setShowDropdown(false); // Hide dropdown after selection
-                            }}
-                          >
-                            {m.name}
-                          </button>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-
-                  <div className="flex justify-between">
-                    <button
-                      onClick={handleUpdateMember}
-                      className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition duration-300 w-full sm:w-auto"
-                    >
-                      Save
-                    </button>
-                    <button
-                      onClick={() => setEditingMember(null)}
-                      className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition duration-300 w-full sm:w-auto"
-                    >
-                      Cancel
-                    </button>
-                  </div>
+                    <div className="w-11 h-6 bg-gray-200 rounded-full peer-checked:bg-green-500 transition-colors duration-300"></div>
+                    <span
+                      className={`absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform duration-300 ${
+                        toggleStatuses[member._id]?.attended
+                          ? "translate-x-5"
+                          : "translate-x-0"
+                      }`}
+                    ></span>
+                  </label>
                 </div>
-              )}
+
+                {/* Uncomment and ensure controlled values for other toggles */}
+                {/* 
+                <div className="flex items-center space-x-2">
+                  <span className="text-sm font-medium text-gray-700">Has Left</span>
+                  <label
+                    htmlFor={`hasLeft-toggle-${member._id}`}
+                    className="relative inline-flex items-center cursor-pointer"
+                  >
+                    <input
+                      id={`hasLeft-toggle-${member._id}`}
+                      type="checkbox"
+                      checked={toggleStatuses[member._id]?.hasLeft || false} // Ensure controlled input
+                      onChange={() => handleToggleHasLeftStatus(member._id)}
+                      className="sr-only peer"
+                    />
+                    <div className="w-11 h-6 bg-gray-200 rounded-full peer-checked:bg-green-500 transition-colors duration-300"></div>
+                    <span
+                      className={`absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform duration-300 ${
+                        toggleStatuses[member._id]?.hasLeft
+                          ? "translate-x-5"
+                          : "translate-x-0"
+                      }`}
+                    ></span>
+                  </label>
+                </div>
+
+                <div className="flex items-center space-x-2">
+                  <span className="text-sm font-medium text-gray-700">Student</span>
+                  <label
+                    htmlFor={`student-toggle-${member._id}`}
+                    className="relative inline-flex items-center cursor-pointer"
+                  >
+                    <input
+                      id={`student-toggle-${member._id}`}
+                      type="checkbox"
+                      checked={toggleStatuses[member._id]?.isStudent || false} // Ensure controlled input
+                      onChange={() => handleToggleStudentStatus(member._id)}
+                      className="sr-only peer"
+                    />
+                    <div className="w-11 h-6 bg-gray-200 rounded-full peer-checked:bg-green-500 transition-colors duration-300"></div>
+                    <span
+                      className={`absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform duration-300 ${
+                        toggleStatuses[member._id]?.isStudent
+                          ? "translate-x-5"
+                          : "translate-x-0"
+                      }`}
+                    ></span>
+                  </label>
+                </div> 
+                */}
+              </div>
             </div>
           ))}
+        </div>
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {showDeleteModal && (
+        <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
+          <div className="bg-white rounded-lg p-6 shadow-lg max-w-sm w-full">
+            <h3 className="text-lg text-black font-semibold mb-4">Confirm Deletion</h3>
+            <p className="text-gray-700 mb-6">
+              Are you sure you want to delete this member?
+            </p>
+            <div className="flex justify-end space-x-4">
+              <button
+                onClick={closeDeleteModal}
+                className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition duration-300"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleDeleteMember}
+                className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition duration-300"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Edit Modal */}
+      {editingMember && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg">
+            <h3 className="text-xl font-bold mb-4">Edit Member</h3>
+            <div className="space-y-4">
+              <input
+                type="text"
+                placeholder="Name"
+                value={editData.name ?? ""}
+                onChange={(e) =>
+                  setEditData({ ...editData, name: e.target.value })
+                }
+                className="text-black w-full p-2 border rounded"
+              />
+              <div className="relative text-black">
+                <input
+                  type="text"
+                  placeholder="Search Invited From"
+                  value={searchTerm || ""}
+                  onChange={(e) => {
+                    setSearchTerm(e.target.value);
+                    setShowDropdown(e.target.value !== "");
+                  }}
+                  className="text-black w-full p-2 border rounded"
+                />
+                {showDropdown && (
+                  <div className="absolute z-10 bg-white w-full border rounded mt-1 max-h-40 overflow-y-auto">
+                    {filteredMembers?.map((m) => (
+                      <button
+                        key={m._id}
+                        className="cursor-pointer p-2 hover:bg-gray-200 text-left w-full"
+                        onClick={() => {
+                          setEditData({
+                            ...editData,
+                            invitedFrom: m.name,
+                          });
+                          setSearchTerm(m.name);
+                          setShowDropdown(false);
+                        }}
+                      >
+                        {m.name}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+              <div className="flex items-center gap-2">
+                <label htmlFor="hasLeft" className="text-black">
+                  Has Left:
+                </label>
+                <input
+                  type="checkbox"
+                  id="hasLeft"
+                  checked={editData.hasLeft || false}
+                  onChange={(e) =>
+                    setEditData({ ...editData, hasLeft: e.target.checked })
+                  }
+                  className="border p-2 rounded"
+                />
+              </div>
+              <div className="flex items-center gap-2">
+                <label htmlFor="isStudent" className="text-black">
+                  Is Student:
+                </label>
+                <input
+                  type="checkbox"
+                  id="isStudent"
+                  checked={editData.isStudent || false}
+                  onChange={(e) =>
+                    setEditData({ ...editData, isStudent: e.target.checked })
+                  }
+                  className="border p-2 rounded"
+                />
+              </div>
+              {editData.isStudent && (
+                <input
+                  type="date"
+                  value={
+                    editData.untilWhen
+                      ? new Date(editData.untilWhen).toISOString().split("T")[0]
+                      : ""
+                  }
+                  onChange={(e) => {
+                    const parsedDate = new Date(e.target.value);
+                    setEditData({
+                      ...editData,
+                      untilWhen: isNaN(parsedDate.getTime())
+                        ? null
+                        : parsedDate,
+                    });
+                  }}
+                  className="text-black border p-2 rounded w-full"
+                />
+              )}
+              <div className="flex justify-between gap-2">
+                <button
+                  onClick={handleUpdateMember}
+                  className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition duration-300 w-full"
+                >
+                  Save
+                </button>
+                <button
+                  onClick={() => setEditingMember(null)}
+                  className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition duration-300 w-full"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       )}
     </div>
