@@ -10,8 +10,6 @@ import {
   useUpdateStudentStatusMutation,
   useUpdateLadyStatusMutation,
   useUpdateAttendedStatusMutation,
-  useToggleStudentDiscountMutation,
-  useToggleLadyDiscountMutation,
 } from "@/redux/features/guests/guestsApiSlice";
 import { Guest, UpdateGuestDto } from "@/types/types";
 import { useAppSelector } from "@/redux/hooks";
@@ -40,8 +38,6 @@ export default function GuestDetail() {
   const [updateStudentStatus] = useUpdateStudentStatusMutation();
   const [updateLadyStatus] = useUpdateLadyStatusMutation();
   const [updateAttendedStatus] = useUpdateAttendedStatusMutation();
-  const [toggleStudentDiscount] = useToggleStudentDiscountMutation();
-  const [toggleLadyDiscount] = useToggleLadyDiscountMutation();
   const [editingGuest, setEditingGuest] = useState<Guest | null>(null);
 
   const [editData, setEditData] = useState<UpdateGuestDto>({
@@ -176,30 +172,6 @@ export default function GuestDetail() {
     }
   };
 
-  const handleToggleStudentDiscount = async (active: boolean) => {
-    try {
-      await toggleStudentDiscount(active).unwrap();
-      alert(
-        `Student discount has been ${active ? "activated" : "deactivated"}.`
-      );
-      refetch();
-    } catch (error) {
-      console.error("Failed to toggle student discount:", error);
-      alert("Failed to toggle student discount.");
-    }
-  };
-
-  const handleToggleLadyDiscount = async (active: boolean) => {
-    try {
-      await toggleLadyDiscount(active).unwrap();
-      alert(`Lady discount has been ${active ? "activated" : "deactivated"}.`);
-      refetch();
-    } catch (error) {
-      console.error("Failed to toggle lady discount:", error);
-      alert("Failed to toggle lady discount.");
-    }
-  };
-
   return (
     <div className="max-w-4xl mx-auto py-8 px-4">
       <h1 className="text-3xl font-bold mb-4">{guest.name}&apos;s Details</h1>
@@ -236,32 +208,6 @@ export default function GuestDetail() {
         {(userRole === "admin" || userRole === "master") && (
           <>
             {/* Discount Toggles (Admin or Master) */}
-            <div className="flex justify-center gap-4 mb-6">
-              <button
-                onClick={() => handleToggleStudentDiscount(true)}
-                className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition duration-300"
-              >
-                Activate Student Discount
-              </button>
-              <button
-                onClick={() => handleToggleStudentDiscount(false)}
-                className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition duration-300"
-              >
-                Deactivate Student Discount
-              </button>
-              <button
-                onClick={() => handleToggleLadyDiscount(true)}
-                className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition duration-300"
-              >
-                Activate Lady Discount
-              </button>
-              <button
-                onClick={() => handleToggleLadyDiscount(false)}
-                className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition duration-300"
-              >
-                Deactivate Lady Discount
-              </button>
-            </div>
 
             {/* Editing Form */}
             <div className="mt-4 space-y-4">

@@ -42,6 +42,11 @@ export default function Guests() {
 
   const [searchTerm, setSearchTerm] = useState<string>(""); // State for search term
 
+  // New state for searchable dropdown
+  const [invitedFromSearchTerm, setInvitedFromSearchTerm] =
+    useState<string>("");
+  const [showDropdown, setShowDropdown] = useState<boolean>(false); // State to control dropdown visibility
+
   const userRole = useAppSelector((state) => state.auth.user?.role);
 
   const handleDeleteGuest = async (id: string) => {
@@ -67,6 +72,7 @@ export default function Guests() {
       isLady: guest.isLady,
       freeEntry: guest.freeEntry, // Initialize freeEntry state
     });
+    setInvitedFromSearchTerm(guest.invitedFrom || ""); // Initialize search term with current invitedFrom value
   };
 
   const handleUpdateGuest = async () => {
@@ -77,7 +83,7 @@ export default function Guests() {
       updatedFields.name = editData.name;
     }
     if (editData.invitedFrom !== editingGuest.invitedFrom) {
-      updatedFields.invitedFrom = editData.invitedFrom;
+      updatedFields.invitedFrom = editData.invitedFrom ?? "";
     }
     if (editData.isStudent !== editingGuest.isStudent) {
       updatedFields.isStudent = editData.isStudent;
@@ -92,14 +98,12 @@ export default function Guests() {
       updatedFields.freeEntry = editData.freeEntry;
     }
 
-    // Only proceed if there are changes to update
     if (Object.keys(updatedFields).length === 0) {
       alert("No changes to update.");
       return;
     }
 
     try {
-      // Call the updateGuest mutation with only the changed fields
       await updateGuest({ id: editingGuest._id, data: updatedFields }).unwrap();
       alert("Guest updated successfully!");
       refetch();
@@ -109,7 +113,6 @@ export default function Guests() {
       alert("Failed to update guest.");
     }
   };
-
 
 
   const handleToggleStudentDiscount = async (active: boolean) => {
@@ -176,6 +179,11 @@ export default function Guests() {
   // Filter guests based on search term (case-insensitive)
   const filteredGuests = guestsData?.guests.filter((guest) =>
     guest.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  // Filter guests based on the invitedFrom search term (case-insensitive)
+  const filteredInvitedFromGuests = guestsData?.guests.filter((guest) =>
+    guest.name.toLowerCase().includes(invitedFromSearchTerm.toLowerCase())
   );
 
   if (isLoading) {
@@ -353,20 +361,48 @@ export default function Guests() {
 
               {editingGuest?._id === guest._id && (
                 <div className="mt-4 space-y-4">
-                  <select
-                    value={editData.invitedFrom}
-                    onChange={(e) =>
-                      setEditData({ ...editData, invitedFrom: e.target.value })
-                    }
-                    className="text-black border p-2 rounded w-full"
-                  >
-                    <option value="">Select Invited From</option>
-                    {guestsData?.guests.map((g) => (
-                      <option key={g._id} value={g.name}>
-                        {g.name}
-                      </option>
-                    ))}
-                  </select>
+                  {/* Searchable Dropdown for Invited From */}
+                  <div className="relative text-black">
+                    <input
+                      type="text"
+                      placeholder="Name"
+                      value={editData.name}
+                      onChange={(e) =>
+                        setEditData({ ...editData, name: e.target.value })
+                      }
+                      className="text-black w-full p-2 border rounded"
+                    />
+                    <input
+                      type="text"
+                      placeholder="Search Invited From"
+                      value={invitedFromSearchTerm}
+                      onChange={(e) => {
+                        setInvitedFromSearchTerm(e.target.value);
+                        setShowDropdown(e.target.value !== ""); // Show dropdown only if there is text in the input
+                      }}
+                      className="text-black w-full p-2 border rounded"
+                    />
+                    {showDropdown && (
+                      <div className="absolute z-10 bg-white w-full border rounded mt-1 max-h-40 overflow-y-auto">
+                        {filteredInvitedFromGuests?.map((g) => (
+                          <button
+                            key={g._id}
+                            className="cursor-pointer p-2 hover:bg-gray-200 text-left w-full"
+                            onClick={() => {
+                              setEditData({
+                                ...editData,
+                                invitedFrom: g.name,
+                              });
+                              setInvitedFromSearchTerm(g.name); // Update search term to the selected guest
+                              setShowDropdown(false); // Hide dropdown after selection
+                            }}
+                          >
+                            {g.name}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
 
                   <div className="text-black flex justify-between items-center">
                     <label htmlFor="isStudent" className="mr-2">
