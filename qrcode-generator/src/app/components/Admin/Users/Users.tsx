@@ -15,16 +15,30 @@ export default function Users() {
   const [updateUserRole] = useUpdateUserRoleMutation();
   const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
   const [selectedRole, setSelectedRole] = useState<string>("");
+  const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
+  const [userIdToDelete, setUserIdToDelete] = useState<string | null>(null);
 
-  const handleDeleteUser = async (userId: string) => {
-    if (confirm("Are you sure you want to delete this user?")) {
+  const handleDeleteUser = async () => {
+    if (userIdToDelete) {
       try {
-        await deleteUser(userId).unwrap();
+        await deleteUser(userIdToDelete).unwrap();
         refetch();
+        setShowDeleteModal(false); // Close modal on successful delete
+        setUserIdToDelete(null); // Clear userIdToDelete state
       } catch (error) {
         console.error("Failed to delete user:", error);
       }
     }
+  };
+
+  const openDeleteModal = (id: string) => {
+    setUserIdToDelete(id);
+    setShowDeleteModal(true);
+  };
+
+  const closeDeleteModal = () => {
+    setShowDeleteModal(false);
+    setUserIdToDelete(null);
   };
 
   const handleUpdateRole = async () => {
@@ -93,7 +107,7 @@ export default function Users() {
                       {selectedUserId === user._id ? (
                         <button
                           onClick={handleUpdateRole}
-                          className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition duration-300 w-full sm:w-auto"
+                          className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition duration-300 w-full sm:w-auto mt-4 sm:mt-0"
                         >
                           Save
                         </button>
@@ -103,13 +117,13 @@ export default function Users() {
                             setSelectedUserId(user._id);
                             setSelectedRole(user.role);
                           }}
-                          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300 w-full sm:w-auto"
+                          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300 w-full sm:w-auto mt-4 sm:mt-0"
                         >
                           Edit Role
                         </button>
                       )}
                       <button
-                        onClick={() => handleDeleteUser(user._id)}
+                        onClick={() => openDeleteModal(user._id)}
                         className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition duration-300 w-full sm:w-auto mt-4 sm:mt-0"
                       >
                         Delete
@@ -121,7 +135,7 @@ export default function Users() {
                 {user.role === "admin" && (
                   <div className="flex justify-end">
                     <button
-                      onClick={() => handleDeleteUser(user._id)}
+                      onClick={() => openDeleteModal(user._id)}
                       className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition duration-300 w-full sm:w-auto"
                     >
                       Delete
@@ -133,6 +147,34 @@ export default function Users() {
               </div>
             </div>
           ))}
+        </div>
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {showDeleteModal && (
+        <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
+          <div className="bg-white rounded-lg p-6 shadow-lg max-w-sm w-full">
+            <h3 className="text-lg text-black font-semibold mb-4">
+              Confirm Deletion
+            </h3>
+            <p className="text-gray-700 mb-6">
+              Are you sure you want to delete this user?
+            </p>
+            <div className="flex justify-end space-x-4">
+              <button
+                onClick={closeDeleteModal}
+                className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition duration-300"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleDeleteUser}
+                className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition duration-300"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>

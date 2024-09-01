@@ -393,7 +393,7 @@ export default function Guests() {
                     </div>
                     <div className="flex flex-col space-y-2">
                       {/* Attended Toggle */}
-                      <div className="flex items-center space-x-2">
+                      <div className="flex items-center space-x-2 justify-center">
                         <span className="text-sm font-medium text-gray-700">
                           Attended
                         </span>
@@ -425,30 +425,32 @@ export default function Guests() {
                 )}
 
                 {userRole === "user" && (
-                  <div className="flex items-center justify-between">
-                    <label
-                      htmlFor={`attended-toggle-${guest._id}`}
-                      className="relative inline-flex items-center cursor-pointer"
-                    >
-                      <span className="text-sm font-medium text-gray-700">
-                        Attended
-                      </span>
-                      <input
-                        id={`attended-toggle-${guest._id}`}
-                        type="checkbox"
-                        checked={!!attendedStatuses[guest._id]} // Ensure boolean
-                        onChange={() => handleToggleAttendedStatus(guest._id)}
-                        className="sr-only peer"
-                      />
-                      <div className="w-11 h-6 bg-gray-200 rounded-full peer-checked:bg-green-500 transition-colors duration-300"></div>
-                      <span
-                        className={`absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform duration-300 ${
-                          attendedStatuses[guest._id]
-                            ? "translate-x-5"
-                            : "translate-x-0"
-                        }`}
-                      ></span>
-                    </label>
+                  <div className="flex items-center space-x-2 justify-center">
+                        <span className="text-sm font-medium text-gray-700">
+                          Attended
+                        </span>
+                        <label
+                          htmlFor={`attended-toggle-${guest._id}`}
+                          className="relative inline-flex items-center cursor-pointer"
+                        >
+                          <input
+                            id={`attended-toggle-${guest._id}`}
+                            type="checkbox"
+                            checked={!!attendedStatuses[guest._id]} // Ensure boolean
+                            onChange={() =>
+                              handleToggleAttendedStatus(guest._id)
+                            }
+                            className="sr-only peer"
+                          />
+                          <div className="w-11 h-6 bg-gray-200 rounded-full peer-checked:bg-green-500 transition-colors duration-300"></div>
+                          <span
+                            className={`absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform duration-300 ${
+                              attendedStatuses[guest._id]
+                                ? "translate-x-5"
+                                : "translate-x-0"
+                            }`}
+                          ></span>
+                        </label>
                   </div>
                 )}
               </div>
