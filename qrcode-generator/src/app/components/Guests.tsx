@@ -299,14 +299,22 @@ export default function Guests() {
                   Attended
                 </th>
                 <th className="py-2 px-4 border-b border-[#575756] dark:border-gray-700">
-                  Inviter
+                  Drinks Coupon
                 </th>
-                <th className="py-2 px-4 border-b border-[#575756] dark:border-gray-700">
-                  Student
-                </th>
-                <th className="py-2 px-4 border-b border-[#575756] dark:border-gray-700">
-                  Lady
-                </th>
+                {/* Only show the following fields for admin or master */}
+                {(userRole === "admin" || userRole === "master") && (
+                  <>
+                    <th className="py-2 px-4 border-b border-[#575756] dark:border-gray-700">
+                      Inviter
+                    </th>
+                    <th className="py-2 px-4 border-b border-[#575756] dark:border-gray-700">
+                      Student
+                    </th>
+                    <th className="py-2 px-4 border-b border-[#575756] dark:border-gray-700">
+                      Lady
+                    </th>
+                  </>
+                )}
                 <th className="py-2 px-4 border-b border-[#575756] dark:border-gray-700">
                   Free Entry
                 </th>
@@ -340,6 +348,9 @@ export default function Guests() {
                       />
                     </button>
                   </td>
+                  <td className="py-2 px-4 border-b border-[#575756] dark:border-gray-700">
+                    {guest.drinksCoupon || 0}
+                  </td>
 
                   {/* Conditionally render additional fields based on userRole */}
                   {(userRole === "admin" || userRole === "master") && (
@@ -352,18 +363,6 @@ export default function Guests() {
                       </td>
                       <td className="py-2 px-4 border-b border-[#575756] dark:border-gray-700">
                         {guest.isLady ? "Yes" : "No"}
-                      </td>
-                      <td className="py-2 px-4 border-b border-[#575756] dark:border-gray-700">
-                        {guest.freeEntry ? "Yes" : "No"}
-                      </td>
-                    </>
-                  )}
-
-                  {/* Show only 'Is Student' and 'Free Entry' for user role */}
-                  {userRole === "user" && (
-                    <>
-                      <td className="py-2 px-4 border-b border-[#575756] dark:border-gray-700">
-                        {guest.isStudent ? "Yes" : "No"}
                       </td>
                       <td className="py-2 px-4 border-b border-[#575756] dark:border-gray-700">
                         {guest.freeEntry ? "Yes" : "No"}
@@ -424,6 +423,12 @@ export default function Guests() {
                   </button>
                 </div>
 
+                {/* Display Drinks Coupon Count */}
+                <p className="text-gray-600 dark:text-gray-400">
+                  <span className="font-semibold">Drinks Coupon:</span>{" "}
+                  {guest.drinksCoupon || 0}
+                </p>
+
                 {/* Conditionally render additional fields based on userRole */}
                 {(userRole === "admin" || userRole === "master") && (
                   <>
@@ -445,7 +450,6 @@ export default function Guests() {
                     </p>
                   </>
                 )}
-
                 {/* Show only 'Is Student' and 'Free Entry' for user role */}
                 {userRole === "user" && (
                   <>

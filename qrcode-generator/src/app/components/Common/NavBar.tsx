@@ -77,8 +77,8 @@ export default function NavBar() {
     <nav className="w-full bg-gray-800 text-white shadow-lg" ref={navbarRef}>
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
         {/* Logo and Brand */}
-        <div
-          className="flex items-center cursor-pointer"
+        <button
+          className="flex items-center cursor-pointer focus:outline-none bg-transparent hover:bg-transparent"
           onClick={() => router.push("/")}
         >
           <Image
@@ -88,7 +88,7 @@ export default function NavBar() {
             height={50}
             className="object-contain"
           />
-        </div>
+        </button>
 
         {/* Desktop Menu */}
         <div className="hidden md:flex items-center space-x-6">

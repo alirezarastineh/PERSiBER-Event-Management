@@ -1,13 +1,13 @@
 "use client";
 
-import React, { ReactNode, useEffect, useRef } from "react";
+import { ReactNode, useEffect, useRef } from "react";
 import { FaTimes } from "react-icons/fa";
 
 type ModalProps = {
   readonly isOpen: boolean;
   readonly onClose: () => void;
   readonly children: ReactNode;
-  readonly title?: string; // Add an optional title prop
+  readonly title?: string;
 };
 
 export default function Modal({
@@ -18,7 +18,6 @@ export default function Modal({
 }: ModalProps) {
   const contentRef = useRef<HTMLDivElement>(null);
 
-  // Handle closing the modal on "Escape" key press
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape" && isOpen) {
@@ -32,17 +31,16 @@ export default function Modal({
     };
   }, [onClose, isOpen]);
 
-  // Handle outside click to close the modal
-  const handleClickOutside = (event: MouseEvent) => {
-    if (
-      contentRef.current &&
-      !contentRef.current.contains(event.target as Node)
-    ) {
-      onClose();
-    }
-  };
-
   useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        contentRef.current &&
+        !contentRef.current.contains(event.target as Node)
+      ) {
+        onClose();
+      }
+    };
+
     if (isOpen) {
       window.addEventListener("mousedown", handleClickOutside);
     } else {
@@ -52,9 +50,8 @@ export default function Modal({
     return () => {
       window.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [isOpen]);
+  }, [isOpen, onClose]);
 
-  // Only render the modal if isOpen is true
   if (!isOpen) return null;
 
   return (
@@ -65,7 +62,7 @@ export default function Modal({
       >
         <div className="flex justify-between items-center p-4 border-b border-gray-200 dark:border-gray-700">
           <h3 className="text-lg font-semibold text-gray-800 dark:text-white">
-            {title} {/* Use the title prop here */}
+            {title}
           </h3>
           <button
             onClick={onClose}
