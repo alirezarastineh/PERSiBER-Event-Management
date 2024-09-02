@@ -5,8 +5,6 @@ import {
   useGetAllGuestsQuery,
   useDeleteGuestMutation,
   useUpdateGuestMutation,
-  useUpdateStudentStatusMutation,
-  useUpdateLadyStatusMutation,
   useToggleStudentDiscountMutation,
   useToggleLadyDiscountMutation,
   useUpdateAttendedStatusMutation,
@@ -14,6 +12,7 @@ import {
 import { Guest, UpdateGuestDto } from "@/types/types";
 import { useAppSelector } from "@/redux/hooks";
 import Spinner from "./Common/Spinner";
+import Modal from "./Common/Modal";
 
 export default function Guests() {
   const {
@@ -24,11 +23,10 @@ export default function Guests() {
   } = useGetAllGuestsQuery();
   const [deleteGuest] = useDeleteGuestMutation();
   const [updateGuest] = useUpdateGuestMutation();
-  const [updateStudentStatus] = useUpdateStudentStatusMutation();
-  const [updateLadyStatus] = useUpdateLadyStatusMutation();
   const [toggleStudentDiscount] = useToggleStudentDiscountMutation();
   const [toggleLadyDiscount] = useToggleLadyDiscountMutation();
   const [updateAttendedStatus] = useUpdateAttendedStatusMutation();
+
   const [editingGuest, setEditingGuest] = useState<Guest | null>(null);
   const [editData, setEditData] = useState<UpdateGuestDto>({
     name: "",
@@ -44,16 +42,7 @@ export default function Guests() {
     useState<string>("");
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
 
-  // State for discount toggles
-  const [isStudentDiscountActive, setIsStudentDiscountActive] =
-    useState<boolean>(false);
-  const [isLadyDiscountActive, setIsLadyDiscountActive] =
-    useState<boolean>(false);
-
-  const [discountStatuses, setDiscountStatuses] = useState<{
-    studentDiscountActive: boolean;
-    ladyDiscountActive: boolean;
-  }>({
+  const [discountStatuses, setDiscountStatuses] = useState({
     studentDiscountActive: false,
     ladyDiscountActive: false,
   });
@@ -66,14 +55,6 @@ export default function Guests() {
   const [guestIdToDelete, setGuestIdToDelete] = useState<string | null>(null);
 
   const userRole = useAppSelector((state) => state.auth.user?.role);
-
-  // Effect to update discount states from backend data
-  useEffect(() => {
-    if (guestsData?.statistics) {
-      setIsStudentDiscountActive(guestsData.statistics.studentDiscountActive);
-      setIsLadyDiscountActive(guestsData.statistics.ladyDiscountActive);
-    }
-  }, [guestsData]);
 
   useEffect(() => {
     if (guestsData?.statistics) {
@@ -99,8 +80,8 @@ export default function Guests() {
       try {
         await deleteGuest(guestIdToDelete).unwrap();
         refetch();
-        setShowDeleteModal(false); // Close modal on successful delete
-        setGuestIdToDelete(null); // Clear guestIdToDelete state
+        setShowDeleteModal(false);
+        setGuestIdToDelete(null);
       } catch (error) {
         console.error("Failed to delete guest:", error);
       }
@@ -228,70 +209,29 @@ export default function Guests() {
     guest.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const filteredInvitedFromGuests = guestsData?.guests.filter((guest) =>
-    guest.name.toLowerCase().includes(invitedFromSearchTerm.toLowerCase())
-  );
-
   if (isLoading) {
-    return <Spinner lg />;
+    return (
+      <div className="flex justify-center items-center my-8">
+        <Spinner xl />
+      </div>
+    );
   }
 
   if (isError) {
-    return <div>Error loading guests.</div>;
+    return (
+      <div className="text-red-500 text-center">Error loading guests.</div>
+    );
   }
 
   return (
-    <div className="max-w-6xl mx-auto py-8 px-4">
+    <div className="p-6 transition-colors ease-in-out duration-300">
       <h1 className="text-3xl font-bold mb-6 text-center">Guest Management</h1>
 
-      {/* Search Input */}
-      <div className="mb-6">
-        <input
-          type="text"
-          placeholder="Search by name..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="text-black w-full p-2 border border-gray-300 rounded-lg"
-        />
-      </div>
-
-      {/* Display Statistics */}
-      {guestsData?.statistics && (
-        <div className="mb-6 text-center space-y-2">
-          <p className="text-lg font-semibold">
-            Total Guests: {guestsData.statistics.totalCount}
-          </p>
-          <p className="text-lg font-semibold">
-            Attended Guests: {guestsData.statistics.attendedCount}
-          </p>
-          {(userRole === "admin" || userRole === "master") && (
-            <>
-              <p className="text-lg font-semibold">
-                Students Count: {guestsData.statistics.studentsCount || 0}
-              </p>
-              <p className="text-lg font-semibold">
-                Ladies Count: {guestsData.statistics.ladiesCount || 0}
-              </p>
-              <p className="text-lg font-semibold">
-                Drinks Coupons Count:{" "}
-                {guestsData.statistics.drinksCouponsCount || 0}
-              </p>
-              <p className="text-lg font-semibold">
-                Free Entry Count: {guestsData.statistics.freeEntryCount || 0}
-              </p>
-            </>
-          )}
-        </div>
-      )}
-
-      {/* Discount Toggles */}
       {(userRole === "admin" || userRole === "master") && (
-        <div className="flex justify-center gap-6 mb-6">
+        <div className="flex justify-between gap-6 mb-8">
           {/* Student Discount Toggle */}
           <div className="flex items-center">
-            <span className="text-lg font-semibold mr-2">
-              Student Discount:
-            </span>
+            <span className="text-lg font-semibold mr-2">Student:</span>
             <button
               onClick={handleToggleStudentDiscount}
               className={`relative inline-flex items-center h-6 rounded-full w-11 ${
@@ -312,7 +252,7 @@ export default function Guests() {
 
           {/* Lady Discount Toggle */}
           <div className="flex items-center">
-            <span className="text-lg font-semibold mr-2">Lady Discount:</span>
+            <span className="text-lg font-semibold mr-2">Lady:</span>
             <button
               onClick={handleToggleLadyDiscount}
               className={`relative inline-flex items-center h-6 rounded-full w-11 ${
@@ -333,195 +273,287 @@ export default function Guests() {
         </div>
       )}
 
-      {filteredGuests?.length === 0 ? (
-        <p>No guests found.</p>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredGuests?.map((guest) => (
-            <div
-              key={guest._id}
-              className="bg-white p-6 rounded-lg shadow-lg flex flex-col justify-between"
-            >
-              <div className="text-center space-y-2">
-                <h2 className="text-black text-xl font-semibold">
-                  {guest.name}
-                </h2>
-                <p className="text-gray-600">Attended: {guest.attended}</p>
-                <p className="text-gray-600">
-                  Invited From: {guest.invitedFrom || "N/A"}
-                </p>
-                <p className="text-gray-600">
-                  Drinks Coupon: {guest.drinksCoupon}
-                </p>
-                <p className="text-gray-600">
-                  Already Paid: {guest.alreadyPaid ? "Yes" : "No"}
-                </p>
-                <p className="text-gray-600">
-                  Free Entry: {guest.freeEntry ? "Yes" : "No"}
-                </p>
-                <p className="text-gray-600">
-                  Is Student: {guest.isStudent ? "Yes" : "No"}
-                </p>
-                <p className="text-gray-600">
-                  Is Lady: {guest.isLady ? "Yes" : "No"}
-                </p>
-                {guest.isStudent && guest.untilWhen && (
-                  <p className="text-gray-600">
-                    Until When: {new Date(guest.untilWhen).toLocaleDateString()}
-                  </p>
-                )}
-              </div>
+      <div className="mb-6">
+        <input
+          type="text"
+          placeholder="Search by name..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="text-black w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-lime-800 transition-shadow shadow-sm hover:shadow-md bg-gray-50 dark:bg-gray-700 dark:text-white dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400"
+        />
+      </div>
 
-              {/* Action Buttons and Toggles */}
-              <div className="mt-4 space-y-3">
+      {filteredGuests?.length === 0 ? (
+        <p className="text-center text-gray-700 dark:text-gray-300">
+          No guests found.
+        </p>
+      ) : (
+        <div className="space-y-4 md:space-y-0 md:overflow-x-auto border-2 border-gray-500 dark:border-gray-700 rounded-3xl transition-all ease-in-out duration-300">
+          <table className="hidden md:table min-w-full bg-[#575756]/20 dark:bg-gray-800 text-left">
+            <thead>
+              <tr>
+                <th className="py-2 px-4 border-b border-[#575756] dark:border-gray-700">
+                  Name
+                </th>
+                <th className="py-2 px-4 border-b border-[#575756] dark:border-gray-700">
+                  Attended
+                </th>
+                <th className="py-2 px-4 border-b border-[#575756] dark:border-gray-700">
+                  Inviter
+                </th>
+                <th className="py-2 px-4 border-b border-[#575756] dark:border-gray-700">
+                  Student
+                </th>
+                <th className="py-2 px-4 border-b border-[#575756] dark:border-gray-700">
+                  Lady
+                </th>
+                <th className="py-2 px-4 border-b border-[#575756] dark:border-gray-700">
+                  Free Entry
+                </th>
+                <th className="py-2 px-4 border-b border-[#575756] dark:border-gray-700">
+                  Actions
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredGuests?.map((guest) => (
+                <tr key={guest._id}>
+                  <td className="py-2 px-4 border-b border-[#575756] dark:border-gray-700">
+                    {guest.name}
+                  </td>
+                  <td className="py-2 px-4 border-b border-[#575756] dark:border-gray-700">
+                    {/* Switch Toggle for Attended */}
+                    <button
+                      onClick={() => handleToggleAttendedStatus(guest._id)}
+                      className={`relative inline-flex items-center h-6 rounded-full w-11 ${
+                        attendedStatuses[guest._id]
+                          ? "bg-green-500"
+                          : "bg-gray-300"
+                      }`}
+                    >
+                      <span
+                        className={`inline-block w-4 h-4 transform bg-white rounded-full transition-transform ${
+                          attendedStatuses[guest._id]
+                            ? "translate-x-5"
+                            : "translate-x-1"
+                        }`}
+                      />
+                    </button>
+                  </td>
+
+                  {/* Conditionally render additional fields based on userRole */}
+                  {(userRole === "admin" || userRole === "master") && (
+                    <>
+                      <td className="py-2 px-4 border-b border-[#575756] dark:border-gray-700">
+                        {guest.invitedFrom || "N/A"}
+                      </td>
+                      <td className="py-2 px-4 border-b border-[#575756] dark:border-gray-700">
+                        {guest.isStudent ? "Yes" : "No"}
+                      </td>
+                      <td className="py-2 px-4 border-b border-[#575756] dark:border-gray-700">
+                        {guest.isLady ? "Yes" : "No"}
+                      </td>
+                      <td className="py-2 px-4 border-b border-[#575756] dark:border-gray-700">
+                        {guest.freeEntry ? "Yes" : "No"}
+                      </td>
+                    </>
+                  )}
+
+                  {/* Show only 'Is Student' and 'Free Entry' for user role */}
+                  {userRole === "user" && (
+                    <>
+                      <td className="py-2 px-4 border-b border-[#575756] dark:border-gray-700">
+                        {guest.isStudent ? "Yes" : "No"}
+                      </td>
+                      <td className="py-2 px-4 border-b border-[#575756] dark:border-gray-700">
+                        {guest.freeEntry ? "Yes" : "No"}
+                      </td>
+                    </>
+                  )}
+
+                  <td className="py-2 px-4 border-b border-[#575756] dark:border-gray-700">
+                    {(userRole === "admin" || userRole === "master") && (
+                      <div className="flex space-x-2">
+                        <button
+                          onClick={() => handleEditGuest(guest)}
+                          className="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600 transition duration-300"
+                        >
+                          Edit
+                        </button>
+                        <button
+                          onClick={() => openDeleteModal(guest._id)}
+                          className="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600 transition duration-300"
+                          disabled={guest.name === "Master"}
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+
+          {/* Mobile View */}
+          <div className="md:hidden">
+            {filteredGuests?.map((guest) => (
+              <div
+                key={guest._id}
+                className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md mb-4"
+              >
+                <div className="flex justify-between items-center">
+                  <h2 className="text-lg font-bold text-gray-800 dark:text-gray-200">
+                    {guest.name}
+                  </h2>
+                  <button
+                    onClick={() => handleToggleAttendedStatus(guest._id)}
+                    className={`relative inline-flex items-center h-6 rounded-full w-11 ${
+                      attendedStatuses[guest._id]
+                        ? "bg-green-500"
+                        : "bg-gray-300"
+                    }`}
+                  >
+                    <span
+                      className={`inline-block w-4 h-4 transform bg-white rounded-full transition-transform ${
+                        attendedStatuses[guest._id]
+                          ? "translate-x-5"
+                          : "translate-x-1"
+                      }`}
+                    />
+                  </button>
+                </div>
+
+                {/* Conditionally render additional fields based on userRole */}
                 {(userRole === "admin" || userRole === "master") && (
                   <>
-                    <div className="flex space-x-2">
+                    <p className="text-gray-600 dark:text-gray-400">
+                      <span className="font-semibold">Inviter:</span>{" "}
+                      {guest.invitedFrom || "N/A"}
+                    </p>
+                    <p className="text-gray-600 dark:text-gray-400">
+                      <span className="font-semibold">Student:</span>{" "}
+                      {guest.isStudent ? "Yes" : "No"}
+                    </p>
+                    <p className="text-gray-600 dark:text-gray-400">
+                      <span className="font-semibold">Lady:</span>{" "}
+                      {guest.isLady ? "Yes" : "No"}
+                    </p>
+                    <p className="text-gray-600 dark:text-gray-400">
+                      <span className="font-semibold">Free Entry:</span>{" "}
+                      {guest.freeEntry ? "Yes" : "No"}
+                    </p>
+                  </>
+                )}
+
+                {/* Show only 'Is Student' and 'Free Entry' for user role */}
+                {userRole === "user" && (
+                  <>
+                    <p className="text-gray-600 dark:text-gray-400">
+                      <span className="font-semibold">Student:</span>{" "}
+                      {guest.isStudent ? "Yes" : "No"}
+                    </p>
+                    <p className="text-gray-600 dark:text-gray-400">
+                      <span className="font-semibold">Free Entry:</span>{" "}
+                      {guest.freeEntry ? "Yes" : "No"}
+                    </p>
+                  </>
+                )}
+
+                <div className="flex space-x-2 mt-4">
+                  {(userRole === "admin" || userRole === "master") && (
+                    <>
                       <button
                         onClick={() => handleEditGuest(guest)}
-                        className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300 flex-1"
+                        className="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600 transition duration-300 w-full"
                       >
                         Edit
                       </button>
                       <button
-                        onClick={() => openDeleteModal(guest._id)} // Open modal instead of confirm
-                        className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition duration-300 flex-1"
+                        onClick={() => openDeleteModal(guest._id)}
+                        className="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600 transition duration-300 w-full"
                         disabled={guest.name === "Master"}
                       >
                         Delete
                       </button>
-                    </div>
-                    <div className="flex flex-col space-y-2">
-                      {/* Attended Toggle */}
-                      <div className="flex items-center space-x-2 justify-center">
-                        <span className="text-sm font-medium text-gray-700">
-                          Attended
-                        </span>
-                        <label
-                          htmlFor={`attended-toggle-${guest._id}`}
-                          className="relative inline-flex items-center cursor-pointer"
-                        >
-                          <input
-                            id={`attended-toggle-${guest._id}`}
-                            type="checkbox"
-                            checked={!!attendedStatuses[guest._id]} // Ensure boolean
-                            onChange={() =>
-                              handleToggleAttendedStatus(guest._id)
-                            }
-                            className="sr-only peer"
-                          />
-                          <div className="w-11 h-6 bg-gray-200 rounded-full peer-checked:bg-green-500 transition-colors duration-300"></div>
-                          <span
-                            className={`absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform duration-300 ${
-                              attendedStatuses[guest._id]
-                                ? "translate-x-5"
-                                : "translate-x-0"
-                            }`}
-                          ></span>
-                        </label>
-                      </div>
-                    </div>
-                  </>
-                )}
-
-                {userRole === "user" && (
-                  <div className="flex items-center space-x-2 justify-center">
-                        <span className="text-sm font-medium text-gray-700">
-                          Attended
-                        </span>
-                        <label
-                          htmlFor={`attended-toggle-${guest._id}`}
-                          className="relative inline-flex items-center cursor-pointer"
-                        >
-                          <input
-                            id={`attended-toggle-${guest._id}`}
-                            type="checkbox"
-                            checked={!!attendedStatuses[guest._id]} // Ensure boolean
-                            onChange={() =>
-                              handleToggleAttendedStatus(guest._id)
-                            }
-                            className="sr-only peer"
-                          />
-                          <div className="w-11 h-6 bg-gray-200 rounded-full peer-checked:bg-green-500 transition-colors duration-300"></div>
-                          <span
-                            className={`absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform duration-300 ${
-                              attendedStatuses[guest._id]
-                                ? "translate-x-5"
-                                : "translate-x-0"
-                            }`}
-                          ></span>
-                        </label>
-                  </div>
-                )}
+                    </>
+                  )}
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       )}
 
       {/* Delete Confirmation Modal */}
       {showDeleteModal && (
-        <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
-          <div className="bg-white rounded-lg p-6 shadow-lg max-w-sm w-full">
-            <h3 className="text-lg text-black font-semibold mb-4">Confirm Deletion</h3>
-            <p className="text-gray-700 mb-6">
-              Are you sure you want to delete this guest?
-            </p>
-            <div className="flex justify-end space-x-4">
-              <button
-                onClick={closeDeleteModal}
-                className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition duration-300"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleDeleteGuest}
-                className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition duration-300"
-              >
-                Delete
-              </button>
-            </div>
+        <Modal
+          isOpen={showDeleteModal}
+          onClose={closeDeleteModal}
+          title="Confirm Deletion"
+        >
+          <p className="text-gray-700 mb-6">
+            Are you sure you want to delete this guest?
+          </p>
+          <div className="flex justify-end space-x-4">
+            <button
+              onClick={closeDeleteModal}
+              className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition duration-300"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={handleDeleteGuest}
+              className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition duration-300"
+            >
+              Delete
+            </button>
           </div>
-        </div>
+        </Modal>
       )}
 
       {/* Edit Modal */}
       {editingGuest && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg">
-            <h3 className="text-xl font-bold mb-4">Edit Guest</h3>
-            <div className="space-y-4">
+        <Modal
+          isOpen={!!editingGuest}
+          onClose={() => setEditingGuest(null)}
+          title="Edit Guest"
+        >
+          <div className="space-y-4">
+            <input
+              type="text"
+              placeholder="Name"
+              value={editData.name ?? ""}
+              onChange={(e) =>
+                setEditData({ ...editData, name: e.target.value })
+              }
+              className="text-black w-full p-2 border rounded"
+            />
+            <div className="relative text-black">
               <input
                 type="text"
-                placeholder="Name"
-                value={editData.name ?? ""} // Ensure controlled input
-                onChange={(e) =>
-                  setEditData({ ...editData, name: e.target.value })
-                }
+                placeholder="Search Inviter"
+                value={invitedFromSearchTerm || ""}
+                onChange={(e) => {
+                  setInvitedFromSearchTerm(e.target.value);
+                  setShowDropdown(e.target.value !== "");
+                }}
                 className="text-black w-full p-2 border rounded"
               />
-              <div className="relative text-black">
-                <input
-                  type="text"
-                  placeholder="Search Invited From"
-                  value={invitedFromSearchTerm || ""} // Ensure controlled input
-                  onChange={(e) => {
-                    setInvitedFromSearchTerm(e.target.value);
-                    setShowDropdown(e.target.value !== "");
-                  }}
-                  className="text-black w-full p-2 border rounded"
-                />
-                {showDropdown && (
-                  <div className="absolute z-10 bg-white w-full border rounded mt-1 max-h-40 overflow-y-auto">
-                    {filteredInvitedFromGuests?.map((g) => (
+              {showDropdown && (
+                <div className="absolute z-10 bg-white w-full border rounded mt-1 max-h-40 overflow-y-auto">
+                  {filteredGuests
+                    ?.filter((g) =>
+                      g.name
+                        .toLowerCase()
+                        .includes(invitedFromSearchTerm.toLowerCase())
+                    )
+                    .map((g) => (
                       <button
                         key={g._id}
                         className="cursor-pointer p-2 hover:bg-gray-200 text-left w-full"
                         onClick={() => {
-                          setEditData({
-                            ...editData,
-                            invitedFrom: g.name,
-                          });
+                          setEditData({ ...editData, invitedFrom: g.name });
                           setInvitedFromSearchTerm(g.name);
                           setShowDropdown(false);
                         }}
@@ -529,87 +561,164 @@ export default function Guests() {
                         {g.name}
                       </button>
                     ))}
-                  </div>
-                )}
-              </div>
-              <div className="flex items-center gap-2">
-                <label htmlFor="isStudent" className="text-black">
-                  Is Student:
-                </label>
-                <input
-                  type="checkbox"
-                  id="isStudent"
-                  checked={editData.isStudent || false} // Ensure controlled input
-                  onChange={(e) =>
-                    setEditData({ ...editData, isStudent: e.target.checked })
-                  }
-                  className="border p-2 rounded"
-                />
-              </div>
-              {editData.isStudent && (
-                <input
-                  type="date"
-                  value={
-                    editData.untilWhen
-                      ? new Date(editData.untilWhen).toISOString().split("T")[0]
-                      : ""
-                  }
-                  onChange={(e) => {
-                    const parsedDate = new Date(e.target.value);
-                    setEditData({
-                      ...editData,
-                      untilWhen: isNaN(parsedDate.getTime())
-                        ? null
-                        : parsedDate,
-                    });
-                  }}
-                  className="text-black border p-2 rounded w-full"
-                />
+                </div>
               )}
-              <div className="flex items-center gap-2">
-                <label htmlFor="isLady" className="text-black">
-                  Is Lady:
-                </label>
-                <input
-                  type="checkbox"
-                  id="isLady"
-                  checked={editData.isLady || false} // Ensure controlled input
-                  onChange={(e) =>
-                    setEditData({ ...editData, isLady: e.target.checked })
-                  }
-                  className="border p-2 rounded"
+            </div>
+
+            {/* Switch Toggle for Is Student */}
+            <div className="flex items-center gap-2 justify-between">
+              <label htmlFor="isStudent" className="">
+                Student:
+              </label>
+              <button
+                onClick={() =>
+                  setEditData({ ...editData, isStudent: !editData.isStudent })
+                }
+                className={`relative inline-flex items-center h-6 rounded-full w-11 ${
+                  editData.isStudent ? "bg-green-500" : "bg-gray-300"
+                }`}
+              >
+                <span
+                  className={`inline-block w-4 h-4 transform bg-white rounded-full transition-transform ${
+                    editData.isStudent ? "translate-x-5" : "translate-x-1"
+                  }`}
                 />
-              </div>
-              <div className="flex items-center gap-2">
-                <label htmlFor="freeEntry" className="text-black">
-                  Free Entry:
-                </label>
-                <input
-                  type="checkbox"
-                  id="freeEntry"
-                  checked={editData.freeEntry || false} // Ensure controlled input
-                  onChange={(e) =>
-                    setEditData({ ...editData, freeEntry: e.target.checked })
-                  }
-                  className="border p-2 rounded"
+              </button>
+            </div>
+
+            {editData.isStudent && (
+              <input
+                type="date"
+                value={
+                  editData.untilWhen
+                    ? new Date(editData.untilWhen).toISOString().split("T")[0]
+                    : ""
+                }
+                onChange={(e) => {
+                  const parsedDate = new Date(e.target.value);
+                  setEditData({
+                    ...editData,
+                    untilWhen: isNaN(parsedDate.getTime()) ? null : parsedDate,
+                  });
+                }}
+                className="text-black border p-2 rounded w-full"
+              />
+            )}
+
+            {/* Switch Toggle for Is Lady */}
+            <div className="flex items-center gap-2 justify-between">
+              <label htmlFor="isLady" className="">
+                Lady:
+              </label>
+              <button
+                onClick={() =>
+                  setEditData({ ...editData, isLady: !editData.isLady })
+                }
+                className={`relative inline-flex items-center h-6 rounded-full w-11 ${
+                  editData.isLady ? "bg-green-500" : "bg-gray-300"
+                }`}
+              >
+                <span
+                  className={`inline-block w-4 h-4 transform bg-white rounded-full transition-transform ${
+                    editData.isLady ? "translate-x-5" : "translate-x-1"
+                  }`}
                 />
-              </div>
-              <div className="flex justify-between gap-2">
-                <button
-                  onClick={handleUpdateGuest}
-                  className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition duration-300 w-full"
-                >
-                  Save
-                </button>
-                <button
-                  onClick={() => setEditingGuest(null)}
-                  className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition duration-300 w-full"
-                >
-                  Cancel
-                </button>
-              </div>
+              </button>
+            </div>
+
+            {/* Switch Toggle for Free Entry */}
+            <div className="flex items-center gap-2 justify-between">
+              <label htmlFor="freeEntry" className="">
+                Free Entry:
+              </label>
+              <button
+                onClick={() =>
+                  setEditData({ ...editData, freeEntry: !editData.freeEntry })
+                }
+                className={`relative inline-flex items-center h-6 rounded-full w-11 ${
+                  editData.freeEntry ? "bg-green-500" : "bg-gray-300"
+                }`}
+              >
+                <span
+                  className={`inline-block w-4 h-4 transform bg-white rounded-full transition-transform ${
+                    editData.freeEntry ? "translate-x-5" : "translate-x-1"
+                  }`}
+                />
+              </button>
+            </div>
+
+            <div className="flex justify-between gap-2">
+              <button
+                onClick={handleUpdateGuest}
+                className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition duration-300 w-full"
+              >
+                Save
+              </button>
+              <button
+                onClick={() => setEditingGuest(null)}
+                className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition duration-300 w-full"
+              >
+                Cancel
+              </button>
             </div>
           </div>
+        </Modal>
+      )}
+
+      {guestsData?.statistics && (
+        <div className="mt-8 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="p-4 bg-gray-100 dark:bg-gray-900 rounded-lg shadow-sm">
+            <p className="text-lg font-semibold text-center text-gray-800 dark:text-white">
+              Total Guests
+            </p>
+            <p className="text-3xl font-bold text-center text-lime-600 dark:text-lime-400">
+              {guestsData.statistics.totalCount}
+            </p>
+          </div>
+          <div className="p-4 bg-gray-100 dark:bg-gray-900 rounded-lg shadow-sm">
+            <p className="text-lg font-semibold text-center text-gray-800 dark:text-white">
+              Attended Guests
+            </p>
+            <p className="text-3xl font-bold text-center text-lime-600 dark:text-lime-400">
+              {guestsData.statistics.attendedCount}
+            </p>
+          </div>
+          {(userRole === "admin" || userRole === "master") && (
+            <>
+              <div className="p-4 bg-gray-100 dark:bg-gray-900 rounded-lg shadow-sm">
+                <p className="text-lg font-semibold text-center text-gray-800 dark:text-white">
+                  Students Count
+                </p>
+                <p className="text-3xl font-bold text-center text-lime-600 dark:text-lime-400">
+                  {guestsData.statistics.studentsCount || 0}
+                </p>
+              </div>
+              <div className="p-4 bg-gray-100 dark:bg-gray-900 rounded-lg shadow-sm">
+                <p className="text-lg font-semibold text-center text-gray-800 dark:text-white">
+                  Ladies Count
+                </p>
+                <p className="text-3xl font-bold text-center text-lime-600 dark:text-lime-400">
+                  {guestsData.statistics.ladiesCount || 0}
+                </p>
+              </div>
+              <div className="p-4 bg-gray-100 dark:bg-gray-900 rounded-lg shadow-sm">
+                <p className="text-lg font-semibold text-center text-gray-800 dark:text-white">
+                  Drinks Coupons Count
+                </p>
+                <p className="text-3xl font-bold text-center text-lime-600 dark:text-lime-400">
+                  {guestsData.statistics.drinksCouponsCount || 0}
+                </p>
+              </div>
+              <div className="p-4 bg-gray-100 dark:bg-gray-900 rounded-lg shadow-sm">
+                <p className="text-lg font-semibold text-center text-gray-800 dark:text-white">
+                  Free Entry Count
+                </p>
+                <p className="text-3xl font-bold text-center text-lime-600 dark:text-lime-400">
+                  {guestsData.statistics.freeEntryCount || 0}
+                </p>
+              </div>
+            </>
+          )}
         </div>
       )}
     </div>

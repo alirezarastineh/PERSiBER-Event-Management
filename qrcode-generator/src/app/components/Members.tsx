@@ -13,6 +13,7 @@ import {
 import { Member, CreateMemberDto, UpdateMemberDto } from "@/types/types";
 import { useAppSelector } from "@/redux/hooks";
 import Spinner from "./Common/Spinner";
+import Modal from "./Common/Modal";
 
 export default function Members() {
   const {
@@ -40,7 +41,6 @@ export default function Members() {
     untilWhen: null,
   });
 
-  // New state for adding a new member
   const [newMemberData, setNewMemberData] = useState<CreateMemberDto>({
     name: "",
     attended: "No",
@@ -51,11 +51,9 @@ export default function Members() {
     untilWhen: null,
   });
 
-  // State for searchable dropdown
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
 
-  // State for global search
   const [globalSearchTerm, setGlobalSearchTerm] = useState<string>("");
 
   const [toggleStatuses, setToggleStatuses] = useState<{
@@ -221,52 +219,42 @@ export default function Members() {
     }
   };
 
-  // Filter members based on the search term
   const filteredMembers = membersData?.members.filter((member) =>
     member.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  // Filter members based on the global search term
   const globallyFilteredMembers = membersData?.members.filter((member) =>
     member.name.toLowerCase().includes(globalSearchTerm.toLowerCase())
   );
 
   if (isLoading) {
-    return <Spinner lg />;
+    return (
+      <div className="flex justify-center items-center my-8">
+        <Spinner xl />
+      </div>
+    );
   }
 
   if (isError) {
-    return <div>Error loading members.</div>;
+    return (
+      <div className="text-red-500 text-center">Error loading members.</div>
+    );
   }
 
   return (
-    <div className="max-w-6xl mx-auto py-8 px-4">
+    <div className="p-6 transition-colors ease-in-out duration-300">
       <h1 className="text-3xl font-bold mb-6 text-center">Member Management</h1>
 
-      {/* Global Search Input */}
       <div className="mb-6">
         <input
           type="text"
           placeholder="Search for a member..."
-          value={globalSearchTerm || ""} // Provide default value
+          value={globalSearchTerm || ""}
           onChange={(e) => setGlobalSearchTerm(e.target.value)}
-          className="text-black w-full p-2 border border-gray-300 rounded-lg"
+          className="text-black w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-lime-800 transition-shadow shadow-sm hover:shadow-md bg-gray-50 dark:bg-gray-700 dark:text-white dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400"
         />
       </div>
 
-      {/* Display Statistics */}
-      <div className="mb-4 text-center">
-        <p className="text-lg font-semibold">
-          Total Members: {membersData?.statistics?.totalCount ?? 0}{" "}
-          {/* Ensure controlled value */}
-        </p>
-        <p className="text-lg font-semibold">
-          Attended: {membersData?.statistics?.attendedCount ?? 0}{" "}
-          {/* Ensure controlled value */}
-        </p>
-      </div>
-
-      {/* Add New Member Section */}
       {(userRole === "admin" || userRole === "master") && (
         <div className="mb-6">
           <h2 className="text-2xl font-semibold mb-4">Add New Member</h2>
@@ -305,289 +293,427 @@ export default function Members() {
         </div>
       )}
 
-      {/* Members List */}
       {globallyFilteredMembers?.length === 0 ? (
-        <p>No members found.</p>
+        <p className="text-center text-gray-700 dark:text-gray-300">
+          No members found.
+        </p>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {globallyFilteredMembers?.map((member) => (
-            <div
-              key={member._id}
-              className="bg-white rounded-lg shadow-md p-6 flex flex-col items-center"
-            >
-              {/* Member Name as the Main Focus */}
-              <h2 className="text-xl font-bold text-gray-900 mb-2">
-                {member.name}
-              </h2>
-              <p className="text-sm text-gray-500">
-                {member.organizer || "N/A"}
-              </p>
+        <div className="space-y-4 md:space-y-0 md:overflow-x-auto border-2 border-gray-500 dark:border-gray-700 rounded-3xl transition-all ease-in-out duration-300">
+          <table className="hidden md:table min-w-full bg-[#575756]/20 dark:bg-gray-800 text-left">
+            <thead>
+              <tr>
+                <th className="py-2 px-4 border-b border-[#575756] dark:border-gray-700">
+                  Name
+                </th>
+                <th className="py-2 px-4 border-b border-[#575756] dark:border-gray-700">
+                  Attended
+                </th>
+                <th className="py-2 px-4 border-b border-[#575756] dark:border-gray-700">
+                  Organizer
+                </th>
+                <th className="py-2 px-4 border-b border-[#575756] dark:border-gray-700">
+                  Inviter
+                </th>
+                <th className="py-2 px-4 border-b border-[#575756] dark:border-gray-700">
+                  Left
+                </th>
+                <th className="py-2 px-4 border-b border-[#575756] dark:border-gray-700">
+                  Student
+                </th>
+                <th className="py-2 px-4 border-b border-[#575756] dark:border-gray-700">
+                  Actions
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {globallyFilteredMembers?.map((member) => (
+                <tr key={member._id}>
+                  <td className="py-2 px-4 border-b border-[#575756] dark:border-gray-700">
+                    {member.name}
+                  </td>
+                  <td className="py-2 px-4 border-b border-[#575756] dark:border-gray-700">
+                    <button
+                      onClick={() => handleToggleAttendedStatus(member._id)}
+                      className={`relative inline-flex items-center h-6 rounded-full w-11 ${
+                        toggleStatuses[member._id]?.attended
+                          ? "bg-green-500"
+                          : "bg-gray-300"
+                      }`}
+                    >
+                      <span
+                        className={`inline-block w-4 h-4 transform bg-white rounded-full transition-transform ${
+                          toggleStatuses[member._id]?.attended
+                            ? "translate-x-5"
+                            : "translate-x-1"
+                        }`}
+                      />
+                    </button>
+                  </td>
 
-              {/* Additional Member Details */}
-              <div className="mt-4 text-center space-y-1">
-                <p className="text-gray-700">
-                  Invited From: {member.invitedFrom || "N/A"}
-                </p>
-                <p className="text-gray-700">
-                  Members Invited: {member.membersInvited || 0}
-                </p>
-                <p className="text-gray-700">
-                  Attended: {member.attended || "No"}
-                </p>
-                <p className="text-gray-700">
-                  Has Left: {member.hasLeft ? "Yes" : "No"}
-                </p>
-                <p className="text-gray-700">
-                  Is Student: {member.isStudent ? "Yes" : "No"}
-                </p>
-                {member.isStudent && member.untilWhen && (
-                  <p className="text-gray-700">
-                    Until: {new Date(member.untilWhen).toLocaleDateString()}
-                  </p>
-                )}
-              </div>
+                  {/* Conditionally render the following columns based on userRole */}
+                  {(userRole === "admin" || userRole === "master") && (
+                    <>
+                      <td className="py-2 px-4 border-b border-[#575756] dark:border-gray-700">
+                        {member.organizer || "N/A"}
+                      </td>
+                      <td className="py-2 px-4 border-b border-[#575756] dark:border-gray-700">
+                        {member.invitedFrom || "N/A"}
+                      </td>
+                      <td className="py-2 px-4 border-b border-[#575756] dark:border-gray-700">
+                        <button
+                          onClick={() => handleToggleHasLeftStatus(member._id)}
+                          className={`relative inline-flex items-center h-6 rounded-full w-11 ${
+                            toggleStatuses[member._id]?.hasLeft
+                              ? "bg-green-500"
+                              : "bg-gray-300"
+                          }`}
+                        >
+                          <span
+                            className={`inline-block w-4 h-4 transform bg-white rounded-full transition-transform ${
+                              toggleStatuses[member._id]?.hasLeft
+                                ? "translate-x-5"
+                                : "translate-x-1"
+                            }`}
+                          />
+                        </button>
+                      </td>
+                      <td className="py-2 px-4 border-b border-[#575756] dark:border-gray-700">
+                        <button
+                          onClick={() => handleToggleStudentStatus(member._id)}
+                          className={`relative inline-flex items-center h-6 rounded-full w-11 ${
+                            toggleStatuses[member._id]?.isStudent
+                              ? "bg-green-500"
+                              : "bg-gray-300"
+                          }`}
+                        >
+                          <span
+                            className={`inline-block w-4 h-4 transform bg-white rounded-full transition-transform ${
+                              toggleStatuses[member._id]?.isStudent
+                                ? "translate-x-5"
+                                : "translate-x-1"
+                            }`}
+                          />
+                        </button>
+                      </td>
+                    </>
+                  )}
 
-              {/* Action Buttons */}
-              <div className="flex w-full mt-4">
+                  <td className="py-2 px-4 border-b border-[#575756] dark:border-gray-700">
+                    {(userRole === "admin" || userRole === "master") && (
+                      <div className="flex space-x-2">
+                        <button
+                          onClick={() => handleEditMember(member)}
+                          className="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600 transition duration-300"
+                        >
+                          Edit
+                        </button>
+                        <button
+                          onClick={() => openDeleteModal(member._id)}
+                          className="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600 transition duration-300"
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+
+          {/* Mobile View */}
+          <div className="md:hidden">
+            {globallyFilteredMembers?.map((member) => (
+              <div
+                key={member._id}
+                className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md mb-4"
+              >
+                <div className="flex justify-between items-center">
+                  <h2 className="text-lg font-bold text-gray-800 dark:text-gray-200">
+                    {member.name}
+                  </h2>
+                  <button
+                    onClick={() => handleToggleAttendedStatus(member._id)}
+                    className={`relative inline-flex items-center h-6 rounded-full w-11 ${
+                      toggleStatuses[member._id]?.attended
+                        ? "bg-green-500"
+                        : "bg-gray-300"
+                    }`}
+                  >
+                    <span
+                      className={`inline-block w-4 h-4 transform bg-white rounded-full transition-transform ${
+                        toggleStatuses[member._id]?.attended
+                          ? "translate-x-5"
+                          : "translate-x-1"
+                      }`}
+                    />
+                  </button>
+                </div>
+
+                {/* Conditionally render the following paragraphs based on userRole */}
                 {(userRole === "admin" || userRole === "master") && (
                   <>
+                    <p className="text-gray-600 dark:text-gray-400">
+                      <span className="font-semibold">Organizer:</span>{" "}
+                      {member.organizer || "N/A"}
+                    </p>
+                    <p className="text-gray-600 dark:text-gray-400">
+                      <span className="font-semibold">Inviter:</span>{" "}
+                      {member.invitedFrom || "N/A"}
+                    </p>
+                    <p className="text-gray-600 dark:text-gray-400">
+                      <span className="font-semibold">Left:</span>{" "}
+                      {member.hasLeft ? "Yes" : "No"}
+                    </p>
+                    <p className="text-gray-600 dark:text-gray-400">
+                      <span className="font-semibold">Student:</span>{" "}
+                      {member.isStudent ? "Yes" : "No"}
+                    </p>
+                    {member.isStudent && member.untilWhen && (
+                      <p className="text-gray-600 dark:text-gray-400">
+                        <span className="font-semibold">Until:</span>{" "}
+                        {new Date(member.untilWhen).toLocaleDateString()}
+                      </p>
+                    )}
+                  </>
+                )}
+
+                {/* Conditionally render edit and delete buttons based on userRole */}
+                {(userRole === "admin" || userRole === "master") && (
+                  <div className="flex space-x-2 mt-4">
                     <button
                       onClick={() => handleEditMember(member)}
-                      className="flex-1 bg-blue-500 text-white py-2 rounded-l-lg hover:bg-blue-600 transition duration-300"
+                      className="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600 transition duration-300 w-full"
                     >
                       Edit
                     </button>
                     <button
-                      onClick={() => openDeleteModal(member._id)} // Open modal instead of confirm
-                      className="flex-1 bg-red-500 text-white py-2 rounded-r-lg hover:bg-red-600 transition duration-300"
+                      onClick={() => openDeleteModal(member._id)}
+                      className="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600 transition duration-300 w-full"
                     >
                       Delete
                     </button>
-                  </>
+                  </div>
                 )}
               </div>
-
-              {/* Toggle Switches */}
-              <div className="flex justify-around w-full mt-4">
-                <div className="flex items-center space-x-2">
-                  <span className="text-sm font-medium text-gray-700">
-                    Attended
-                  </span>
-                  <label
-                    htmlFor={`attended-toggle-${member._id}`}
-                    className="relative inline-flex items-center cursor-pointer"
-                  >
-                    <input
-                      id={`attended-toggle-${member._id}`}
-                      type="checkbox"
-                      checked={toggleStatuses[member._id]?.attended || false} // Ensure controlled input
-                      onChange={() => handleToggleAttendedStatus(member._id)}
-                      className="sr-only peer"
-                    />
-                    <div className="w-11 h-6 bg-gray-200 rounded-full peer-checked:bg-green-500 transition-colors duration-300"></div>
-                    <span
-                      className={`absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform duration-300 ${
-                        toggleStatuses[member._id]?.attended
-                          ? "translate-x-5"
-                          : "translate-x-0"
-                      }`}
-                    ></span>
-                  </label>
-                </div>
-
-                {/* Uncomment and ensure controlled values for other toggles */}
-                {/* 
-                <div className="flex items-center space-x-2">
-                  <span className="text-sm font-medium text-gray-700">Has Left</span>
-                  <label
-                    htmlFor={`hasLeft-toggle-${member._id}`}
-                    className="relative inline-flex items-center cursor-pointer"
-                  >
-                    <input
-                      id={`hasLeft-toggle-${member._id}`}
-                      type="checkbox"
-                      checked={toggleStatuses[member._id]?.hasLeft || false} // Ensure controlled input
-                      onChange={() => handleToggleHasLeftStatus(member._id)}
-                      className="sr-only peer"
-                    />
-                    <div className="w-11 h-6 bg-gray-200 rounded-full peer-checked:bg-green-500 transition-colors duration-300"></div>
-                    <span
-                      className={`absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform duration-300 ${
-                        toggleStatuses[member._id]?.hasLeft
-                          ? "translate-x-5"
-                          : "translate-x-0"
-                      }`}
-                    ></span>
-                  </label>
-                </div>
-
-                <div className="flex items-center space-x-2">
-                  <span className="text-sm font-medium text-gray-700">Student</span>
-                  <label
-                    htmlFor={`student-toggle-${member._id}`}
-                    className="relative inline-flex items-center cursor-pointer"
-                  >
-                    <input
-                      id={`student-toggle-${member._id}`}
-                      type="checkbox"
-                      checked={toggleStatuses[member._id]?.isStudent || false} // Ensure controlled input
-                      onChange={() => handleToggleStudentStatus(member._id)}
-                      className="sr-only peer"
-                    />
-                    <div className="w-11 h-6 bg-gray-200 rounded-full peer-checked:bg-green-500 transition-colors duration-300"></div>
-                    <span
-                      className={`absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform duration-300 ${
-                        toggleStatuses[member._id]?.isStudent
-                          ? "translate-x-5"
-                          : "translate-x-0"
-                      }`}
-                    ></span>
-                  </label>
-                </div> 
-                */}
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       )}
 
       {/* Delete Confirmation Modal */}
       {showDeleteModal && (
-        <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
-          <div className="bg-white rounded-lg p-6 shadow-lg max-w-sm w-full">
-            <h3 className="text-lg text-black font-semibold mb-4">Confirm Deletion</h3>
-            <p className="text-gray-700 mb-6">
-              Are you sure you want to delete this member?
-            </p>
-            <div className="flex justify-end space-x-4">
-              <button
-                onClick={closeDeleteModal}
-                className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition duration-300"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleDeleteMember}
-                className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition duration-300"
-              >
-                Delete
-              </button>
-            </div>
+        <Modal
+          isOpen={showDeleteModal}
+          onClose={closeDeleteModal}
+          title="Confirm Deletion"
+        >
+          <p className="text-gray-700 mb-6">
+            Are you sure you want to delete this member?
+          </p>
+          <div className="flex justify-end space-x-4">
+            <button
+              onClick={closeDeleteModal}
+              className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition duration-300"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={handleDeleteMember}
+              className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition duration-300"
+            >
+              Delete
+            </button>
           </div>
-        </div>
+        </Modal>
       )}
 
       {/* Edit Modal */}
+      {/* Edit Modal */}
       {editingMember && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg">
-            <h3 className="text-xl font-bold mb-4">Edit Member</h3>
-            <div className="space-y-4">
+        <Modal
+          isOpen={!!editingMember}
+          onClose={() => setEditingMember(null)}
+          title="Edit Member"
+        >
+          <div className="space-y-4">
+            {/* Name Input */}
+            <input
+              type="text"
+              placeholder="Name"
+              value={editData.name ?? ""}
+              onChange={(e) =>
+                setEditData({ ...editData, name: e.target.value })
+              }
+              className="text-black w-full p-2 border rounded"
+            />
+
+            {/* Organizer Dropdown */}
+            <select
+              value={editData.organizer ?? ""}
+              onChange={(e) =>
+                setEditData({ ...editData, organizer: e.target.value })
+              }
+              className="text-black w-full p-2 border rounded"
+            >
+              <option value="">Select Organizer</option>
+              <option value="Kourosh">Kourosh</option>
+              <option value="Sobhan">Sobhan</option>
+              <option value="Mutual">Mutual</option>
+            </select>
+
+            {/* Search Inviter */}
+            <div className="relative text-black">
               <input
                 type="text"
-                placeholder="Name"
-                value={editData.name ?? ""}
-                onChange={(e) =>
-                  setEditData({ ...editData, name: e.target.value })
-                }
+                placeholder="Search Inviter"
+                value={searchTerm || ""}
+                onChange={(e) => {
+                  setSearchTerm(e.target.value);
+                  setShowDropdown(e.target.value !== "");
+                }}
                 className="text-black w-full p-2 border rounded"
               />
-              <div className="relative text-black">
-                <input
-                  type="text"
-                  placeholder="Search Invited From"
-                  value={searchTerm || ""}
-                  onChange={(e) => {
-                    setSearchTerm(e.target.value);
-                    setShowDropdown(e.target.value !== "");
-                  }}
-                  className="text-black w-full p-2 border rounded"
-                />
-                {showDropdown && (
-                  <div className="absolute z-10 bg-white w-full border rounded mt-1 max-h-40 overflow-y-auto">
-                    {filteredMembers?.map((m) => (
-                      <button
-                        key={m._id}
-                        className="cursor-pointer p-2 hover:bg-gray-200 text-left w-full"
-                        onClick={() => {
-                          setEditData({
-                            ...editData,
-                            invitedFrom: m.name,
-                          });
-                          setSearchTerm(m.name);
-                          setShowDropdown(false);
-                        }}
-                      >
-                        {m.name}
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </div>
-              <div className="flex items-center gap-2">
-                <label htmlFor="hasLeft" className="text-black">
-                  Has Left:
-                </label>
-                <input
-                  type="checkbox"
-                  id="hasLeft"
-                  checked={editData.hasLeft || false}
-                  onChange={(e) =>
-                    setEditData({ ...editData, hasLeft: e.target.checked })
-                  }
-                  className="border p-2 rounded"
-                />
-              </div>
-              <div className="flex items-center gap-2">
-                <label htmlFor="isStudent" className="text-black">
-                  Is Student:
-                </label>
-                <input
-                  type="checkbox"
-                  id="isStudent"
-                  checked={editData.isStudent || false}
-                  onChange={(e) =>
-                    setEditData({ ...editData, isStudent: e.target.checked })
-                  }
-                  className="border p-2 rounded"
-                />
-              </div>
-              {editData.isStudent && (
-                <input
-                  type="date"
-                  value={
-                    editData.untilWhen
-                      ? new Date(editData.untilWhen).toISOString().split("T")[0]
-                      : ""
-                  }
-                  onChange={(e) => {
-                    const parsedDate = new Date(e.target.value);
-                    setEditData({
-                      ...editData,
-                      untilWhen: isNaN(parsedDate.getTime())
-                        ? null
-                        : parsedDate,
-                    });
-                  }}
-                  className="text-black border p-2 rounded w-full"
-                />
+              {showDropdown && (
+                <div className="absolute z-10 bg-white w-full border rounded mt-1 max-h-40 overflow-y-auto">
+                  {filteredMembers?.map((m) => (
+                    <button
+                      key={m._id}
+                      className="cursor-pointer p-2 hover:bg-gray-200 text-left w-full"
+                      onClick={() => {
+                        setEditData({
+                          ...editData,
+                          invitedFrom: m.name,
+                        });
+                        setSearchTerm(m.name);
+                        setShowDropdown(false);
+                      }}
+                    >
+                      {m.name}
+                    </button>
+                  ))}
+                </div>
               )}
-              <div className="flex justify-between gap-2">
-                <button
-                  onClick={handleUpdateMember}
-                  className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition duration-300 w-full"
-                >
-                  Save
-                </button>
-                <button
-                  onClick={() => setEditingMember(null)}
-                  className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition duration-300 w-full"
-                >
-                  Cancel
-                </button>
-              </div>
+            </div>
+
+            {/* Switch Toggle for Has Left */}
+            <div className="flex items-center gap-2 justify-between">
+              <label htmlFor="hasLeft" className="">
+                Left:
+              </label>
+              <button
+                onClick={() =>
+                  setEditData({ ...editData, hasLeft: !editData.hasLeft })
+                }
+                className={`relative inline-flex items-center h-6 rounded-full w-11 ${
+                  editData.hasLeft ? "bg-green-500" : "bg-gray-300"
+                }`}
+              >
+                <span
+                  className={`inline-block w-4 h-4 transform bg-white rounded-full transition-transform ${
+                    editData.hasLeft ? "translate-x-5" : "translate-x-1"
+                  }`}
+                />
+              </button>
+            </div>
+
+            {/* Switch Toggle for Is Student */}
+            <div className="flex items-center gap-2 justify-between">
+              <label htmlFor="isStudent" className="">
+                Student:
+              </label>
+              <button
+                onClick={() =>
+                  setEditData({ ...editData, isStudent: !editData.isStudent })
+                }
+                className={`relative inline-flex items-center h-6 rounded-full w-11 ${
+                  editData.isStudent ? "bg-green-500" : "bg-gray-300"
+                }`}
+              >
+                <span
+                  className={`inline-block w-4 h-4 transform bg-white rounded-full transition-transform ${
+                    editData.isStudent ? "translate-x-5" : "translate-x-1"
+                  }`}
+                />
+              </button>
+            </div>
+
+            {editData.isStudent && (
+              <input
+                type="date"
+                value={
+                  editData.untilWhen
+                    ? new Date(editData.untilWhen).toISOString().split("T")[0]
+                    : ""
+                }
+                onChange={(e) => {
+                  const parsedDate = new Date(e.target.value);
+                  setEditData({
+                    ...editData,
+                    untilWhen: isNaN(parsedDate.getTime()) ? null : parsedDate,
+                  });
+                }}
+                className="text-black border p-2 rounded w-full"
+              />
+            )}
+
+            {/* Save and Cancel Buttons */}
+            <div className="flex justify-between gap-2">
+              <button
+                onClick={handleUpdateMember}
+                className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition duration-300 w-full"
+              >
+                Save
+              </button>
+              <button
+                onClick={() => setEditingMember(null)}
+                className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition duration-300 w-full"
+              >
+                Cancel
+              </button>
             </div>
           </div>
+        </Modal>
+      )}
+
+      {membersData?.statistics && (
+        <div className="mt-8 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="p-4 bg-gray-100 dark:bg-gray-900 rounded-lg shadow-sm">
+            <p className="text-lg font-semibold text-center text-gray-800 dark:text-white">
+              Total Members
+            </p>
+            <p className="text-3xl font-bold text-center text-lime-600 dark:text-lime-400">
+              {membersData.statistics.totalCount}
+            </p>
+          </div>
+          <div className="p-4 bg-gray-100 dark:bg-gray-900 rounded-lg shadow-sm">
+            <p className="text-lg font-semibold text-center text-gray-800 dark:text-white">
+              Attended Members
+            </p>
+            <p className="text-3xl font-bold text-center text-lime-600 dark:text-lime-400">
+              {membersData.statistics.attendedCount}
+            </p>
+          </div>
+          {(userRole === "admin" || userRole === "master") && (
+            <>
+              <div className="p-4 bg-gray-100 dark:bg-gray-900 rounded-lg shadow-sm">
+                <p className="text-lg font-semibold text-center text-gray-800 dark:text-white">
+                  Students Count
+                </p>
+                <p className="text-3xl font-bold text-center text-lime-600 dark:text-lime-400">
+                  {membersData.statistics.studentsCount || 0}
+                </p>
+              </div>
+              <div className="p-4 bg-gray-100 dark:bg-gray-900 rounded-lg shadow-sm">
+                <p className="text-lg font-semibold text-center text-gray-800 dark:text-white">
+                  Members Left
+                </p>
+                <p className="text-3xl font-bold text-center text-lime-600 dark:text-lime-400">
+                  {membersData.statistics.hasLeftCount || 0}
+                </p>
+              </div>
+            </>
+          )}
         </div>
       )}
     </div>

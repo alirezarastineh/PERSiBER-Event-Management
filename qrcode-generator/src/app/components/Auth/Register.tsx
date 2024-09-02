@@ -26,9 +26,9 @@ export default function Register() {
   ];
 
   return (
-    <div className="flex items-center justify-center min-h-screen px-4 sm:px-6 lg:px-8">
-      <div className="w-full max-w-lg sm:max-w-xl lg:max-w-2xl p-8 space-y-8 bg-slate-100 rounded-lg shadow-lg lg:p-12">
-        <h2 className="text-center text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900">
+    <div className="flex items-center justify-center min-h-screen px-4 sm:px-6 lg:px-8 transition-colors duration-300">
+      <div className="w-full max-w-md p-8 space-y-6 bg-white dark:bg-gray-800 rounded-xl shadow-lg lg:p-12  border border-gray-200/10">
+        <h2 className="text-center text-3xl font-bold text-gray-800 dark:text-white">
           Register
         </h2>
         <Form

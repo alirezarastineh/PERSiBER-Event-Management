@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { useAppSelector, useAppDispatch } from "@/redux/hooks";
 import { logout } from "@/redux/features/auth/authSlice";
 
@@ -11,6 +11,7 @@ export default function NavBar() {
   const dispatch = useAppDispatch();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { isAuthenticated, user } = useAppSelector((state) => state.auth);
+  const navbarRef = useRef<HTMLDivElement | null>(null);
 
   const handleLoginRedirect = () => {
     router.push("/auth/login");
@@ -49,11 +50,35 @@ export default function NavBar() {
     setIsMenuOpen(false);
   };
 
+  useEffect(() => {
+    // Close menu when clicking outside
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        navbarRef.current &&
+        !navbarRef.current.contains(event.target as Node)
+      ) {
+        closeMenu();
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [navbarRef]);
+
+  // Handle menu item click and close menu
+  const handleMenuItemClick = (redirectFunction: () => void) => {
+    redirectFunction();
+    closeMenu();
+  };
+
   return (
-    <nav className="w-full bg-gray-800 text-white py-4">
-      <div className="container mx-auto px-4 flex justify-between items-center">
-        <button
-          className="text-xl md:text-2xl font-bold cursor-pointer bg-transparent hover:bg-transparent hover:text-orange-500 focus:outline-none"
+    <nav className="w-full bg-gray-800 text-white shadow-lg" ref={navbarRef}>
+      <div className="container mx-auto px-4 py-4 flex justify-between items-center">
+        {/* Logo and Brand */}
+        <div
+          className="flex items-center cursor-pointer"
           onClick={() => router.push("/")}
         >
           <Image
@@ -61,15 +86,16 @@ export default function NavBar() {
             alt="PERSiBER Logo"
             width={50}
             height={50}
-            className="object-contain w-auto h-auto max-w-full"
-            sizes="(max-width: 768px) 40px, (max-width: 1200px) 50px, 60px"
+            className="object-contain"
           />
-        </button>
-        <div className="hidden md:flex space-x-4">
+        </div>
+
+        {/* Desktop Menu */}
+        <div className="hidden md:flex items-center space-x-6">
           {!isAuthenticated ? (
             <button
               onClick={handleLoginRedirect}
-              className="font-bold py-2 px-4 rounded min-w-[100px]"
+              className="px-4 py-2 rounded-lg bg-orange-500 hover:bg-orange-600 text-white font-semibold transition duration-300"
             >
               Login
             </button>
@@ -78,50 +104,56 @@ export default function NavBar() {
               {(user?.role === "admin" || user?.role === "master") && (
                 <>
                   <button
-                    onClick={handleRegisterRedirect}
-                    className="font-bold py-2 px-4 rounded min-w-[100px]"
+                    onClick={() => handleMenuItemClick(handleRegisterRedirect)}
+                    className="px-4 py-2 rounded-lg bg-gray-700 hover:bg-gray-600 text-white font-semibold transition duration-300"
                   >
                     Register
                   </button>
                   <button
-                    onClick={handleQRRedirect}
-                    className="font-bold py-2 px-4 rounded min-w-[100px]"
+                    onClick={() => handleMenuItemClick(handleQRRedirect)}
+                    className="px-4 py-2 rounded-lg bg-gray-700 hover:bg-gray-600 text-white font-semibold transition duration-300"
                   >
                     QR
                   </button>
                   <button
-                    onClick={handleUsersRedirect}
-                    className="font-bold py-2 px-4 rounded min-w-[100px]"
+                    onClick={() => handleMenuItemClick(handleUsersRedirect)}
+                    className="px-4 py-2 rounded-lg bg-gray-700 hover:bg-gray-600 text-white font-semibold transition duration-300"
                   >
                     Users
                   </button>
                 </>
               )}
               <button
-                onClick={handleGuestsRedirect}
-                className="font-bold py-2 px-4 rounded min-w-[100px]"
+                onClick={() => handleMenuItemClick(handleGuestsRedirect)}
+                className="px-4 py-2 rounded-lg bg-gray-700 hover:bg-gray-600 text-white font-semibold transition duration-300"
               >
                 Guests
               </button>
               <button
-                onClick={handleMembersRedirect}
-                className="font-bold py-2 px-4 rounded min-w-[100px]"
+                onClick={() => handleMenuItemClick(handleMembersRedirect)}
+                className="px-4 py-2 rounded-lg bg-gray-700 hover:bg-gray-600 text-white font-semibold transition duration-300"
               >
                 Members
               </button>
               <button
-                onClick={handleLogout}
-                className="font-bold py-2 px-4 rounded min-w-[100px]"
+                onClick={() => handleMenuItemClick(handleLogout)}
+                className="px-4 py-2 rounded-lg bg-red-600 hover:bg-red-700 text-white font-semibold transition duration-300"
               >
                 Logout
               </button>
             </>
           )}
         </div>
-        <div className="md:hidden flex items-center">
-          <button onClick={toggleMenu} className="focus:outline-none">
+
+        {/* Mobile Menu Button */}
+        <div className="md:hidden">
+          <button
+            onClick={toggleMenu}
+            aria-label="Toggle menu"
+            className="focus:outline-none bg-transparent"
+          >
             <svg
-              className="w-6 h-6"
+              className="w-8 h-8 transition-transform transform duration-300 ease-in-out"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -133,80 +165,100 @@ export default function NavBar() {
                 strokeWidth="2"
                 d={
                   isMenuOpen
-                    ? "M6 18L18 6M6 6l12 12"
-                    : "M4 6h16M4 12h16M4 18h16"
+                    ? "M6 18L18 6M6 6l12 12" // X icon (menu open)
+                    : "M4 6h16M4 12h16M4 18h16" // Hamburger icon (menu closed)
                 }
               ></path>
             </svg>
           </button>
         </div>
-      </div>
-      {/* Overlay */}
-      {isMenuOpen && (
-        <button
-          className="fixed inset-0 bg-black opacity-50 z-40"
-          onClick={closeMenu}
-          onKeyDown={closeMenu}
-          tabIndex={0}
-        ></button>
-      )}
-      {/* Mobile menu */}
-      <div
-        className={`md:hidden bg-gray-700 transition-transform transform ease-in-out duration-300 ${
-          isMenuOpen ? "translate-x-0" : "translate-x-full"
-        } fixed top-16 right-0 w-3/4 h-full z-50`}
-      >
-        {!isAuthenticated ? (
-          <button
-            onClick={handleLoginRedirect}
-            className="block w-full text-center px-4 py-2 font-bold text-xl transition-all ease-in-out duration-300 mt-4 bg-transparent hover:bg-transparent hover:text-orange-500 focus:outline-none"
-          >
-            Login
-          </button>
-        ) : (
-          <>
-            {(user?.role === "admin" || user?.role === "master") && (
+
+        {/* Mobile Menu */}
+        <div
+          className={`md:hidden fixed top-0 right-0 h-full w-64 bg-gray-800 text-white transform transition-transform duration-300 ease-in-out z-50 ${
+            isMenuOpen ? "translate-x-0" : "translate-x-full"
+          }`}
+        >
+          {/* Close Button for Mobile Menu */}
+          <div className="flex justify-end p-4">
+            <button
+              onClick={closeMenu}
+              aria-label="Close menu"
+              className="focus:outline-none bg-transparent"
+            >
+              <svg
+                className="w-8 h-8 transition-transform transform duration-300 ease-in-out"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M6 18L18 6M6 6l12 12" // X icon for close button
+                ></path>
+              </svg>
+            </button>
+          </div>
+          {/* Mobile Menu Content */}
+          <div className="p-6 flex flex-col space-y-4">
+            {!isAuthenticated ? (
+              <button
+                onClick={() => handleMenuItemClick(handleLoginRedirect)}
+                className="w-full text-left px-4 py-2 rounded-lg bg-orange-500 hover:bg-orange-600 text-white font-semibold transition duration-300"
+              >
+                Login
+              </button>
+            ) : (
               <>
+                {(user?.role === "admin" || user?.role === "master") && (
+                  <>
+                    <button
+                      onClick={() =>
+                        handleMenuItemClick(handleRegisterRedirect)
+                      }
+                      className="w-full text-left px-4 py-2 rounded-lg bg-gray-700 hover:bg-gray-600 text-white font-semibold transition duration-300"
+                    >
+                      Register
+                    </button>
+                    <button
+                      onClick={() => handleMenuItemClick(handleQRRedirect)}
+                      className="w-full text-left px-4 py-2 rounded-lg bg-gray-700 hover:bg-gray-600 text-white font-semibold transition duration-300"
+                    >
+                      QR
+                    </button>
+                    <button
+                      onClick={() => handleMenuItemClick(handleUsersRedirect)}
+                      className="w-full text-left px-4 py-2 rounded-lg bg-gray-700 hover:bg-gray-600 text-white font-semibold transition duration-300"
+                    >
+                      Users
+                    </button>
+                  </>
+                )}
                 <button
-                  onClick={handleRegisterRedirect}
-                  className="block w-full text-center px-4 py-2 font-bold text-xl transition-all ease-in-out duration-300 mt-4 bg-transparent hover:bg-transparent hover:text-orange-500 focus:outline-none"
+                  onClick={() => handleMenuItemClick(handleGuestsRedirect)}
+                  className="w-full text-left px-4 py-2 rounded-lg bg-gray-700 hover:bg-gray-600 text-white font-semibold transition duration-300"
                 >
-                  Register
+                  Guests
                 </button>
                 <button
-                  onClick={handleQRRedirect}
-                  className="block w-full text-center px-4 py-2 font-bold text-xl transition-all ease-in-out duration-300 mt-4 bg-transparent hover:bg-transparent hover:text-orange-500 focus:outline-none"
+                  onClick={() => handleMenuItemClick(handleMembersRedirect)}
+                  className="w-full text-left px-4 py-2 rounded-lg bg-gray-700 hover:bg-gray-600 text-white font-semibold transition duration-300"
                 >
-                  QR
+                  Members
                 </button>
                 <button
-                  onClick={handleUsersRedirect}
-                  className="block w-full text-center px-4 py-2 font-bold text-xl transition-all ease-in-out duration-300 mt-4 bg-transparent hover:bg-transparent hover:text-orange-500 focus:outline-none"
+                  onClick={() => handleMenuItemClick(handleLogout)}
+                  className="w-full text-left px-4 py-2 rounded-lg bg-red-600 hover:bg-red-700 text-white font-semibold transition duration-300"
                 >
-                  Users
+                  Logout
                 </button>
               </>
             )}
-            <button
-              onClick={handleGuestsRedirect}
-              className="block w-full text-center px-4 py-2 font-bold text-xl transition-all ease-in-out duration-300 mt-4 bg-transparent hover:bg-transparent hover:text-orange-500 focus:outline-none"
-            >
-              Guests
-            </button>
-            <button
-              onClick={handleMembersRedirect}
-              className="block w-full text-center px-4 py-2 font-bold text-xl transition-all ease-in-out duration-300 mt-4 bg-transparent hover:bg-transparent hover:text-orange-500 focus:outline-none"
-            >
-              Members
-            </button>
-            <button
-              onClick={handleLogout}
-              className="block w-full text-center px-4 py-2 font-bold text-xl transition-all ease-in-out duration-300 mt-4 bg-transparent hover:bg-transparent hover:text-orange-500 focus:outline-none"
-            >
-              Logout
-            </button>
-          </>
-        )}
+          </div>
+        </div>
       </div>
     </nav>
   );

@@ -61,10 +61,14 @@ const QRCodeComponent = () => {
     const pageHeight = doc.internal.pageSize.getHeight();
     const qrCodeSize = 140;
     const qrCodeX = (pageWidth - qrCodeSize) / 2;
-    const qrCodeY = (pageHeight - qrCodeSize) / 2 - 20;
+    const qrCodeY = (pageHeight - qrCodeSize) / 2;
 
     if (qrCodeRef.current) {
+      const formattedText = text.replace(/\s+/g, " ").trim();
+      doc.setFontSize(22);
+      doc.text(formattedText, pageWidth / 2, qrCodeY - 30, { align: "center" });
       doc.addImage(qrCodeUrl, "PNG", qrCodeX, qrCodeY, qrCodeSize, qrCodeSize);
+      doc.setFontSize(14);
       doc.text(
         "See you on the Dancefloor, PERSiBER Team 27.09.2024",
         pageWidth / 2,
@@ -72,15 +76,14 @@ const QRCodeComponent = () => {
         { align: "center" }
       );
 
-      const formattedText = text.replace(/\s+/g, " ").trim();
       const pdfFileName = `${formattedText} - PERSiBER 27.09.2024.pdf`;
       doc.save(pdfFileName);
     }
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen py-2 px-4 sm:px-6 lg:px-8">
-      <h1 className="text-2xl font-bold mb-4 text-center">
+    <div className="flex flex-col items-center justify-center min-h-screen py-6 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+      <h1 className="text-3xl font-bold mb-6 text-center text-gray-800 dark:text-white">
         PERSiBER QR Code Generator
       </h1>
       <input
@@ -88,22 +91,30 @@ const QRCodeComponent = () => {
         value={text}
         onChange={(e) => setText(e.target.value)}
         placeholder="Enter the guest's Name"
-        className="mb-4 p-2 border rounded text-black w-full max-w-md"
+        className="mb-6 p-3 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm text-black dark:text-white bg-white dark:bg-gray-700 w-full max-w-md focus:outline-none focus:ring-2 focus:ring-cyan-500 transition duration-300"
       />
       <button
         onClick={generateQRCode}
         disabled={loading} // Disable button while loading
-        className="mb-4 p-2 bg-cyan-800 text-white rounded w-full max-w-md"
+        className={`mb-6 p-3 rounded-lg w-full max-w-md font-semibold shadow-md transition duration-300 ${
+          loading
+            ? "text-gray-200 cursor-not-allowed"
+            : "text-white"
+        }`}
       >
-        {loading ? "Generating..." : "Generate QR Code"}{" "}
-        {/* Show loading state */}
+        {loading ? "Generating..." : "Generate QR Code"}
       </button>
       {qrCodeUrl && (
-        <div className="flex flex-col items-center">
-          <canvas ref={qrCodeRef} className="mb-4" width="300" height="300" />
+        <div className="flex flex-col items-center mt-6">
+          <canvas
+            ref={qrCodeRef}
+            className="mb-6 border border-gray-300 dark:border-gray-600 rounded-lg"
+            width="300"
+            height="300"
+          />
           <button
             onClick={downloadPDF}
-            className="p-2 bg-green-800 text-white rounded w-full max-w-md"
+            className="p-3 bg-green-600 text-white rounded-lg w-full max-w-md font-semibold shadow-md hover:bg-green-700 transition duration-300"
           >
             Download as PDF
           </button>

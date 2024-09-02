@@ -3,10 +3,11 @@ import { ChangeEvent, FormEvent } from "react";
 export interface User {
   _id: string;
   username: string;
-  role: string;
+  role: "user" | "admin" | "master";
   accessToken: string | null;
   refreshToken: string | null;
 }
+
 
 export interface AuthResponse {
   accessToken: string;
@@ -78,6 +79,8 @@ export interface UpdateMemberDto {
 export interface MemberStatistics {
   attendedCount: number;
   totalCount: number;
+  studentsCount: number;
+  hasLeftCount: number;
 }
 
 

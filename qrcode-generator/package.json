@@ -25,13 +25,13 @@
   },
   "devDependencies": {
     "@types/js-cookie": "^3.0.6",
-    "@types/node": "^22.5.1",
+    "@types/node": "^22.5.2",
     "@types/qrcode": "^1.5.5",
     "@types/react": "^18.3.5",
     "@types/react-dom": "^18.0.10",
     "eslint": "^8.57.0",
-    "eslint-config-next": "^14.2.5",
-    "postcss": "^8.4.42",
+    "eslint-config-next": "^14.2.7",
+    "postcss": "^8.4.44",
     "tailwindcss": "^3.4.10",
     "typescript": "^5"
   },
