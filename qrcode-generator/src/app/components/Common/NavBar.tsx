@@ -74,7 +74,10 @@ export default function NavBar() {
   };
 
   return (
-    <nav className="w-full bg-gray-800 text-white shadow-lg" ref={navbarRef}>
+    <nav
+      className="w-full bg-gray-800 text-white shadow-lg relative"
+      ref={navbarRef}
+    >
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
         {/* Logo and Brand */}
         <button
@@ -173,6 +176,15 @@ export default function NavBar() {
           </button>
         </div>
 
+        {/* Overlay for background darkening */}
+        {isMenuOpen && (
+          <button
+            className="fixed inset-0 bg-black opacity-50 z-40"
+            onClick={closeMenu}
+            aria-label="Close menu overlay" // Adds an accessible label
+          />
+        )}
+        
         {/* Mobile Menu */}
         <div
           className={`md:hidden fixed top-0 right-0 h-full w-64 bg-gray-800 text-white transform transition-transform duration-300 ease-in-out z-50 ${
