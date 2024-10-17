@@ -42,6 +42,9 @@ export class Guest {
 
   @Prop({ type: Date, default: null })
   untilWhen: Date | null;
+
+  @Prop({ required: false })
+  addedBy: string;
 }
 
 export const GuestSchema = SchemaFactory.createForClass(Guest);

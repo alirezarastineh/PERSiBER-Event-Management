@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Guest, GuestDocument } from './schemas/guests.schema/guests.schema';
-import { Model} from 'mongoose';
+import { Model } from 'mongoose';
 import { CreateGuestDto } from './dto/create-guest.dto/create-guest.dto';
 import { UpdateGuestDto } from './dto/update-guest.dto/update-guest.dto';
 
@@ -30,8 +30,20 @@ export class GuestsService {
     return { guests, statistics };
   }
 
-  async create(createGuestDto: CreateGuestDto): Promise<GuestDocument> {
-    const createdGuest = new this.guestModel(createGuestDto);
+  async create(
+    createGuestDto: CreateGuestDto,
+    userRole: string,
+    userName: string,
+  ): Promise<GuestDocument> {
+    if (userRole === 'user') {
+      createGuestDto.attended = 'Yes';
+    }
+
+    const createdGuest = new this.guestModel({
+      ...createGuestDto,
+      addedBy: userName,
+    });
+
     const guest = await createdGuest.save();
 
     if (createGuestDto.invitedFrom) {
@@ -43,12 +55,16 @@ export class GuestsService {
     return guest;
   }
 
-  async findOrCreateGuest(name: string): Promise<GuestDocument> {
+  async findOrCreateGuest(
+    name: string,
+    userRole: string,
+    userName: string,
+  ): Promise<GuestDocument> {
     let guest = await this.guestModel.findOne({ name }).exec();
 
     if (!guest) {
       const createGuestDto: CreateGuestDto = { name };
-      guest = await this.create(createGuestDto);
+      guest = await this.create(createGuestDto, userRole, userName);
     }
     return guest as GuestDocument;
   }

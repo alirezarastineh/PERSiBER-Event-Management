@@ -8,6 +8,7 @@ import {
   useToggleStudentDiscountMutation,
   useToggleLadyDiscountMutation,
   useUpdateAttendedStatusMutation,
+  useCreateGuestMutation,
 } from "@/redux/features/guests/guestsApiSlice";
 import { Guest, UpdateGuestDto } from "@/types/types";
 import { useAppSelector } from "@/redux/hooks";
@@ -26,6 +27,9 @@ export default function Guests() {
   const [toggleStudentDiscount] = useToggleStudentDiscountMutation();
   const [toggleLadyDiscount] = useToggleLadyDiscountMutation();
   const [updateAttendedStatus] = useUpdateAttendedStatusMutation();
+
+  const [createGuest] = useCreateGuestMutation();
+  const [newGuestName, setNewGuestName] = useState<string>("");
 
   const [editingGuest, setEditingGuest] = useState<Guest | null>(null);
   const [editData, setEditData] = useState<UpdateGuestDto>({
@@ -74,6 +78,23 @@ export default function Guests() {
       setAttendedStatuses(initialAttendedStatuses);
     }
   }, [guestsData]);
+
+  const handleAddGuest = async () => {
+    if (!newGuestName.trim()) {
+      alert("Please enter a guest's name.");
+      return;
+    }
+
+    try {
+      await createGuest({ name: newGuestName }).unwrap();
+      refetch();
+      setNewGuestName("");
+      alert("Guest added successfully!");
+    } catch (error) {
+      console.error("Failed to add guest:", error);
+      alert("Error adding guest.");
+    }
+  };
 
   const handleDeleteGuest = async () => {
     if (guestIdToDelete) {
@@ -283,6 +304,58 @@ export default function Guests() {
         />
       </div>
 
+      {/* Non-Mobile View: Add New Guest */}
+      {(userRole === "admin" ||
+        userRole === "master" ||
+        userRole === "user") && (
+        <div className="mb-8 hidden md:block">
+          {" "}
+          {/* Hide on mobile */}
+          <h2 className="text-xl font-semibold mb-4">Add a New Guest</h2>
+          <div className="flex space-x-4">
+            <input
+              type="text"
+              placeholder="Enter guest's name"
+              value={newGuestName}
+              onChange={(e) => setNewGuestName(e.target.value)}
+              className="w-full h-full p-3 border border-gray-300 rounded-lg text-black"
+            />
+            <button
+              onClick={handleAddGuest}
+              className="p-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition duration-300 ease-in-out"
+            >
+              Add Guest
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Mobile View: Add New Guest */}
+      {(userRole === "admin" ||
+        userRole === "master" ||
+        userRole === "user") && (
+        <div className="md:hidden mb-8">
+          {" "}
+          {/* Hide on desktop */}
+          <h2 className="text-xl font-semibold mb-4">Add a New Guest</h2>
+          <div className="flex flex-col space-y-4">
+            <input
+              type="text"
+              placeholder="Enter guest's name"
+              value={newGuestName}
+              onChange={(e) => setNewGuestName(e.target.value)}
+              className="w-full p-3 border border-gray-300 rounded-lg text-black"
+            />
+            <button
+              onClick={handleAddGuest}
+              className="p-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition duration-300"
+            >
+              Add Guest
+            </button>
+          </div>
+        </div>
+      )}
+
       {filteredGuests?.length === 0 ? (
         <p className="text-center text-gray-700 dark:text-gray-300">
           No guests found.
@@ -300,6 +373,9 @@ export default function Guests() {
                 </th>
                 <th className="py-2 px-4 border-b border-[#575756] dark:border-gray-700">
                   Drinks Coupon
+                </th>
+                <th className="py-2 px-4 border-b border-[#575756] dark:border-gray-700">
+                  Added By
                 </th>
                 {/* Only show the following fields for admin or master */}
                 {(userRole === "admin" || userRole === "master") && (
@@ -350,6 +426,9 @@ export default function Guests() {
                   </td>
                   <td className="py-2 px-4 border-b border-[#575756] dark:border-gray-700">
                     {guest.drinksCoupon || 0}
+                  </td>
+                  <td className="py-2 px-4 border-b border-[#575756] dark:border-gray-700">
+                    {guest.addedBy ?? "N/A"}
                   </td>
 
                   {/* Conditionally render additional fields based on userRole */}
@@ -427,6 +506,11 @@ export default function Guests() {
                 <p className="text-gray-600 dark:text-gray-400">
                   <span className="font-semibold">Drinks Coupon:</span>{" "}
                   {guest.drinksCoupon || 0}
+                </p>
+
+                <p className="text-gray-600 dark:text-gray-400">
+                  <span className="font-semibold">Added By:</span>{" "}
+                  {guest.addedBy ?? "N/A"}
                 </p>
 
                 {/* Conditionally render additional fields based on userRole */}

@@ -8,7 +8,6 @@ export interface User {
   refreshToken: string | null;
 }
 
-
 export interface AuthResponse {
   accessToken: string;
   refreshToken: string;
@@ -83,7 +82,6 @@ export interface MemberStatistics {
   hasLeftCount: number;
 }
 
-
 export interface Guest {
   _id: string;
   name: string;
@@ -95,6 +93,7 @@ export interface Guest {
   isStudent: boolean;
   untilWhen: Date | null;
   isLady: boolean;
+  addedBy?: string;
 }
 
 export interface CreateGuestDto {

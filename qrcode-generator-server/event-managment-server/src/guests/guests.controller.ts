@@ -39,15 +39,19 @@ export class GuestsController {
   }
 
   @Post('add')
-  @Roles('admin', 'master')
+  @Roles('admin', 'master', 'user')
   @UseGuards(RolesGuard)
-  async createGuest(@Body() createGuestDto: CreateGuestDto) {
-    return this.guestsService.create(createGuestDto);
+  async createGuest(@Body() createGuestDto: CreateGuestDto, @Request() req) {
+    const userRole = req.user.role;
+    const userName = req.user.username;
+    return this.guestsService.create(createGuestDto, userRole, userName);
   }
 
   @Post('find-or-create')
-  async findOrCreateGuest(@Body('name') name: string) {
-    return this.guestsService.findOrCreateGuest(name);
+  async findOrCreateGuest(@Body('name') name: string, @Request() req) {
+    const userRole = req.user.role;
+    const userName = req.user.username;
+    return this.guestsService.findOrCreateGuest(name, userRole, userName);
   }
 
   @Patch(':id')

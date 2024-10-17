@@ -10,7 +10,7 @@ export class CreateGuestDto {
 
   @IsOptional()
   @IsString()
-  readonly attended?: string;
+  attended?: string;
 
   @IsOptional()
   @IsString()

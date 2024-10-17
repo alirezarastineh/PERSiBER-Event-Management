@@ -63,20 +63,23 @@ const QRCodeComponent = () => {
     const qrCodeX = (pageWidth - qrCodeSize) / 2;
     const qrCodeY = (pageHeight - qrCodeSize) / 2;
 
+    doc.setFillColor("#960018");
+    doc.rect(0, 0, pageWidth, pageHeight, "F");
     if (qrCodeRef.current) {
       const formattedText = text.replace(/\s+/g, " ").trim();
-      doc.setFontSize(22);
+      doc.setTextColor("#ffdc9a");
+      doc.setFontSize(60);
       doc.text(formattedText, pageWidth / 2, qrCodeY - 30, { align: "center" });
       doc.addImage(qrCodeUrl, "PNG", qrCodeX, qrCodeY, qrCodeSize, qrCodeSize);
-      doc.setFontSize(14);
+      doc.setFontSize(17);
       doc.text(
-        "See you on the Dancefloor, PERSiBER Team 27.09.2024",
+        "See you on the Dancefloor! Yalda Night 2024 with PERSiBER 20.12.2024",
         pageWidth / 2,
         qrCodeY + qrCodeSize + 20,
         { align: "center" }
       );
 
-      const pdfFileName = `${formattedText} - PERSiBER 27.09.2024.pdf`;
+      const pdfFileName = `${formattedText} - Yalda Night - PERSiBER 20.12.2024.pdf`;
       doc.save(pdfFileName);
     }
   };
@@ -97,9 +100,7 @@ const QRCodeComponent = () => {
         onClick={generateQRCode}
         disabled={loading} // Disable button while loading
         className={`mb-6 p-3 rounded-lg w-full max-w-md font-semibold shadow-md transition duration-300 ${
-          loading
-            ? "text-gray-200 cursor-not-allowed"
-            : "text-white"
+          loading ? "text-gray-200 cursor-not-allowed" : "text-white"
         }`}
       >
         {loading ? "Generating..." : "Generate QR Code"}
