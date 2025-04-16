@@ -27,7 +27,7 @@ export default function Form({
       <div>
         <button
           type="submit"
-          className="flex w-full justify-center text-white rounded-md px-4 py-2 text-sm font-semibold shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-300"
+          className="flex w-full justify-center text-white rounded-md px-4 py-2 text-sm font-semibold shadow-xs focus:outline-hidden focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-300"
           disabled={isLoading}
         >
           {isLoading ? <Spinner sm /> : btnText}

@@ -251,7 +251,7 @@ export default function Members() {
           placeholder="Search for a member..."
           value={globalSearchTerm || ""}
           onChange={(e) => setGlobalSearchTerm(e.target.value)}
-          className="text-black w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-lime-800 transition-shadow shadow-sm hover:shadow-md bg-gray-50 dark:bg-gray-700 dark:text-white dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400"
+          className="text-black w-full p-3 border border-gray-300 rounded-lg focus:outline-hidden focus:ring-2 focus:ring-lime-800 transition-shadow shadow-xs hover:shadow-md bg-gray-50 dark:bg-gray-700 dark:text-white dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400"
         />
       </div>
 
@@ -266,7 +266,7 @@ export default function Members() {
               onChange={(e) =>
                 setNewMemberData({ ...newMemberData, name: e.target.value })
               }
-              className="text-black w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className="text-black w-full p-3 border border-gray-300 rounded-lg focus:outline-hidden focus:ring-2 focus:ring-blue-400"
             />
             <select
               value={newMemberData.organizer ?? ""}
@@ -276,7 +276,7 @@ export default function Members() {
                   organizer: e.target.value,
                 })
               }
-              className="text-black w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className="text-black w-full p-3 border border-gray-300 rounded-lg focus:outline-hidden focus:ring-2 focus:ring-blue-400"
             >
               <option value="">Select Organizer</option>
               <option value="Kourosh">Kourosh</option>
@@ -285,7 +285,7 @@ export default function Members() {
             </select>
             <button
               onClick={handleCreateMember}
-              className="w-full bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600 transition duration-300 focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className="w-full bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600 transition duration-300 focus:outline-hidden focus:ring-2 focus:ring-blue-400"
             >
               Add Member
             </button>
@@ -403,13 +403,13 @@ export default function Members() {
                       <div className="flex space-x-2">
                         <button
                           onClick={() => handleEditMember(member)}
-                          className="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600 transition duration-300"
+                          className="bg-blue-500 text-white px-4 py-1 rounded-sm hover:bg-blue-600 transition duration-300"
                         >
                           Edit
                         </button>
                         <button
                           onClick={() => openDeleteModal(member._id)}
-                          className="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600 transition duration-300"
+                          className="bg-red-500 text-white px-4 py-1 rounded-sm hover:bg-red-600 transition duration-300"
                         >
                           Delete
                         </button>
@@ -483,13 +483,13 @@ export default function Members() {
                   <div className="flex space-x-2 mt-4">
                     <button
                       onClick={() => handleEditMember(member)}
-                      className="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600 transition duration-300 w-full"
+                      className="bg-blue-500 text-white px-4 py-1 rounded-sm hover:bg-blue-600 transition duration-300 w-full"
                     >
                       Edit
                     </button>
                     <button
                       onClick={() => openDeleteModal(member._id)}
-                      className="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600 transition duration-300 w-full"
+                      className="bg-red-500 text-white px-4 py-1 rounded-sm hover:bg-red-600 transition duration-300 w-full"
                     >
                       Delete
                     </button>
@@ -514,13 +514,13 @@ export default function Members() {
           <div className="flex justify-end space-x-4">
             <button
               onClick={closeDeleteModal}
-              className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition duration-300"
+              className="bg-gray-500 text-white px-4 py-2 rounded-sm hover:bg-gray-600 transition duration-300"
             >
               Cancel
             </button>
             <button
               onClick={handleDeleteMember}
-              className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition duration-300"
+              className="bg-red-500 text-white px-4 py-2 rounded-sm hover:bg-red-600 transition duration-300"
             >
               Delete
             </button>
@@ -545,7 +545,7 @@ export default function Members() {
               onChange={(e) =>
                 setEditData({ ...editData, name: e.target.value })
               }
-              className="text-black w-full p-2 border rounded"
+              className="text-black w-full p-2 border rounded-sm"
             />
 
             {/* Organizer Dropdown */}
@@ -554,7 +554,7 @@ export default function Members() {
               onChange={(e) =>
                 setEditData({ ...editData, organizer: e.target.value })
               }
-              className="text-black w-full p-2 border rounded"
+              className="text-black w-full p-2 border rounded-sm"
             >
               <option value="">Select Organizer</option>
               <option value="Kourosh">Kourosh</option>
@@ -572,10 +572,10 @@ export default function Members() {
                   setSearchTerm(e.target.value);
                   setShowDropdown(e.target.value !== "");
                 }}
-                className="text-black w-full p-2 border rounded"
+                className="text-black w-full p-2 border rounded-sm"
               />
               {showDropdown && (
-                <div className="absolute z-10 bg-white w-full border rounded mt-1 max-h-40 overflow-y-auto">
+                <div className="absolute z-10 bg-white w-full border rounded-sm mt-1 max-h-40 overflow-y-auto">
                   {filteredMembers?.map((m) => (
                     <button
                       key={m._id}
@@ -653,7 +653,7 @@ export default function Members() {
                     untilWhen: isNaN(parsedDate.getTime()) ? null : parsedDate,
                   });
                 }}
-                className="text-black border p-2 rounded w-full"
+                className="text-black border p-2 rounded-sm w-full"
               />
             )}
 
@@ -661,13 +661,13 @@ export default function Members() {
             <div className="flex justify-between gap-2">
               <button
                 onClick={handleUpdateMember}
-                className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition duration-300 w-full"
+                className="bg-green-500 text-white px-4 py-2 rounded-sm hover:bg-green-600 transition duration-300 w-full"
               >
                 Save
               </button>
               <button
                 onClick={() => setEditingMember(null)}
-                className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition duration-300 w-full"
+                className="bg-gray-500 text-white px-4 py-2 rounded-sm hover:bg-gray-600 transition duration-300 w-full"
               >
                 Cancel
               </button>
@@ -678,7 +678,7 @@ export default function Members() {
 
       {membersData?.statistics && (
         <div className="mt-8 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <div className="p-4 bg-gray-100 dark:bg-gray-900 rounded-lg shadow-sm">
+          <div className="p-4 bg-gray-100 dark:bg-gray-900 rounded-lg shadow-xs">
             <p className="text-lg font-semibold text-center text-gray-800 dark:text-white">
               Total Members
             </p>
@@ -686,7 +686,7 @@ export default function Members() {
               {membersData.statistics.totalCount}
             </p>
           </div>
-          <div className="p-4 bg-gray-100 dark:bg-gray-900 rounded-lg shadow-sm">
+          <div className="p-4 bg-gray-100 dark:bg-gray-900 rounded-lg shadow-xs">
             <p className="text-lg font-semibold text-center text-gray-800 dark:text-white">
               Attended Members
             </p>
@@ -696,7 +696,7 @@ export default function Members() {
           </div>
           {(userRole === "admin" || userRole === "master") && (
             <>
-              <div className="p-4 bg-gray-100 dark:bg-gray-900 rounded-lg shadow-sm">
+              <div className="p-4 bg-gray-100 dark:bg-gray-900 rounded-lg shadow-xs">
                 <p className="text-lg font-semibold text-center text-gray-800 dark:text-white">
                   Students Count
                 </p>
@@ -704,7 +704,7 @@ export default function Members() {
                   {membersData.statistics.studentsCount || 0}
                 </p>
               </div>
-              <div className="p-4 bg-gray-100 dark:bg-gray-900 rounded-lg shadow-sm">
+              <div className="p-4 bg-gray-100 dark:bg-gray-900 rounded-lg shadow-xs">
                 <p className="text-lg font-semibold text-center text-gray-800 dark:text-white">
                   Members Left
                 </p>

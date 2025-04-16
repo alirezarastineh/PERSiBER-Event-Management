@@ -38,7 +38,7 @@ export default function Input({
           value={value}
           onChange={onChange}
           required={required}
-          className="block w-full text-black dark:text-white bg-white dark:bg-gray-700 rounded-md border border-gray-300 dark:border-gray-600 py-2 px-3 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent sm:text-sm transition duration-300"
+          className="block w-full text-black dark:text-white bg-white dark:bg-gray-700 rounded-md border border-gray-300 dark:border-gray-600 py-2 px-3 shadow-xs focus:outline-hidden focus:ring-2 focus:ring-blue-500 focus:border-transparent sm:text-sm transition duration-300"
         />
       </div>
     </div>

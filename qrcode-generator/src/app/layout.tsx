@@ -21,7 +21,7 @@ export default function RootLayout({
         <CustomProvider>
           <Setup />
           <NavBar />
-          <div className="flex-grow">{children}</div>
+          <div className="grow">{children}</div>
         </CustomProvider>
       </body>
     </html>

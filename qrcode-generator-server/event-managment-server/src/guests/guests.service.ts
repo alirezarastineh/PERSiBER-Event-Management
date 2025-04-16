@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Guest, GuestDocument } from './schemas/guests.schema/guests.schema';
-import { Model } from 'mongoose';
+import { Document, Model } from 'mongoose';
 import { CreateGuestDto } from './dto/create-guest.dto/create-guest.dto';
 import { UpdateGuestDto } from './dto/update-guest.dto/update-guest.dto';
 
@@ -11,7 +11,7 @@ export class GuestsService {
   private ladyDiscountActive = false;
 
   constructor(
-    @InjectModel(Guest.name) private guestModel: Model<GuestDocument>,
+    @InjectModel(Guest.name) private readonly guestModel: Model<GuestDocument>,
   ) {}
 
   async findAll(userRole: string): Promise<{
@@ -34,7 +34,9 @@ export class GuestsService {
     createGuestDto: CreateGuestDto,
     userRole: string,
     userName: string,
-  ): Promise<GuestDocument> {
+  ): Promise<
+    Document<unknown, {}, GuestDocument> & GuestDocument & { __v: number }
+  > {
     if (userRole === 'user') {
       createGuestDto.attended = 'Yes';
     }
@@ -44,15 +46,7 @@ export class GuestsService {
       addedBy: userName,
     });
 
-    const guest = await createdGuest.save();
-
-    if (createGuestDto.invitedFrom) {
-      await this.incrementDrinksCoupon(createGuestDto.invitedFrom);
-    }
-
-    await this.applyDiscounts(guest);
-    await this.recalculateDrinksCoupons();
-    return guest;
+    return createdGuest.save();
   }
 
   async findOrCreateGuest(
@@ -64,9 +58,14 @@ export class GuestsService {
 
     if (!guest) {
       const createGuestDto: CreateGuestDto = { name };
-      guest = await this.create(createGuestDto, userRole, userName);
+      guest = (await this.create(
+        createGuestDto,
+        userRole,
+        userName,
+      )) as Document<unknown, {}, GuestDocument> &
+        GuestDocument & { __v: number };
     }
-    return guest as GuestDocument;
+    return guest;
   }
 
   async delete(id: string): Promise<void> {

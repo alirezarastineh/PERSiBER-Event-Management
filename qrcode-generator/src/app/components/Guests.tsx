@@ -300,7 +300,7 @@ export default function Guests() {
           placeholder="Search by name..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="text-black w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-lime-800 transition-shadow shadow-sm hover:shadow-md bg-gray-50 dark:bg-gray-700 dark:text-white dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400"
+          className="text-black w-full p-3 border border-gray-300 rounded-lg focus:outline-hidden focus:ring-2 focus:ring-lime-800 transition-shadow shadow-xs hover:shadow-md bg-gray-50 dark:bg-gray-700 dark:text-white dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400"
         />
       </div>
 
@@ -454,13 +454,13 @@ export default function Guests() {
                       <div className="flex space-x-2">
                         <button
                           onClick={() => handleEditGuest(guest)}
-                          className="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600 transition duration-300"
+                          className="bg-blue-500 text-white px-4 py-1 rounded-sm hover:bg-blue-600 transition duration-300"
                         >
                           Edit
                         </button>
                         <button
                           onClick={() => openDeleteModal(guest._id)}
-                          className="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600 transition duration-300"
+                          className="bg-red-500 text-white px-4 py-1 rounded-sm hover:bg-red-600 transition duration-300"
                           disabled={guest.name === "Master"}
                         >
                           Delete
@@ -553,13 +553,13 @@ export default function Guests() {
                     <>
                       <button
                         onClick={() => handleEditGuest(guest)}
-                        className="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600 transition duration-300 w-full"
+                        className="bg-blue-500 text-white px-4 py-1 rounded-sm hover:bg-blue-600 transition duration-300 w-full"
                       >
                         Edit
                       </button>
                       <button
                         onClick={() => openDeleteModal(guest._id)}
-                        className="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600 transition duration-300 w-full"
+                        className="bg-red-500 text-white px-4 py-1 rounded-sm hover:bg-red-600 transition duration-300 w-full"
                         disabled={guest.name === "Master"}
                       >
                         Delete
@@ -586,13 +586,13 @@ export default function Guests() {
           <div className="flex justify-end space-x-4">
             <button
               onClick={closeDeleteModal}
-              className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition duration-300"
+              className="bg-gray-500 text-white px-4 py-2 rounded-sm hover:bg-gray-600 transition duration-300"
             >
               Cancel
             </button>
             <button
               onClick={handleDeleteGuest}
-              className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition duration-300"
+              className="bg-red-500 text-white px-4 py-2 rounded-sm hover:bg-red-600 transition duration-300"
             >
               Delete
             </button>
@@ -615,7 +615,7 @@ export default function Guests() {
               onChange={(e) =>
                 setEditData({ ...editData, name: e.target.value })
               }
-              className="text-black w-full p-2 border rounded"
+              className="text-black w-full p-2 border rounded-sm"
             />
             <div className="relative text-black">
               <input
@@ -626,10 +626,10 @@ export default function Guests() {
                   setInvitedFromSearchTerm(e.target.value);
                   setShowDropdown(e.target.value !== "");
                 }}
-                className="text-black w-full p-2 border rounded"
+                className="text-black w-full p-2 border rounded-sm"
               />
               {showDropdown && (
-                <div className="absolute z-10 bg-white w-full border rounded mt-1 max-h-40 overflow-y-auto">
+                <div className="absolute z-10 bg-white w-full border rounded-sm mt-1 max-h-40 overflow-y-auto">
                   {filteredGuests
                     ?.filter((g) =>
                       g.name
@@ -689,7 +689,7 @@ export default function Guests() {
                     untilWhen: isNaN(parsedDate.getTime()) ? null : parsedDate,
                   });
                 }}
-                className="text-black border p-2 rounded w-full"
+                className="text-black border p-2 rounded-sm w-full"
               />
             )}
 
@@ -738,13 +738,13 @@ export default function Guests() {
             <div className="flex justify-between gap-2">
               <button
                 onClick={handleUpdateGuest}
-                className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition duration-300 w-full"
+                className="bg-green-500 text-white px-4 py-2 rounded-sm hover:bg-green-600 transition duration-300 w-full"
               >
                 Save
               </button>
               <button
                 onClick={() => setEditingGuest(null)}
-                className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition duration-300 w-full"
+                className="bg-gray-500 text-white px-4 py-2 rounded-sm hover:bg-gray-600 transition duration-300 w-full"
               >
                 Cancel
               </button>
@@ -755,7 +755,7 @@ export default function Guests() {
 
       {guestsData?.statistics && (
         <div className="mt-8 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <div className="p-4 bg-gray-100 dark:bg-gray-900 rounded-lg shadow-sm">
+          <div className="p-4 bg-gray-100 dark:bg-gray-900 rounded-lg shadow-xs">
             <p className="text-lg font-semibold text-center text-gray-800 dark:text-white">
               Total Guests
             </p>
@@ -763,7 +763,7 @@ export default function Guests() {
               {guestsData.statistics.totalCount}
             </p>
           </div>
-          <div className="p-4 bg-gray-100 dark:bg-gray-900 rounded-lg shadow-sm">
+          <div className="p-4 bg-gray-100 dark:bg-gray-900 rounded-lg shadow-xs">
             <p className="text-lg font-semibold text-center text-gray-800 dark:text-white">
               Attended Guests
             </p>
@@ -773,7 +773,7 @@ export default function Guests() {
           </div>
           {(userRole === "admin" || userRole === "master") && (
             <>
-              <div className="p-4 bg-gray-100 dark:bg-gray-900 rounded-lg shadow-sm">
+              <div className="p-4 bg-gray-100 dark:bg-gray-900 rounded-lg shadow-xs">
                 <p className="text-lg font-semibold text-center text-gray-800 dark:text-white">
                   Students Count
                 </p>
@@ -781,7 +781,7 @@ export default function Guests() {
                   {guestsData.statistics.studentsCount || 0}
                 </p>
               </div>
-              <div className="p-4 bg-gray-100 dark:bg-gray-900 rounded-lg shadow-sm">
+              <div className="p-4 bg-gray-100 dark:bg-gray-900 rounded-lg shadow-xs">
                 <p className="text-lg font-semibold text-center text-gray-800 dark:text-white">
                   Ladies Count
                 </p>
@@ -789,7 +789,7 @@ export default function Guests() {
                   {guestsData.statistics.ladiesCount || 0}
                 </p>
               </div>
-              <div className="p-4 bg-gray-100 dark:bg-gray-900 rounded-lg shadow-sm">
+              <div className="p-4 bg-gray-100 dark:bg-gray-900 rounded-lg shadow-xs">
                 <p className="text-lg font-semibold text-center text-gray-800 dark:text-white">
                   Drinks Coupons Count
                 </p>
@@ -797,7 +797,7 @@ export default function Guests() {
                   {guestsData.statistics.drinksCouponsCount || 0}
                 </p>
               </div>
-              <div className="p-4 bg-gray-100 dark:bg-gray-900 rounded-lg shadow-sm">
+              <div className="p-4 bg-gray-100 dark:bg-gray-900 rounded-lg shadow-xs">
                 <p className="text-lg font-semibold text-center text-gray-800 dark:text-white">
                   Free Entry Count
                 </p>

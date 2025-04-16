@@ -7,7 +7,7 @@ export default function LandingPage() {
   return (
     <div className="min-h-screen flex flex-col">
       <Heading title="PERSiBER" />
-      <div className="flex-grow flex flex-col items-center justify-center px-4">
+      <div className="grow flex flex-col items-center justify-center px-4">
         <div className="pt-8 md:pt-12">
           <Image
             src="https://i.imgur.com/MiwxKii.png"

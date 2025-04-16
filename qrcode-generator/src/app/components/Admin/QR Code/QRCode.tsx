@@ -94,7 +94,7 @@ const QRCodeComponent = () => {
         value={text}
         onChange={(e) => setText(e.target.value)}
         placeholder="Enter the guest's Name"
-        className="mb-6 p-3 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm text-black dark:text-white bg-white dark:bg-gray-700 w-full max-w-md focus:outline-none focus:ring-2 focus:ring-cyan-500 transition duration-300"
+        className="mb-6 p-3 border border-gray-300 dark:border-gray-600 rounded-lg shadow-xs text-black dark:text-white bg-white dark:bg-gray-700 w-full max-w-md focus:outline-hidden focus:ring-2 focus:ring-cyan-500 transition duration-300"
       />
       <button
         onClick={generateQRCode}

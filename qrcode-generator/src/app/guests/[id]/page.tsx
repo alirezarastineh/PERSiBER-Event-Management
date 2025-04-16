@@ -246,7 +246,7 @@ export default function GuestDetail() {
                   className="mt-1 block w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md text-black dark:text-white bg-gray-50 dark:bg-gray-700"
                 />
                 {showDropdown && (
-                  <div className="absolute z-10 bg-white w-full border rounded mt-1 max-h-40 overflow-y-auto">
+                  <div className="absolute z-10 bg-white w-full border rounded-sm mt-1 max-h-40 overflow-y-auto">
                     {guestsData?.guests
                       .filter((g) =>
                         g.name
@@ -332,7 +332,7 @@ export default function GuestDetail() {
                           : parsedDate,
                       });
                     }}
-                    className="text-black border p-2 rounded w-full"
+                    className="text-black border p-2 rounded-sm w-full"
                   />
                 )}
 
@@ -416,13 +416,13 @@ export default function GuestDetail() {
               <div className="flex justify-between gap-2">
                 <button
                   onClick={handleUpdateGuest}
-                  className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition duration-300 w-full"
+                  className="bg-green-500 text-white px-4 py-2 rounded-sm hover:bg-green-600 transition duration-300 w-full"
                 >
                   Save
                 </button>
                 <button
                   onClick={openDeleteModal}
-                  className="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600 transition duration-300 w-full"
+                  className="bg-red-500 text-white px-4 py-1 rounded-sm hover:bg-red-600 transition duration-300 w-full"
                   disabled={!guest || guest.name === "Master"} // Disable if guest is undefined or name is 'Master'
                 >
                   Delete
@@ -445,13 +445,13 @@ export default function GuestDetail() {
             <div className="flex justify-end space-x-4">
               <button
                 onClick={closeDeleteModal}
-                className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition duration-300"
+                className="bg-gray-500 text-white px-4 py-2 rounded-sm hover:bg-gray-600 transition duration-300"
               >
                 Cancel
               </button>
               <button
                 onClick={handleDeleteGuest}
-                className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition duration-300"
+                className="bg-red-500 text-white px-4 py-2 rounded-sm hover:bg-red-600 transition duration-300"
               >
                 Delete
               </button>
@@ -463,7 +463,7 @@ export default function GuestDetail() {
         <div className="flex justify-center mt-6">
           <button
             onClick={() => router.push("/guests")}
-            className="bg-gray-600 hover:bg-gray-300 text-white px-4 py-2 rounded transition-all duration-300 ease-in-out"
+            className="bg-gray-600 hover:bg-gray-300 text-white px-4 py-2 rounded-sm transition-all duration-300 ease-in-out"
           >
             Back to Guest List
           </button>

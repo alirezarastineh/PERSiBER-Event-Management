@@ -81,7 +81,7 @@ export default function NavBar() {
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
         {/* Logo and Brand */}
         <button
-          className="flex items-center cursor-pointer focus:outline-none bg-transparent hover:bg-transparent"
+          className="flex items-center cursor-pointer focus:outline-hidden bg-transparent hover:bg-transparent"
           onClick={() => router.push("/")}
         >
           <Image
@@ -153,7 +153,7 @@ export default function NavBar() {
           <button
             onClick={toggleMenu}
             aria-label="Toggle menu"
-            className="focus:outline-none bg-transparent"
+            className="focus:outline-hidden bg-transparent"
           >
             <svg
               className="w-8 h-8 transition-transform transform duration-300 ease-in-out"
@@ -196,7 +196,7 @@ export default function NavBar() {
             <button
               onClick={closeMenu}
               aria-label="Close menu"
-              className="focus:outline-none bg-transparent"
+              className="focus:outline-hidden bg-transparent"
             >
               <svg
                 className="w-8 h-8 transition-transform transform duration-300 ease-in-out"

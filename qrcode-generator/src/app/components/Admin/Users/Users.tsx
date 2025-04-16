@@ -117,7 +117,7 @@ export default function Users() {
                           {/* Admin can delete users with the role of "user" */}
                           <button
                             onClick={() => openDeleteModal(user._id)}
-                            className="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600 transition duration-300"
+                            className="bg-red-500 text-white px-4 py-1 rounded-sm hover:bg-red-600 transition duration-300"
                           >
                             Delete
                           </button>
@@ -132,14 +132,14 @@ export default function Users() {
                               setSelectedUserId(user._id);
                               setSelectedRole(user.role);
                             }}
-                            className="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600 transition duration-300"
+                            className="bg-blue-500 text-white px-4 py-1 rounded-sm hover:bg-blue-600 transition duration-300"
                           >
                             Edit Role
                           </button>
                           {/* Master can delete all except "master" */}
                           <button
                             onClick={() => openDeleteModal(user._id)}
-                            className="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600 transition duration-300"
+                            className="bg-red-500 text-white px-4 py-1 rounded-sm hover:bg-red-600 transition duration-300"
                           >
                             Delete
                           </button>
@@ -155,14 +155,14 @@ export default function Users() {
                                 setSelectedUserId(user._id);
                                 setSelectedRole(user.role);
                               }}
-                              className="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600 transition duration-300"
+                              className="bg-blue-500 text-white px-4 py-1 rounded-sm hover:bg-blue-600 transition duration-300"
                             >
                               Edit Role
                             </button>
                             {/* Master can delete admin users */}
                             <button
                               onClick={() => openDeleteModal(user._id)}
-                              className="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600 transition duration-300"
+                              className="bg-red-500 text-white px-4 py-1 rounded-sm hover:bg-red-600 transition duration-300"
                             >
                               Delete
                             </button>
@@ -194,7 +194,7 @@ export default function Users() {
                   {currentUserRole === "admin" && user.role === "user" && (
                     <button
                       onClick={() => openDeleteModal(user._id)}
-                      className="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600 transition duration-300 w-full"
+                      className="bg-red-500 text-white px-4 py-1 rounded-sm hover:bg-red-600 transition duration-300 w-full"
                     >
                       Delete
                     </button>
@@ -207,13 +207,13 @@ export default function Users() {
                           setSelectedUserId(user._id);
                           setSelectedRole(user.role);
                         }}
-                        className="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600 transition duration-300 w-full"
+                        className="bg-blue-500 text-white px-4 py-1 rounded-sm hover:bg-blue-600 transition duration-300 w-full"
                       >
                         Edit Role
                       </button>
                       <button
                         onClick={() => openDeleteModal(user._id)}
-                        className="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600 transition duration-300 w-full"
+                        className="bg-red-500 text-white px-4 py-1 rounded-sm hover:bg-red-600 transition duration-300 w-full"
                       >
                         Delete
                       </button>
@@ -227,13 +227,13 @@ export default function Users() {
                           setSelectedUserId(user._id);
                           setSelectedRole(user.role);
                         }}
-                        className="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600 transition duration-300 w-full"
+                        className="bg-blue-500 text-white px-4 py-1 rounded-sm hover:bg-blue-600 transition duration-300 w-full"
                       >
                         Edit Role
                       </button>
                       <button
                         onClick={() => openDeleteModal(user._id)}
-                        className="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600 transition duration-300 w-full"
+                        className="bg-red-500 text-white px-4 py-1 rounded-sm hover:bg-red-600 transition duration-300 w-full"
                       >
                         Delete
                       </button>
@@ -255,7 +255,7 @@ export default function Users() {
             <select
               value={selectedRole}
               onChange={(e) => setSelectedRole(e.target.value)}
-              className="text-black w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className="text-black w-full p-3 border border-gray-300 rounded-lg focus:outline-hidden focus:ring-2 focus:ring-blue-400"
             >
               <option value="">Select role</option>
               <option value="user">User</option>
@@ -264,13 +264,13 @@ export default function Users() {
             <div className="flex justify-between gap-2">
               <button
                 onClick={handleUpdateRole}
-                className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition duration-300 w-full"
+                className="bg-green-500 text-white px-4 py-2 rounded-sm hover:bg-green-600 transition duration-300 w-full"
               >
                 Save
               </button>
               <button
                 onClick={() => setSelectedUserId(null)}
-                className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition duration-300 w-full"
+                className="bg-gray-500 text-white px-4 py-2 rounded-sm hover:bg-gray-600 transition duration-300 w-full"
               >
                 Cancel
               </button>
@@ -290,13 +290,13 @@ export default function Users() {
           <div className="flex justify-end space-x-4">
             <button
               onClick={closeDeleteModal}
-              className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition duration-300"
+              className="bg-gray-500 text-white px-4 py-2 rounded-sm hover:bg-gray-600 transition duration-300"
             >
               Cancel
             </button>
             <button
               onClick={handleDeleteUser}
-              className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition duration-300"
+              className="bg-red-500 text-white px-4 py-2 rounded-sm hover:bg-red-600 transition duration-300"
             >
               Delete
             </button>

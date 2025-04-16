@@ -15,7 +15,8 @@ import { UpdateMemberDto } from './dto/update-member.dto/update-member.dto';
 @Injectable()
 export class MembersService {
   constructor(
-    @InjectModel(Member.name) private memberModel: Model<MemberDocument>,
+    @InjectModel(Member.name)
+    private readonly memberModel: Model<MemberDocument>,
   ) {}
 
   async findAll(): Promise<{
