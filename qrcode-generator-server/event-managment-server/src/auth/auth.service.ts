@@ -102,10 +102,9 @@ export class AuthService {
       { sub: userId, username, role },
       {
         secret: this.configService.get<string>('JWT_SECRET'),
-        expiresIn: '15m',
+        expiresIn: '1d',
       },
     );
-
     const refreshToken = this.jwtService.sign(
       { sub: userId, username, role },
       {
@@ -113,7 +112,6 @@ export class AuthService {
         expiresIn: '7d',
       },
     );
-
     return { accessToken, refreshToken };
   }
 }

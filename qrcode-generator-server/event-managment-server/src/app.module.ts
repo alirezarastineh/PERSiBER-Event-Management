@@ -6,6 +6,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AdminController } from './admin/admin.controller';
 import { GuestsModule } from './guests/guests.module';
 import { MembersModule } from './members/members.module';
+import { BpplistModule } from './bpplist/bpplist.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { MembersModule } from './members/members.module';
     UsersModule,
     GuestsModule,
     MembersModule,
+    BpplistModule,
   ],
   controllers: [AdminController],
 })

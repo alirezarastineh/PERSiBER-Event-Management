@@ -167,3 +167,42 @@ export interface FormProps {
   onSubmit: (e: FormEvent<HTMLFormElement>) => void;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
 }
+
+export interface Bpplist {
+  _id: string;
+  name: string;
+  attended: string;
+  organizer: string;
+  invitedFrom: string;
+  membersInvited: number;
+  hasLeft: boolean;
+  isStudent: boolean;
+  untilWhen: Date | null;
+}
+
+export interface CreateBpplistDto {
+  name: string;
+  attended?: string;
+  organizer?: string;
+  invitedFrom?: string;
+  hasLeft?: boolean;
+  isStudent?: boolean;
+  untilWhen?: Date | null;
+}
+
+export interface UpdateBpplistDto {
+  name?: string;
+  attended?: string;
+  organizer?: string;
+  invitedFrom?: string;
+  hasLeft?: boolean;
+  isStudent?: boolean;
+  untilWhen?: Date | null;
+}
+
+export interface BpplistStatistics {
+  attendedCount: number;
+  totalCount: number;
+  hasLeftCount: number;
+  studentsCount: number;
+}

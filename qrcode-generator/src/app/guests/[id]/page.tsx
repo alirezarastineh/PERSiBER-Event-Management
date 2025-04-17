@@ -439,7 +439,7 @@ export default function GuestDetail() {
             onClose={closeDeleteModal}
             title="Confirm Deletion"
           >
-            <p className="text-gray-700 dark:text-gray-300 mb-6">
+            <p className="text-white dark:text-gray-300 mb-6">
               Are you sure you want to delete this guest?
             </p>
             <div className="flex justify-end space-x-4">

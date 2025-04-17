@@ -1,7 +1,7 @@
 "use client";
 
 import { ReactNode, useEffect, useRef } from "react";
-import { FaTimes } from "react-icons/fa";
+import { motion, AnimatePresence } from "framer-motion";
 
 type ModalProps = {
   readonly isOpen: boolean;
@@ -52,30 +52,100 @@ export default function Modal({
     };
   }, [isOpen, onClose]);
 
-  if (!isOpen) return null;
-
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4">
-      <div
-        ref={contentRef}
-        className="relative bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4 max-w-3xl max-h-[90vh] w-full overflow-auto"
-      >
-        <div className="flex justify-between items-center p-4 border-b border-gray-200 dark:border-gray-700">
-          <h3 className="text-lg font-semibold text-gray-800 dark:text-white">
-            {title}
-          </h3>
-          <button
+    <AnimatePresence>
+      {isOpen && (
+        <motion.div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-hidden"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.3 }}
+        >
+          {/* Backdrop */}
+          <motion.div
+            className="absolute inset-0 bg-black/40 backdrop-blur-sm"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
             onClick={onClose}
-            className="text-gray-500 bg-transparent hover:text-gray-800 dark:hover:text-gray-200 transition-colors"
-            aria-label="Close modal"
+            aria-hidden="true"
+          />
+
+          {/* Modal Content */}
+          <motion.div
+            ref={contentRef}
+            className="relative bg-soft-cream dark:bg-deep-navy rounded-xl shadow-xl max-w-3xl max-h-[90vh] w-full overflow-hidden"
+            initial={{ y: 20, opacity: 0, scale: 0.98 }}
+            animate={{ y: 0, opacity: 1, scale: 1 }}
+            exit={{ y: 20, opacity: 0, scale: 0.98 }}
+            transition={{
+              type: "spring",
+              damping: 25,
+              stiffness: 300,
+            }}
           >
-            <FaTimes />
-          </button>
-        </div>
-        <div className="p-4 break-words whitespace-pre-line hyphens-auto">
-          {children}
-        </div>
-      </div>
-    </div>
+            {/* Gold accent bar */}
+            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-rich-gold to-accent-amber" />
+
+            {/* Header */}
+            <div className="relative flex justify-between items-center p-6 border-b border-gray-200/20 dark:border-gray-700/20">
+              <motion.h3
+                className="text-xl font-bold text-warm-charcoal dark:text-white tracking-wide"
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.1 }}
+              >
+                {title}
+              </motion.h3>
+
+              <motion.button
+                onClick={onClose}
+                className="w-8 h-8 flex items-center justify-center rounded-full text-gray-500 hover:text-warm-charcoal dark:hover:text-white bg-gray-100/50 dark:bg-gray-800/50 hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-200"
+                aria-label="Close modal"
+                whileHover={{ scale: 1.1, rotate: 90 }}
+                whileTap={{ scale: 0.9 }}
+              >
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 16 16"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M12 4L4 12"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  <path
+                    d="M4 4L12 12"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </motion.button>
+            </div>
+
+            {/* Content */}
+            <motion.div
+              className="p-6 break-words whitespace-pre-line hyphens-auto text-warm-charcoal dark:text-gray-200 overflow-y-auto max-h-[calc(90vh-120px)]"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.2 }}
+            >
+              {children}
+            </motion.div>
+
+            {/* Shadow effect at bottom when scrolling */}
+            <div className="absolute bottom-0 left-0 right-0 h-6 bg-gradient-to-t from-soft-cream dark:from-deep-navy to-transparent pointer-events-none"></div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 }

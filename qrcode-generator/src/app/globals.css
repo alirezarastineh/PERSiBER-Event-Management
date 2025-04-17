@@ -1,23 +1,42 @@
 @import 'tailwindcss';
 
 @theme {
-  --color-custom-background: #960018;
-  --color-custom-button: #f4a261;
-
+  /* Rich, luxury color palette */
+  --color-custom-background: #1a1a2e;
+  --color-custom-button: #d4af37;
+  
+  /* Secondary palette */
+  --color-rich-gold: #d4af37;
+  --color-deep-navy: #1a1a2e;
+  --color-soft-cream: #f5f5f0;
+  --color-warm-charcoal: #2d2d2d;
+  --color-accent-amber: #ffb347;
+  
+  /* Gradient configurations */
   --background-image-gradient-radial: radial-gradient(var(--tw-gradient-stops));
   --background-image-gradient-conic: conic-gradient(
     from 180deg at 50% 50%,
     var(--tw-gradient-stops)
   );
+  
+  /* Typography */
+  --font-primary: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-heading: 'Inter', system-ui, -apple-system, sans-serif;
+  
+  /* Spacing */
+  --space-unit: 0.25rem;
+  --border-radius-sm: 0.25rem;
+  --border-radius-md: 0.5rem;
+  --border-radius-lg: 1rem;
+  
+  /* Shadows */
+  --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.08);
+  --shadow-medium: 0 8px 30px rgba(0, 0, 0, 0.12);
+  --shadow-hard: 0 12px 40px rgba(0, 0, 0, 0.2);
 }
 
 /*
-  The default border color has changed to `currentcolor` in Tailwind CSS v4,
-  so we've added these compatibility styles to make sure everything still
-  looks the same as it did with Tailwind CSS v3.
-
-  If we ever want to remove these styles, we need to add an explicit border
-  color utility to any element that depends on these defaults.
+  Border color compatibility for Tailwind CSS v4
 */
 @layer base {
   *,
@@ -27,6 +46,24 @@
   ::file-selector-button {
     border-color: var(--color-gray-200, currentcolor);
   }
+  
+  html {
+    font-family: var(--font-primary);
+    scroll-behavior: smooth;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 1.2;
+  }
+  
+  /* Enhanced focus states for accessibility */
+  *:focus-visible {
+    outline: 2px solid var(--color-rich-gold);
+    outline-offset: 2px;
+  }
 }
 
 @utility text-balance {
@@ -35,22 +72,21 @@
 
 @layer utilities {
   :root {
-    --foreground-rgb: 0, 0, 0;
-    --background-start-rgb: 214, 219, 220;
+    --foreground-rgb: 45, 45, 45;
+    --background-start-rgb: 245, 245, 240;
     --background-end-rgb: 255, 255, 255;
   }
 
   @media (prefers-color-scheme: dark) {
     :root {
-      --foreground-rgb: 255, 255, 255;
-      --background-start-rgb: 22, 40, 48;
-      --background-end-rgb: 22, 40, 48;
+      --foreground-rgb: 240, 240, 235;
+      --background-start-rgb: 26, 26, 46;
+      --background-end-rgb: 21, 21, 35;
     }
   }
 
   body {
-    background-color: #162830;
-
+    background-color: rgb(var(--background-start-rgb));
     background-image: linear-gradient(
       to bottom,
       transparent,
@@ -59,23 +95,82 @@
     background-repeat: no-repeat;
     background-position: top;
     background-size: cover;
-
     color: rgb(var(--foreground-rgb));
+    font-feature-settings: "salt" 1, "ss01" 1, "ss02" 1;
   }
-
+  
+  /* Elegant buttons */
   button {
-    @apply bg-custom-button text-white;
-
-    transition:
-      background-color 0.3s ease,
-      color 0.3s ease;
+    @apply bg-custom-button text-white font-medium px-4 py-2 rounded-md shadow-md;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   button:hover {
     background-color: #ffdc9a;
-  }
-
-  button:hover {
     color: #162830;
+  }
+  
+  button:active {
+    @apply transform scale-[0.98] shadow-sm;
+  }
+  
+  button:focus-visible {
+    @apply ring-2 ring-offset-2 ring-custom-button;
+  }
+  
+  /* Luxury UI elements */
+  .card {
+    @apply bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .card:hover {
+    @apply shadow-lg;
+    transform: translateY(-4px);
+  }
+  
+  /* Luxury accents */
+  .accent-border {
+    @apply border-l-4 border-custom-button;
+  }
+  
+  .gradient-text {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-amber-500 to-amber-700;
+  }
+  
+  /* Elegant form elements */
+  input, select, textarea {
+    @apply bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md px-4 py-2 focus:ring-2 focus:ring-custom-button focus:border-custom-button;
+    transition: all 0.2s ease;
+  }
+  
+  /* Rich dividers */
+  .divider {
+    @apply h-px w-full bg-gradient-to-r from-transparent via-gray-300 dark:via-gray-600 to-transparent my-6;
+  }
+  
+  /* Animations */
+  .fade-in {
+    animation: fadeIn 0.5s ease forwards;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  .slide-up {
+    animation: slideUp 0.6s ease forwards;
+  }
+  
+  @keyframes slideUp {
+    from { 
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to { 
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 }
