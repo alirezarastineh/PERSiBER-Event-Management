@@ -29,7 +29,12 @@ export class JwtAuthGuard implements CanActivate {
       });
       request.user = payload;
     } catch (error) {
-      throw new UnauthorizedException('Invalid JWT token');
+      const errorMessage =
+        error instanceof Error
+          ? `Invalid JWT token: ${error.message}`
+          : 'Invalid JWT token';
+
+      throw new UnauthorizedException(errorMessage, { cause: error });
     }
 
     return true;
@@ -41,6 +46,6 @@ export class JwtAuthGuard implements CanActivate {
       return headerToken;
     }
     const cookieToken = request.cookies['auth-cookie'];
-    return cookieToken || null;
+    return cookieToken ?? null;
   }
 }

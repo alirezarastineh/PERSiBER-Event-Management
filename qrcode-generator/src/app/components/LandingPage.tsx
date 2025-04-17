@@ -89,10 +89,9 @@ export default function LandingPage() {
                   href={
                     isAuthenticated ? "/guests" : "/auth/login?redirect=/guests"
                   }
-                  passHref
                 >
-                  <motion.a
-                    className="px-8 py-4 bg-gradient-to-r from-rich-gold to-accent-amber text-deep-navy dark:text-deep-navy rounded-md font-medium text-lg inline-flex items-center justify-center transition-all duration-300 shadow-lg hover:shadow-xl"
+                  <motion.div
+                    className="px-8 py-4 bg-gradient-to-r from-rich-gold to-accent-amber text-deep-navy dark:text-deep-navy rounded-md font-medium text-lg inline-flex items-center justify-center transition-all duration-300 shadow-lg hover:shadow-xl cursor-pointer"
                     whileHover={{
                       scale: 1.02,
                       boxShadow: "0 10px 25px rgba(212, 175, 55, 0.25)",
@@ -112,7 +111,7 @@ export default function LandingPage() {
                         clipRule="evenodd"
                       />
                     </svg>
-                  </motion.a>
+                  </motion.div>
                 </Link>
               </motion.div>
             </motion.div>
@@ -152,23 +151,26 @@ export default function LandingPage() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {[
                 {
+                  id: "feature-planning",
                   title: "Event Planning",
                   desc: "Seamlessly plan and schedule your events",
                   icon: "📅",
                 },
                 {
+                  id: "feature-guest-management",
                   title: "Guest Management",
                   desc: "Efficiently manage attendee lists and invitations",
                   icon: "👥",
                 },
                 {
+                  id: "feature-analytics",
                   title: "Analytics",
                   desc: "Comprehensive insights and reporting tools",
                   icon: "📊",
                 },
               ].map((feature, i) => (
                 <motion.div
-                  key={i}
+                  key={feature.id}
                   className="bg-white/50 dark:bg-gray-800/30 backdrop-blur-sm p-8 rounded-xl border border-gray-100 dark:border-gray-700/20 shadow-sm flex flex-col items-center text-center"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}

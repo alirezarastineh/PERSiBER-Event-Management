@@ -11,7 +11,6 @@ import Spinner from "../../Common/Spinner";
 import Modal from "../../Common/Modal";
 import { useAppSelector } from "@/redux/hooks";
 import { motion, AnimatePresence } from "framer-motion";
-import Image from "next/image";
 
 export default function Users() {
   const { data: users, isLoading, isError, refetch } = useGetAllUsersQuery();
@@ -150,31 +149,13 @@ export default function Users() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          <div className="flex justify-center mb-6">
-            <motion.div
-              className="relative"
-              whileHover={{ scale: 1.05 }}
-              transition={{ type: "spring", stiffness: 300 }}
-            >
-              <div className="bg-soft-cream dark:bg-deep-navy rounded-full p-2">
-                <Image
-                  src="https://i.imgur.com/MiwxKii.png"
-                  alt="PERSiBER Logo"
-                  width={60}
-                  height={60}
-                  className="object-contain"
-                />
-              </div>
-            </motion.div>
-          </div>
-
           <motion.h1
             className="text-4xl md:text-5xl font-bold mb-3 gradient-text"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2, duration: 0.7 }}
           >
-            User Management
+            Users Management
           </motion.h1>
 
           <motion.div
@@ -483,7 +464,7 @@ export default function Users() {
                                 setSelectedUserId(user._id);
                                 setSelectedRole(user.role);
                               }}
-                              className="w-full px-4 py-2.5 rounded-lg bg-gradient-to-r from-blue-500 to-blue-600 text-white font-medium shadow-sm flex items-center justify-center"
+                              className="w-full px-4 py-2.5 rounded-lg bg-gradient-to-r from-rich-gold/90 to-accent-amber text-deep-navy font-medium shadow-sm flex items-center justify-center"
                               whileHover={{ scale: 1.03 }}
                               whileTap={{ scale: 0.98 }}
                             >
@@ -504,7 +485,7 @@ export default function Users() {
                             </motion.button>
                             <motion.button
                               onClick={() => openDeleteModal(user._id)}
-                              className="w-full px-4 py-2.5 rounded-lg bg-gradient-to-r from-red-500 to-red-600 text-white font-medium shadow-sm flex items-center justify-center"
+                              className="w-full px-4 py-2.5 rounded-lg bg-gradient-to-r from-warm-charcoal to-deep-navy text-soft-cream border border-rich-gold/30 font-medium shadow-sm flex items-center justify-center"
                               whileHover={{ scale: 1.03 }}
                               whileTap={{ scale: 0.98 }}
                             >

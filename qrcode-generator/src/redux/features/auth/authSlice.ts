@@ -15,22 +15,32 @@ const authSlice = createSlice({
     setAuth: (
       state,
       action: PayloadAction<{
-        user: User;
+        user?: User;
         accessToken: string;
         refreshToken: string;
       }>
     ) => {
       state.isAuthenticated = true;
       state.user = {
-        ...action.payload.user,
+        ...(action.payload.user || {}),
         accessToken: action.payload.accessToken,
         refreshToken: action.payload.refreshToken,
+        username: action.payload.user?.username ?? "",
+        role: action.payload.user?.role ?? "user",
+        _id: action.payload.user?._id ?? "", // Provide default empty string for _id
       };
       localStorage.setItem("isAuthenticated", "true");
       localStorage.setItem("accessToken", action.payload.accessToken);
       localStorage.setItem("refreshToken", action.payload.refreshToken);
-      localStorage.setItem("username", action.payload.user.username);
-      localStorage.setItem("role", action.payload.user.role);
+
+      // Add null checks for user properties
+      if (action.payload.user?.username) {
+        localStorage.setItem("username", action.payload.user.username);
+      }
+
+      if (action.payload.user?.role) {
+        localStorage.setItem("role", action.payload.user.role);
+      }
     },
     logout: (state) => {
       state.user = null;

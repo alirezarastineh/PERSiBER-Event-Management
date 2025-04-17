@@ -17,7 +17,10 @@ async function bootstrap() {
   const allowedOrigins = frontendUrl ? frontendUrl.split(',') : [];
 
   app.enableCors({
-    origin: (origin, callback) => {
+    origin: (
+      origin: string | undefined,
+      callback: (error: Error | null, allow?: boolean) => void,
+    ) => {
       if (allowedOrigins.includes(origin) || !origin) {
         callback(null, true);
       } else {

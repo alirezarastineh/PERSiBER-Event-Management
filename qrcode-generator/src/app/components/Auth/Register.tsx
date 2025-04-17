@@ -42,7 +42,7 @@ export default function Register() {
         transition={{ delay: 0.3, duration: 0.8 }}
       >
         <div className="absolute inset-0 bg-gradient-to-br from-deep-navy to-warm-charcoal z-0">
-          <div className="absolute inset-0 opacity-10 bg-[url('https://images.unsplash.com/photo-1542744173-8e7e53415bb0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80')] bg-cover bg-center"></div>
+          <div className="absolute inset-0 opacity-10 bg-[url('https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2000&q=80')] bg-cover bg-center"></div>
         </div>
 
         <div className="relative z-10 flex flex-col justify-center items-center w-full h-full p-12">
@@ -72,13 +72,16 @@ export default function Register() {
 
             <div className="mt-12 space-y-8">
               {[
-                "One-Click Event Creation",
-                "Detailed Analytics Dashboard",
-                "Premium Support",
-                "Advanced Security Features",
+                { id: "feature-create", text: "One-Click Event Creation" },
+                {
+                  id: "feature-analytics",
+                  text: "Detailed Analytics Dashboard",
+                },
+                { id: "feature-support", text: "Premium Support" },
+                { id: "feature-security", text: "Advanced Security Features" },
               ].map((feature, i) => (
                 <motion.div
-                  key={i}
+                  key={feature.id}
                   className="flex items-center"
                   initial={{ opacity: 0, x: -10 }}
                   animate={{ opacity: 1, x: 0 }}
@@ -98,7 +101,7 @@ export default function Register() {
                       />
                     </svg>
                   </div>
-                  <span className="text-gray-200">{feature}</span>
+                  <span className="text-gray-200">{feature.text}</span>
                 </motion.div>
               ))}
             </div>
@@ -156,7 +159,7 @@ export default function Register() {
               animate={{ opacity: 1 }}
               transition={{ delay: 0.8, duration: 0.5 }}
             >
-              Register a user to manage your event
+              Register an user to manage your event
             </motion.p>
           </div>
 

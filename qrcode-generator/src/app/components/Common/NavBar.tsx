@@ -61,12 +61,20 @@ export default function NavBar() {
     document.addEventListener("mousedown", handleClickOutside);
     window.addEventListener("scroll", handleScroll);
 
+    // Control body scroll when mobile menu is open
+    if (isMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+
     // Clean up event listeners
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
       window.removeEventListener("scroll", handleScroll);
+      document.body.style.overflow = "";
     };
-  }, [navbarRef]);
+  }, [navbarRef, isMenuOpen]); // Added isMenuOpen as dependency
 
   // Animation variants
   const navbarVariants = {
@@ -390,9 +398,9 @@ export default function NavBar() {
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                     >
-                      <span className="absolute inset-0 bg-gradient-to-r from-red-600/80 to-red-700/80 rounded-lg" />
-                      <span className="absolute inset-0 rounded-lg opacity-0 group-hover:opacity-40 bg-gradient-to-r from-red-500 to-red-700 blur-md transition-opacity duration-300" />
-                      <span className="relative flex items-center text-white">
+                      <span className="absolute inset-0 bg-gradient-to-r from-rose-800/90 to-red-900/90 rounded-lg" />
+                      <span className="absolute inset-0 rounded-lg opacity-0 group-hover:opacity-30 bg-gradient-to-r from-rose-700 to-red-800 blur-md transition-opacity duration-300" />
+                      <span className="relative flex items-center text-rose-100">
                         <svg
                           className="size-4.5 mr-1.5"
                           fill="none"
@@ -443,27 +451,25 @@ export default function NavBar() {
 
             {/* Mobile Menu Button */}
             <motion.button
-              className="lg:hidden relative size-10 flex items-center justify-center rounded-lg focus:outline-none"
+              className="lg:hidden relative size-14 flex items-center justify-center rounded-lg focus:outline-none bg-transparent"
               onClick={toggleMenu}
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.3 }}
+              style={{ backgroundColor: "transparent", boxShadow: "none" }}
             >
               <span
-                className={`absolute inset-0 rounded-lg ${
-                  isMenuOpen ? "bg-amber-600/20" : "bg-zinc-700/50"
-                } transition-colors duration-300`}
+                className="absolute inset-0 rounded-lg bg-transparent"
+                style={{ backgroundColor: "transparent", opacity: 0 }}
               />
 
-              <div className="relative w-6 h-5 flex flex-col justify-between items-center">
+              <div className="relative w-8 h-5 flex flex-col justify-between items-center">
                 <motion.span
-                  className="w-full h-0.5 bg-gradient-to-r from-amber-400 to-amber-600 rounded-full transform origin-left"
+                  className="w-full h-0.5 bg-gradient-to-r from-amber-400 to-amber-600 rounded-full"
                   animate={{
-                    rotate: isMenuOpen ? 45 : 0,
-                    translateY: isMenuOpen ? 8 : 0,
-                    width: isMenuOpen ? "125%" : "100%",
+                    opacity: isMenuOpen ? 0 : 1,
                   }}
                   transition={{ duration: 0.3 }}
                 />
@@ -471,18 +477,15 @@ export default function NavBar() {
                   className="w-full h-0.5 bg-gradient-to-r from-amber-400 to-amber-600 rounded-full"
                   animate={{
                     opacity: isMenuOpen ? 0 : 1,
-                    translateX: isMenuOpen ? -10 : 0,
                   }}
-                  transition={{ duration: 0.3 }}
+                  transition={{ duration: 0.3, delay: 0.1 }}
                 />
                 <motion.span
-                  className="w-full h-0.5 bg-gradient-to-r from-amber-400 to-amber-600 rounded-full transform origin-left"
+                  className="w-full h-0.5 bg-gradient-to-r from-amber-400 to-amber-600 rounded-full"
                   animate={{
-                    rotate: isMenuOpen ? -45 : 0,
-                    translateY: isMenuOpen ? -8 : 0,
-                    width: isMenuOpen ? "125%" : "100%",
+                    opacity: isMenuOpen ? 0 : 1,
                   }}
-                  transition={{ duration: 0.3 }}
+                  transition={{ duration: 0.3, delay: 0.2 }}
                 />
               </div>
             </motion.button>
@@ -531,7 +534,7 @@ export default function NavBar() {
                 variants={itemVariants}
               >
                 <div className="flex items-center">
-                  <div className="size-10 rounded-full bg-zinc-800 border border-amber-500/20 flex items-center justify-center">
+                  <div className="size-10 flex items-center justify-center">
                     <Image
                       src="https://i.imgur.com/MiwxKii.png"
                       alt="PERSiBER Logo"
@@ -540,28 +543,36 @@ export default function NavBar() {
                       className="object-contain"
                     />
                   </div>
-                  <div className="ml-3">
-                    <span className="font-bold text-amber-500">PERSiBER</span>
-                  </div>
                 </div>
 
                 <motion.button
                   onClick={closeMenu}
-                  className="size-9 flex items-center justify-center rounded-full bg-zinc-800/80 border border-amber-500/10"
+                  className="size-16 flex items-center justify-center"
                   whileHover={{ scale: 1.1, rotate: 90 }}
                   whileTap={{ scale: 0.9 }}
+                  style={{ backgroundColor: "transparent", boxShadow: "none" }}
+                  initial={{ opacity: 0 }}
+                  animate={{
+                    opacity: isMenuOpen ? 1 : 0,
+                    transition: { duration: 0.3 },
+                  }}
                 >
                   <svg
-                    className="size-5 text-amber-500/80"
+                    className="size-28 text-amber-500/80"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
                   >
-                    <path
+                    <motion.path
                       strokeLinecap="round"
                       strokeLinejoin="round"
                       strokeWidth="2"
                       d="M6 18L18 6M6 6l12 12"
+                      initial={{ pathLength: 0 }}
+                      animate={{
+                        pathLength: isMenuOpen ? 1 : 0,
+                        transition: { duration: 0.4, ease: "easeInOut" },
+                      }}
                     />
                   </svg>
                 </motion.button>
@@ -787,7 +798,7 @@ export default function NavBar() {
                 >
                   <motion.button
                     onClick={() => handleMenuItemClick(handleLogout)}
-                    className="w-full flex items-center justify-center p-4 rounded-xl bg-gradient-to-r from-red-600/90 to-red-700/90 text-white font-medium"
+                    className="w-full flex items-center justify-center p-4 rounded-xl bg-gradient-to-r from-rose-800/80 to-red-900/80 text-rose-100 font-medium border border-rose-800/30"
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                   >

@@ -21,13 +21,13 @@ const ProtectedRoute = ({ children, allowedRoles }: ProtectedRouteProps) => {
 
   useEffect(() => {
     if (!isLoading) {
-      if (!isAuthenticated || !allowedRoles.includes(userRole || "")) {
+      if (!isAuthenticated || !allowedRoles.includes(userRole ?? "")) {
         router.push("/");
       }
     }
   }, [isLoading, isAuthenticated, userRole, allowedRoles, router]);
 
-  if (isLoading || !isAuthenticated || !allowedRoles.includes(userRole || "")) {
+  if (isLoading || !isAuthenticated || !allowedRoles.includes(userRole ?? "")) {
     return (
       <div className="flex justify-center my-8">
         <Spinner lg />

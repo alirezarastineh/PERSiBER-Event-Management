@@ -15,7 +15,6 @@ import { useAppSelector } from "@/redux/hooks";
 import Spinner from "./Common/Spinner";
 import Modal from "./Common/Modal";
 import { motion, AnimatePresence } from "framer-motion";
-import Image from "next/image";
 
 export default function Members() {
   const {
@@ -315,31 +314,13 @@ export default function Members() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7 }}
         >
-          <div className="flex justify-center mb-6">
-            <motion.div
-              className="relative"
-              whileHover={{ scale: 1.05 }}
-              transition={{ type: "spring", stiffness: 300 }}
-            >
-              <div className="bg-soft-cream dark:bg-deep-navy rounded-full p-2">
-                <Image
-                  src="https://i.imgur.com/MiwxKii.png"
-                  alt="PERSiBER Logo"
-                  width={70}
-                  height={70}
-                  className="object-contain"
-                />
-              </div>
-            </motion.div>
-          </div>
-
           <motion.h1
             className="text-4xl md:text-5xl font-bold mb-3 gradient-text"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2, duration: 0.7 }}
           >
-            Member Management
+            Members Management
           </motion.h1>
 
           <motion.div

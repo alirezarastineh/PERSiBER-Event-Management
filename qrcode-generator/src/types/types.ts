@@ -206,3 +206,5 @@ export interface BpplistStatistics {
   hasLeftCount: number;
   studentsCount: number;
 }
+
+export type AlertType = "success" | "error" | "warning" | "info";

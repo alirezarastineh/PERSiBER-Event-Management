@@ -93,7 +93,12 @@ export class AuthService {
 
       return this.generateTokens(user._id.toString(), user.username, user.role);
     } catch (error) {
-      throw new UnauthorizedException('Invalid refresh token');
+      const errorMessage =
+        error instanceof Error
+          ? `Invalid refresh token: ${error.message}`
+          : 'Invalid refresh token';
+
+      throw new UnauthorizedException(errorMessage, { cause: error });
     }
   }
 

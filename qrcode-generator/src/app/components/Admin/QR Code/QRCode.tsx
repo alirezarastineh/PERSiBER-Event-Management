@@ -7,6 +7,8 @@ import { useFindOrCreateGuestMutation } from "@/redux/features/guests/guestsApiS
 import { motion, AnimatePresence } from "framer-motion";
 import Spinner from "@/app/components/Common/Spinner";
 import Image from "next/image";
+import Modal from "../../Common/Modal";
+import { AlertType } from "@/types/types";
 
 const QRCodeComponent = () => {
   const [text, setText] = useState("");
@@ -15,6 +17,37 @@ const QRCodeComponent = () => {
   const qrCodeRef = useRef<HTMLCanvasElement | null>(null);
   const [findOrCreateGuest] = useFindOrCreateGuestMutation();
   const [loading, setLoading] = useState(false);
+
+  const [showAlertModal, setShowAlertModal] = useState(false);
+  const [alertType, setAlertType] = useState<AlertType>("info");
+  const [alertTitle, setAlertTitle] = useState("");
+  const [alertMessage, setAlertMessage] = useState("");
+
+  // Add this function to show custom alerts
+  const showCustomAlert = (
+    title: string,
+    message: string,
+    type: AlertType = "info"
+  ) => {
+    setAlertTitle(title);
+    setAlertMessage(message);
+    setAlertType(type);
+    setShowAlertModal(true);
+  };
+
+  const getAlertBackgroundColor = (type: AlertType) => {
+    switch (type) {
+      case "success":
+        return "rgba(16, 185, 129, 0.2)";
+      case "error":
+        return "rgba(239, 68, 68, 0.2)";
+      case "warning":
+        return "rgba(245, 158, 11, 0.2)";
+      case "info":
+      default:
+        return "rgba(59, 130, 246, 0.2)";
+    }
+  };
 
   useEffect(() => {
     if (qrCodeUrl && qrCodeRef.current) {
@@ -48,7 +81,11 @@ const QRCodeComponent = () => {
 
   const generateQRCode = async () => {
     if (!text.trim()) {
-      alert("Please enter a guest's name.");
+      showCustomAlert(
+        "Input Required",
+        "Please enter a guest's name.",
+        "warning"
+      );
       return;
     }
 
@@ -64,7 +101,11 @@ const QRCodeComponent = () => {
         "Error generating QR code or finding/creating guest:",
         error
       );
-      alert("Failed to generate QR code or find/create guest.");
+      showCustomAlert(
+        "Generation Failed",
+        "Failed to generate QR code or find/create guest.",
+        "error"
+      );
     } finally {
       setLoading(false);
     }
@@ -109,17 +150,6 @@ const QRCodeComponent = () => {
       borderMargin,
       pageWidth - 2 * borderMargin,
       pageHeight - 2 * borderMargin,
-      "S"
-    );
-
-    // Inner border with thinner line
-    doc.setDrawColor(212, 175, 55, 0.6); // Rich gold with opacity
-    doc.setLineWidth(1);
-    doc.rect(
-      borderMargin + 5,
-      borderMargin + 5,
-      pageWidth - 2 * (borderMargin + 5),
-      pageHeight - 2 * (borderMargin + 5),
       "S"
     );
 
@@ -201,7 +231,6 @@ const QRCodeComponent = () => {
     doc.setFontSize(14);
     doc.setTextColor(255, 220, 154); // Lighter gold
     doc.setFont("helvetica", "normal");
-    doc.text("TICKET FOR", pageWidth / 2, 80, { align: "center" });
 
     // Guest name with larger, elegant font
     doc.setFontSize(32);
@@ -280,24 +309,6 @@ const QRCodeComponent = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2, duration: 0.7 }}
         >
-          <div className="flex justify-center mb-6">
-            <motion.div
-              className="relative"
-              whileHover={{ scale: 1.05 }}
-              transition={{ type: "spring", stiffness: 300 }}
-            >
-              <div className="p-2">
-                <Image
-                  src="https://i.imgur.com/MiwxKii.png"
-                  alt="PERSiBER Logo"
-                  width={70}
-                  height={70}
-                  className="object-contain"
-                />
-              </div>
-            </motion.div>
-          </div>
-
           <motion.h1
             className="text-4xl md:text-5xl font-bold mb-3 gradient-text"
             initial={{ opacity: 0 }}
@@ -507,6 +518,109 @@ const QRCodeComponent = () => {
                 </motion.div>
               )}
             </AnimatePresence>
+
+            <AnimatePresence>
+              {showAlertModal && (
+                <Modal
+                  isOpen={showAlertModal}
+                  onClose={() => setShowAlertModal(false)}
+                  title={alertTitle}
+                >
+                  <div className="space-y-6">
+                    <div
+                      className="flex items-center justify-center w-16 h-16 mx-auto rounded-full"
+                      style={{
+                        backgroundColor: getAlertBackgroundColor(alertType),
+                      }}
+                    >
+                      {alertType === "success" && (
+                        <svg
+                          className="w-8 h-8 text-green-600 dark:text-green-400"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M5 13l4 4L19 7"
+                          />
+                        </svg>
+                      )}
+                      {alertType === "error" && (
+                        <svg
+                          className="w-8 h-8 text-red-600 dark:text-red-400"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M6 18L18 6M6 6l12 12"
+                          />
+                        </svg>
+                      )}
+                      {alertType === "warning" && (
+                        <svg
+                          className="w-8 h-8 text-amber-600 dark:text-amber-400"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                          />
+                        </svg>
+                      )}
+                      {alertType === "info" && (
+                        <svg
+                          className="w-8 h-8 text-blue-600 dark:text-blue-400"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                          />
+                        </svg>
+                      )}
+                    </div>
+
+                    <div className="text-center">
+                      <h3 className="text-lg font-medium text-warm-charcoal dark:text-white mb-2">
+                        {alertTitle}
+                      </h3>
+                      <p className="text-gray-600 dark:text-gray-400">
+                        {alertMessage}
+                      </p>
+                    </div>
+
+                    <div className="flex gap-3 pt-3 justify-center">
+                      <motion.button
+                        onClick={() => setShowAlertModal(false)}
+                        className="px-6 py-3 rounded-lg bg-gradient-to-r from-rich-gold to-accent-amber text-deep-navy font-medium shadow-md min-w-[120px]"
+                        whileHover={{
+                          scale: 1.02,
+                          boxShadow: "0 5px 15px rgba(212, 175, 55, 0.25)",
+                        }}
+                        whileTap={{ scale: 0.98 }}
+                      >
+                        Okay
+                      </motion.button>
+                    </div>
+                  </div>
+                </Modal>
+              )}
+            </AnimatePresence>
           </motion.div>
         </div>
 
@@ -519,6 +633,7 @@ const QRCodeComponent = () => {
         >
           {[
             {
+              id: "feature-instant-generation",
               icon: (
                 <svg
                   className="w-8 h-8"
@@ -539,6 +654,7 @@ const QRCodeComponent = () => {
               desc: "Create QR codes in seconds with minimal input required",
             },
             {
+              id: "feature-secure-access",
               icon: (
                 <svg
                   className="w-8 h-8"
@@ -559,6 +675,7 @@ const QRCodeComponent = () => {
               desc: "Each QR code links to a secure, personalized guest page",
             },
             {
+              id: "feature-print-ready",
               icon: (
                 <svg
                   className="w-8 h-8"
@@ -578,13 +695,17 @@ const QRCodeComponent = () => {
               title: "Print Ready",
               desc: "Download professionally formatted PDF invitations",
             },
-          ].map((feature, i) => (
+          ].map((feature) => (
             <motion.div
-              key={i}
+              key={feature.id}
               className="card p-6 flex flex-col items-center text-center"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.8 + i * 0.2, duration: 0.5 }}
+              transition={{
+                delay:
+                  0.8 + Array.prototype.indexOf.call(feature, feature) * 0.2,
+                duration: 0.5,
+              }}
               whileHover={{ y: -8, transition: { duration: 0.3 } }}
             >
               <div className="w-14 h-14 flex items-center justify-center rounded-full bg-gradient-to-r from-rich-gold/20 to-accent-amber/20 text-rich-gold dark:text-accent-amber mb-4">
