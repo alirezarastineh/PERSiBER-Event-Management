@@ -9,14 +9,18 @@ import {
   useToggleLadyDiscountMutation,
   useUpdateAttendedStatusMutation,
   useCreateGuestMutation,
+  useAdjustDrinksCouponMutation,
 } from "@/redux/features/guests/guestsApiSlice";
 import { AlertType, Guest, UpdateGuestDto } from "@/types/types";
 import { useAppSelector } from "@/redux/hooks";
 import Spinner from "./Common/Spinner";
 import Modal from "./Common/Modal";
 import { motion, AnimatePresence } from "framer-motion";
+import { useRouter } from "next/navigation";
 
 export default function Guests() {
+  const router = useRouter();
+
   const {
     data: guestsData,
     isLoading,
@@ -28,6 +32,7 @@ export default function Guests() {
   const [toggleStudentDiscount] = useToggleStudentDiscountMutation();
   const [toggleLadyDiscount] = useToggleLadyDiscountMutation();
   const [updateAttendedStatus] = useUpdateAttendedStatusMutation();
+  const [adjustDrinksCoupon] = useAdjustDrinksCouponMutation();
 
   const [createGuest] = useCreateGuestMutation();
   const [newGuestName, setNewGuestName] = useState<string>("");
@@ -95,8 +100,9 @@ export default function Guests() {
   useEffect(() => {
     if (guestsData?.statistics) {
       setDiscountStatuses({
-        studentDiscountActive: guestsData.statistics.studentDiscountActive,
-        ladyDiscountActive: guestsData.statistics.ladyDiscountActive,
+        studentDiscountActive:
+          guestsData.statistics.studentDiscountActive ?? false,
+        ladyDiscountActive: guestsData.statistics.ladyDiscountActive ?? false,
       });
     }
   }, [guestsData]);
@@ -294,6 +300,11 @@ export default function Guests() {
   const fadeIn = {
     hidden: { opacity: 0 },
     visible: { opacity: 1, transition: { duration: 0.6 } },
+  };
+
+  // Function to navigate to guest detail page
+  const navigateToGuestDetail = (guestId: string) => {
+    router.push(`/guests/${guestId}`);
   };
 
   if (isLoading) {
@@ -749,12 +760,15 @@ export default function Guests() {
                       >
                         Free Entry
                       </th>
-                      <th
-                        scope="col"
-                        className="px-6 py-4 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"
-                      >
-                        Actions
-                      </th>
+                      {/* Only show Actions column header for admin or master */}
+                      {(userRole === "admin" || userRole === "master") && (
+                        <th
+                          scope="col"
+                          className="px-6 py-4 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"
+                        >
+                          Actions
+                        </th>
+                      )}
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
@@ -766,8 +780,15 @@ export default function Guests() {
                           className="hover:bg-gray-50 dark:hover:bg-gray-700/30 transition-colors duration-150"
                           exit={{ opacity: 0, height: 0 }}
                         >
-                          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
-                            {guest.name}
+                          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                            <motion.span
+                              onClick={() => navigateToGuestDetail(guest._id)}
+                              className="cursor-pointer text-gray-900 dark:text-white hover:text-rich-gold dark:hover:text-accent-amber transition-colors duration-200"
+                              whileHover={{ scale: 1.02 }}
+                              whileTap={{ scale: 0.98 }}
+                            >
+                              {guest.name}
+                            </motion.span>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-sm">
                             <motion.button
@@ -839,9 +860,9 @@ export default function Guests() {
                               {guest.freeEntry ? "Yes" : "No"}
                             </span>
                           </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                            {(userRole === "admin" ||
-                              userRole === "master") && (
+                          {/* Only show Actions cell for admin or master */}
+                          {(userRole === "admin" || userRole === "master") && (
+                            <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                               <div className="flex justify-end space-x-2">
                                 <motion.button
                                   onClick={() => handleEditGuest(guest)}
@@ -870,8 +891,8 @@ export default function Guests() {
                                   Delete
                                 </motion.button>
                               </div>
-                            )}
-                          </td>
+                            </td>
+                          )}
                         </motion.tr>
                       ))}
                     </AnimatePresence>
@@ -896,9 +917,14 @@ export default function Guests() {
                   >
                     <div className="flex justify-between items-center">
                       <div className="flex-1">
-                        <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                        <motion.h3
+                          className="text-lg font-semibold text-gray-900 dark:text-white cursor-pointer hover:text-rich-gold dark:hover:text-accent-amber transition-colors duration-200"
+                          onClick={() => navigateToGuestDetail(guest._id)}
+                          whileHover={{ scale: 1.01 }}
+                          whileTap={{ scale: 0.99 }}
+                        >
                           {guest.name}
-                        </h3>
+                        </motion.h3>
                         <p className="text-sm text-gray-500 dark:text-gray-400">
                           Added by: {guest.addedBy ?? "N/A"}
                         </p>
@@ -1233,6 +1259,76 @@ export default function Guests() {
                   className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-rich-gold dark:focus:ring-accent-amber focus:border-rich-gold transition-all duration-300 text-warm-charcoal dark:text-white"
                   whileFocus={{ scale: 1.01 }}
                 />
+              </div>
+
+              {/* Drinks Coupon Control */}
+              <div className="space-y-2">
+                <label
+                  htmlFor="drinksCoupon"
+                  className="block text-sm font-medium text-warm-charcoal dark:text-gray-300"
+                >
+                  Drinks Coupon
+                </label>
+                <div className="flex items-center space-x-2">
+                  <motion.input
+                    id="drinksCoupon"
+                    type="number"
+                    min="0"
+                    value={editingGuest.drinksCoupon || 0}
+                    onChange={(e) => {
+                      const newValue = parseInt(e.target.value, 10) || 0;
+                      // Update the local state immediately for visual feedback
+                      const updatedGuest = {
+                        ...editingGuest,
+                        drinksCoupon: newValue,
+                      };
+                      setEditingGuest(updatedGuest);
+                    }}
+                    className="flex-1 px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-rich-gold dark:focus:ring-accent-amber focus:border-rich-gold dark:focus:border-accent-amber text-warm-charcoal dark:text-white"
+                    whileFocus={{ scale: 1.01 }}
+                  />
+                  <motion.button
+                    onClick={async () => {
+                      if (!editingGuest) return;
+                      try {
+                        // Calculate the adjustment needed to reach the new value
+                        // Find the original guest from guestsData
+                        const originalGuest = guestsData?.guests.find(
+                          (g) => g._id === editingGuest._id
+                        );
+                        const originalCoupons =
+                          originalGuest?.drinksCoupon ?? 0;
+                        const newCoupons = editingGuest.drinksCoupon || 0;
+                        const adjustment = newCoupons - originalCoupons;
+
+                        if (adjustment !== 0) {
+                          await adjustDrinksCoupon({
+                            id: editingGuest._id,
+                            adjustment: adjustment,
+                          }).unwrap();
+                          refetch();
+                          showCustomAlert(
+                            "Success",
+                            "Drink coupons updated successfully!",
+                            "success"
+                          );
+                        }
+                      } catch (error) {
+                        console.error("Failed to update drinks coupon:", error);
+                        showCustomAlert(
+                          "Error",
+                          "Failed to update drink coupons",
+                          "error"
+                        );
+                      }
+                    }}
+                    className="px-4 py-3 rounded-lg bg-gradient-to-r from-rich-gold to-accent-amber text-deep-navy font-medium shadow-md"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    Update
+                  </motion.button>
+                </div>
               </div>
 
               <div className="space-y-2 relative">

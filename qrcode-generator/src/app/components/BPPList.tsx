@@ -749,12 +749,14 @@ export default function BPPList() {
                             </th>
                           </>
                         )}
-                        <th
-                          scope="col"
-                          className="px-6 py-4 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"
-                        >
-                          Actions
-                        </th>
+                        {(userRole === "admin" || userRole === "master") && (
+                          <th
+                            scope="col"
+                            className="px-6 py-4 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"
+                          >
+                            Actions
+                          </th>
+                        )}
                       </tr>
                     </thead>
                     <tbody className="bg-white dark:bg-transparent divide-y divide-gray-200 dark:divide-gray-700">

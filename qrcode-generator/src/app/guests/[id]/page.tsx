@@ -10,6 +10,7 @@ import {
   useUpdateStudentStatusMutation,
   useUpdateLadyStatusMutation,
   useUpdateAttendedStatusMutation,
+  useAdjustDrinksCouponMutation,
 } from "@/redux/features/guests/guestsApiSlice";
 import { AlertType, Guest, UpdateGuestDto } from "@/types/types";
 import { useAppSelector } from "@/redux/hooks";
@@ -40,6 +41,7 @@ export default function GuestDetail() {
   const [updateStudentStatus] = useUpdateStudentStatusMutation();
   const [updateLadyStatus] = useUpdateLadyStatusMutation();
   const [updateAttendedStatus] = useUpdateAttendedStatusMutation();
+  const [adjustDrinksCoupon] = useAdjustDrinksCouponMutation();
   const [editingGuest, setEditingGuest] = useState<Guest | null>(null);
 
   const [editData, setEditData] = useState<UpdateGuestDto>({
@@ -67,6 +69,21 @@ export default function GuestDetail() {
   const [alertType, setAlertType] = useState<AlertType>("info");
   const [alertTitle, setAlertTitle] = useState("");
   const [alertMessage, setAlertMessage] = useState("");
+
+  // Animation variants
+  const fadeIn = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1, transition: { duration: 0.6 } },
+  };
+
+  const slideUp = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { type: "spring", stiffness: 300, damping: 24 },
+    },
+  };
 
   // Add this function to show custom alerts
   const showCustomAlert = (
@@ -129,9 +146,48 @@ export default function GuestDetail() {
     setGuestIdToDelete(null);
   };
 
-  if (isGuestLoading || isGuestsLoading) return <Spinner lg />;
+  if (isGuestLoading || isGuestsLoading) {
+    return (
+      <motion.div
+        className="flex justify-center items-center min-h-[70vh] bg-gradient-to-b from-soft-cream to-gray-100 dark:from-deep-navy dark:to-gray-900"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
+        <Spinner xl />
+      </motion.div>
+    );
+  }
+
   if (isGuestError || isGuestsError || !guest) {
-    return <div>Error loading guest details or guest not found.</div>;
+    return (
+      <motion.div
+        className="text-center p-8 rounded-xl bg-red-50 dark:bg-deep-navy border border-red-200 dark:border-red-800/30 shadow-lg max-w-2xl mx-auto my-12"
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.5 }}
+      >
+        <svg
+          className="w-12 h-12 text-red-500 mx-auto mb-4"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+          />
+        </svg>
+        <h2 className="text-2xl font-bold text-red-700 dark:text-red-400 mb-2">
+          Error Loading Guest
+        </h2>
+        <p className="text-red-600 dark:text-red-300">
+          We couldn&apos;t retrieve the guest data. Please try again later.
+        </p>
+      </motion.div>
+    );
   }
 
   const handleDeleteGuest = async () => {
@@ -183,330 +239,592 @@ export default function GuestDetail() {
   };
 
   return (
-    <div className="p-6 transition-colors ease-in-out duration-300">
-      <h1 className="text-3xl font-bold mb-6 text-center">
-        {guest.name}&apos;s Details
-      </h1>
-      <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md space-y-4 text-black dark:text-white">
-        {/* Toggle switch for Attended status */}
-        <div className="flex justify-between items-center">
-          <h2 className="text-lg font-bold text-gray-800 dark:text-gray-200">
-            {guest.name}
-          </h2>
-          <button
-            onClick={handleToggleAttendedStatus}
-            className={`relative inline-flex items-center h-6 rounded-full w-11 ${
-              attendedStatus ? "bg-green-500" : "bg-gray-300"
-            }`}
+    <motion.div
+      className="min-h-screen bg-gradient-to-b from-soft-cream to-gray-100 dark:from-deep-navy dark:to-gray-900 transition-colors duration-500"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.6 }}
+    >
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        {/* Header */}
+        <motion.header
+          className="mb-12 text-center"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7 }}
+        >
+          <motion.h1
+            className="text-4xl md:text-5xl font-bold mb-3 gradient-text"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2, duration: 0.7 }}
           >
-            <span
-              className={`inline-block w-4 h-4 transform bg-white rounded-full transition-transform ${
-                attendedStatus ? "translate-x-5" : "translate-x-1"
-              }`}
-            />
-          </button>
-        </div>
+            {guest.name}
+          </motion.h1>
 
-        {/* Other fields */}
-        <p>
-          <strong>Drinks Coupon:</strong> {guest.drinksCoupon}
-        </p>
-        <p>
-          <strong>Already Paid:</strong> {guest.alreadyPaid ? "Yes" : "No"}
-        </p>
-        <p>
-          <strong>Free Entry:</strong> {guest.freeEntry ? "Yes" : "No"}
-        </p>
+          <motion.div
+            className="h-1 w-24 bg-gradient-to-r from-rich-gold to-accent-amber rounded-full mx-auto"
+            initial={{ width: 0 }}
+            animate={{ width: 96 }}
+            transition={{ delay: 0.3, duration: 0.8 }}
+          />
+        </motion.header>
 
-        {/* Only display the following fields for admin or master */}
-        {(userRole === "admin" || userRole === "master") && (
-          <>
-            <p>
-              <strong>Inviter:</strong> {guest.invitedFrom || "N/A"}
-            </p>
-            <p>
-              <strong>Student:</strong> {guest.isStudent ? "Yes" : "No"}
-            </p>
-            <p>
-              <strong>Lady:</strong> {guest.isLady ? "Yes" : "No"}
-            </p>
-            {guest.isStudent && guest.untilWhen && (
-              <p>
-                <strong>Until When:</strong>{" "}
-                {new Date(guest.untilWhen).toLocaleDateString()}
-              </p>
-            )}
-          </>
-        )}
-
-        {/* Admin or Master Actions */}
-        {(userRole === "admin" || userRole === "master") && (
-          <>
-            {/* Editing Form */}
-            <div className="mt-4 space-y-4">
-              {/* Name Input */}
-              <div>
-                <label
-                  htmlFor="name"
-                  className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+        {/* Guest Details Card */}
+        <motion.section
+          className="mb-12"
+          variants={fadeIn}
+          initial="hidden"
+          animate="visible"
+        >
+          <div className="bg-white dark:bg-gray-800/60 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-gray-100 dark:border-gray-700/50">
+            <div className="space-y-6">
+              {/* Guest Status Section */}
+              <div className="flex items-center justify-between">
+                <motion.h2
+                  className="text-xl font-bold text-warm-charcoal dark:text-white"
+                  variants={slideUp}
                 >
-                  Name
-                </label>
-                <input
-                  type="text"
-                  id="name"
-                  value={editData.name}
-                  onChange={(e) =>
-                    setEditData({ ...editData, name: e.target.value })
-                  }
-                  className="mt-1 block w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md text-black dark:text-white bg-gray-50 dark:bg-gray-700"
-                />
-              </div>
-
-              {/* Invited From Searchable Input */}
-              <div className="relative text-black">
-                <label
-                  htmlFor="invitedFrom"
-                  className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                  Attendance Status
+                </motion.h2>
+                <motion.button
+                  onClick={handleToggleAttendedStatus}
+                  className={`relative w-14 h-7 flex items-center rounded-full p-1 transition-colors duration-300 focus:outline-none ${
+                    attendedStatus
+                      ? "bg-gradient-to-r from-emerald-500 to-emerald-600"
+                      : "bg-gray-300 dark:bg-gray-600"
+                  }`}
+                  whileTap={{ scale: 0.95 }}
+                  variants={slideUp}
                 >
-                  Inviter
-                </label>
-                <input
-                  type="text"
-                  id="invitedFrom"
-                  placeholder="Search Inviter"
-                  value={invitedFromSearchTerm}
-                  onChange={(e) => {
-                    setInvitedFromSearchTerm(e.target.value);
-                    setShowDropdown(e.target.value !== ""); // Show dropdown if search term is not empty
-                  }}
-                  className="mt-1 block w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md text-black dark:text-white bg-gray-50 dark:bg-gray-700"
-                />
-                {showDropdown && (
-                  <div className="absolute z-10 bg-white w-full border rounded-sm mt-1 max-h-40 overflow-y-auto">
-                    {guestsData?.guests
-                      .filter((g) =>
-                        g.name
-                          .toLowerCase()
-                          .includes(invitedFromSearchTerm.toLowerCase())
-                      )
-                      .map((g) => (
-                        <button
-                          key={g._id}
-                          className="cursor-pointer p-2 hover:bg-gray-200 text-left w-full"
-                          onClick={() => {
-                            setEditData({ ...editData, invitedFrom: g.name });
-                            setInvitedFromSearchTerm(g.name);
-                            setShowDropdown(false);
-                          }}
-                        >
-                          {g.name}
-                        </button>
-                      ))}
-                  </div>
-                )}
-              </div>
-
-              {/* Switch Toggles */}
-              <div className="flex flex-wrap gap-4">
-                {/* Is Student Toggle */}
-                <div className="flex items-center gap-2 justify-between w-full">
-                  <label
-                    htmlFor="isStudent"
-                    className="block text-sm font-medium text-gray-700 dark:text-gray-300"
-                  >
-                    Student:
-                  </label>
-                  <button
-                    onClick={async () => {
-                      if (!editingGuest?._id) return; // Ensure _id is defined using optional chaining
-                      const newStudentStatus = !editData.isStudent;
-                      setEditData({ ...editData, isStudent: newStudentStatus });
-                      try {
-                        await updateStudentStatus({
-                          id: editingGuest._id, // `_id` is guaranteed to be a string here
-                          isStudent: newStudentStatus,
-                          untilWhen: newStudentStatus
-                            ? editData.untilWhen ?? null
-                            : null,
-                        }).unwrap();
-                        refetch();
-                      } catch (error) {
-                        console.error(
-                          "Failed to update student status:",
-                          error
-                        );
-                      }
+                  <motion.span
+                    className="absolute bg-white w-5 h-5 rounded-full shadow-md transform transition-transform duration-300"
+                    animate={{
+                      translateX: attendedStatus ? 26 : 0,
                     }}
-                    className={`relative inline-flex items-center h-6 rounded-full w-11 ${
-                      editData.isStudent ? "bg-green-500" : "bg-gray-300"
-                    }`}
-                  >
-                    <span
-                      className={`inline-block w-4 h-4 transform bg-white rounded-full transition-transform ${
-                        editData.isStudent ? "translate-x-5" : "translate-x-1"
-                      }`}
-                    />
-                  </button>
-                </div>
-
-                {editData.isStudent && (
-                  <input
-                    type="date"
-                    value={
-                      editData.untilWhen
-                        ? new Date(editData.untilWhen)
-                            .toISOString()
-                            .split("T")[0]
-                        : ""
-                    }
-                    onChange={(e) => {
-                      const parsedDate = new Date(e.target.value);
-                      setEditData({
-                        ...editData,
-                        untilWhen: isNaN(parsedDate.getTime())
-                          ? null
-                          : parsedDate,
-                      });
-                    }}
-                    className="text-black border p-2 rounded-sm w-full"
                   />
-                )}
-
-                {/* Is Lady Toggle */}
-                <div className="flex items-center gap-2 justify-between w-full">
-                  <label
-                    htmlFor="isLady"
-                    className="block text-sm font-medium text-gray-700 dark:text-gray-300"
-                  >
-                    Lady:
-                  </label>
-                  <button
-                    onClick={async () => {
-                      if (!editingGuest?._id) return; // Ensure editingGuest and _id are defined
-                      const newLadyStatus = !editData.isLady;
-                      setEditData({ ...editData, isLady: newLadyStatus });
-                      try {
-                        await updateLadyStatus({
-                          id: editingGuest._id, // `_id` is guaranteed to be a string here
-                          isLady: newLadyStatus,
-                        }).unwrap();
-                        refetch();
-                      } catch (error) {
-                        console.error("Failed to update lady status:", error);
-                      }
-                    }}
-                    className={`relative inline-flex items-center h-6 rounded-full w-11 ${
-                      editData.isLady ? "bg-green-500" : "bg-gray-300"
-                    }`}
-                  >
-                    <span
-                      className={`inline-block w-4 h-4 transform bg-white rounded-full transition-transform ${
-                        editData.isLady ? "translate-x-5" : "translate-x-1"
-                      }`}
-                    />
-                  </button>
-                </div>
-
-                {/* Free Entry Toggle */}
-                <div className="flex items-center gap-2 justify-between w-full">
-                  <label
-                    htmlFor="freeEntry"
-                    className="block text-sm font-medium text-gray-700 dark:text-gray-300"
-                  >
-                    Free Entry:
-                  </label>
-                  <button
-                    onClick={async () => {
-                      if (!editingGuest?._id) return; // Ensure editingGuest and _id are defined
-                      const newFreeEntryStatus = !editData.freeEntry;
-                      setEditData({
-                        ...editData,
-                        freeEntry: newFreeEntryStatus,
-                      });
-                      try {
-                        await updateGuest({
-                          id: editingGuest._id, // `_id` is guaranteed to be a string here
-                          data: { freeEntry: newFreeEntryStatus },
-                        }).unwrap();
-                        refetch();
-                      } catch (error) {
-                        console.error(
-                          "Failed to update free entry status:",
-                          error
-                        );
-                      }
-                    }}
-                    className={`relative inline-flex items-center h-6 rounded-full w-11 ${
-                      editData.freeEntry ? "bg-green-500" : "bg-gray-300"
-                    }`}
-                  >
-                    <span
-                      className={`inline-block w-4 h-4 transform bg-white rounded-full transition-transform ${
-                        editData.freeEntry ? "translate-x-5" : "translate-x-1"
-                      }`}
-                    />
-                  </button>
-                </div>
+                </motion.button>
               </div>
 
-              <div className="flex justify-between gap-2">
-                <button
-                  onClick={handleUpdateGuest}
-                  className="bg-green-500 text-white px-4 py-2 rounded-sm hover:bg-green-600 transition duration-300 w-full"
+              {/* Guest Information Grid */}
+              <motion.div
+                className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-gray-100 dark:border-gray-700/30"
+                variants={slideUp}
+              >
+                <div className="space-y-2">
+                  <p className="text-sm text-gray-500 dark:text-gray-400">
+                    Drinks Coupon
+                  </p>
+                  {userRole === "admin" || userRole === "master" ? (
+                    <div className="flex items-center mt-1 space-x-2">
+                      <motion.input
+                        type="number"
+                        min="0"
+                        value={guest.drinksCoupon || 0}
+                        onChange={(e) => {
+                          const newValue = parseInt(e.target.value, 10) || 0;
+                          document.getElementById(
+                            "drinksCouponValue"
+                          )!.innerText = newValue.toString();
+                        }}
+                        className="w-full max-w-[120px] px-3 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-rich-gold dark:focus:ring-accent-amber focus:border-rich-gold dark:focus:border-accent-amber text-warm-charcoal dark:text-white transition-all duration-300 text-center"
+                        whileFocus={{ scale: 1.01 }}
+                      />
+                      <motion.button
+                        onClick={async () => {
+                          try {
+                            // Get the current input value
+                            const inputEl = document.querySelector(
+                              'input[type="number"]'
+                            ) as HTMLInputElement;
+                            const newValue = parseInt(inputEl.value, 10) || 0;
+                            const originalValue = guest.drinksCoupon || 0;
+                            const adjustment = newValue - originalValue;
+
+                            if (adjustment !== 0) {
+                              await adjustDrinksCoupon({
+                                id: guest._id,
+                                adjustment: adjustment,
+                              }).unwrap();
+                              refetch();
+                              showCustomAlert(
+                                "Success",
+                                "Drink coupons updated successfully!",
+                                "success"
+                              );
+                            }
+                          } catch (error) {
+                            console.error(
+                              "Failed to update drinks coupon:",
+                              error
+                            );
+                            showCustomAlert(
+                              "Error",
+                              "Failed to update drink coupons",
+                              "error"
+                            );
+                          }
+                        }}
+                        className="whitespace-nowrap px-3 py-2 rounded-lg bg-gradient-to-r from-rich-gold to-accent-amber text-deep-navy font-medium shadow-md text-sm"
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.98 }}
+                      >
+                        Update
+                      </motion.button>
+                    </div>
+                  ) : (
+                    <p className="text-lg font-medium text-warm-charcoal dark:text-white">
+                      <span id="drinksCouponValue">
+                        {guest.drinksCoupon || 0}
+                      </span>
+                    </p>
+                  )}
+                </div>
+
+                <div className="space-y-2">
+                  <p className="text-sm text-gray-500 dark:text-gray-400">
+                    Already Paid
+                  </p>
+                  <p className="text-lg font-medium text-warm-charcoal dark:text-white">
+                    {guest.alreadyPaid ? "Yes" : "No"}
+                  </p>
+                </div>
+
+                <div className="space-y-2">
+                  <p className="text-sm text-gray-500 dark:text-gray-400">
+                    Free Entry
+                  </p>
+                  <p className="text-lg font-medium text-warm-charcoal dark:text-white">
+                    {guest.freeEntry ? (
+                      <span className="text-amber-600 dark:text-amber-400">
+                        Yes
+                      </span>
+                    ) : (
+                      "No"
+                    )}
+                  </p>
+                </div>
+
+                {/* Only display the following fields for admin or master */}
+                {(userRole === "admin" || userRole === "master") && (
+                  <>
+                    <div className="space-y-2">
+                      <p className="text-sm text-gray-500 dark:text-gray-400">
+                        Inviter
+                      </p>
+                      <p className="text-lg font-medium text-warm-charcoal dark:text-white">
+                        {guest.invitedFrom || "N/A"}
+                      </p>
+                    </div>
+
+                    <div className="space-y-2">
+                      <p className="text-sm text-gray-500 dark:text-gray-400">
+                        Student
+                      </p>
+                      <p className="text-lg font-medium text-warm-charcoal dark:text-white">
+                        {guest.isStudent ? (
+                          <span className="text-blue-600 dark:text-blue-400">
+                            Yes
+                          </span>
+                        ) : (
+                          "No"
+                        )}
+                      </p>
+                    </div>
+
+                    <div className="space-y-2">
+                      <p className="text-sm text-gray-500 dark:text-gray-400">
+                        Lady
+                      </p>
+                      <p className="text-lg font-medium text-warm-charcoal dark:text-white">
+                        {guest.isLady ? (
+                          <span className="text-pink-600 dark:text-pink-400">
+                            Yes
+                          </span>
+                        ) : (
+                          "No"
+                        )}
+                      </p>
+                    </div>
+
+                    {guest.isStudent && guest.untilWhen && (
+                      <div className="space-y-2">
+                        <p className="text-sm text-gray-500 dark:text-gray-400">
+                          Student Until
+                        </p>
+                        <p className="text-lg font-medium text-warm-charcoal dark:text-white">
+                          {new Date(guest.untilWhen).toLocaleDateString()}
+                        </p>
+                      </div>
+                    )}
+                  </>
+                )}
+              </motion.div>
+
+              {/* Admin or Master Actions */}
+              {(userRole === "admin" || userRole === "master") && (
+                <motion.div
+                  className="pt-6 mt-6 border-t border-gray-100 dark:border-gray-700/30"
+                  variants={slideUp}
                 >
-                  Save
-                </button>
-                <button
-                  onClick={openDeleteModal}
-                  className="bg-red-500 text-white px-4 py-1 rounded-sm hover:bg-red-600 transition duration-300 w-full"
-                  disabled={!guest || guest.name === "Master"} // Disable if guest is undefined or name is 'Master'
+                  <h3 className="text-lg font-semibold mb-4 text-warm-charcoal dark:text-white">
+                    Edit Guest Information
+                  </h3>
+                  <div className="space-y-4">
+                    {/* Name Input */}
+                    <div>
+                      <label
+                        htmlFor="name"
+                        className="block text-sm font-medium text-gray-500 dark:text-gray-400 mb-1"
+                      >
+                        Name
+                      </label>
+                      <motion.input
+                        id="name"
+                        type="text"
+                        value={editData.name}
+                        onChange={(e) =>
+                          setEditData({ ...editData, name: e.target.value })
+                        }
+                        className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-rich-gold dark:focus:ring-accent-amber focus:border-rich-gold dark:focus:border-accent-amber text-warm-charcoal dark:text-white transition-all duration-300"
+                        whileFocus={{ scale: 1.01 }}
+                      />
+                    </div>
+
+                    {/* Invited From Searchable Input */}
+                    <div className="relative">
+                      <label
+                        htmlFor="invitedFrom"
+                        className="block text-sm font-medium text-gray-500 dark:text-gray-400 mb-1"
+                      >
+                        Inviter
+                      </label>
+                      <motion.input
+                        id="invitedFrom"
+                        type="text"
+                        placeholder="Search for inviter"
+                        value={invitedFromSearchTerm}
+                        onChange={(e) => {
+                          setInvitedFromSearchTerm(e.target.value);
+                          setShowDropdown(e.target.value !== "");
+                        }}
+                        className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-rich-gold dark:focus:ring-accent-amber focus:border-rich-gold dark:focus:border-accent-amber text-warm-charcoal dark:text-white transition-all duration-300"
+                        whileFocus={{ scale: 1.01 }}
+                      />
+                      {showDropdown && (
+                        <div className="absolute z-10 bg-white dark:bg-gray-800 w-full border border-gray-200 dark:border-gray-700 rounded-lg mt-1 max-h-40 overflow-y-auto shadow-lg">
+                          {guestsData?.guests
+                            .filter((g) =>
+                              g.name
+                                .toLowerCase()
+                                .includes(invitedFromSearchTerm.toLowerCase())
+                            )
+                            .map((g) => (
+                              <button
+                                key={g._id}
+                                className="cursor-pointer p-3 hover:bg-gray-100 dark:hover:bg-gray-700 text-left w-full text-warm-charcoal dark:text-white text-sm transition-colors duration-150"
+                                onClick={() => {
+                                  setEditData({
+                                    ...editData,
+                                    invitedFrom: g.name,
+                                  });
+                                  setInvitedFromSearchTerm(g.name);
+                                  setShowDropdown(false);
+                                }}
+                              >
+                                {g.name}
+                              </button>
+                            ))}
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Toggle Switches Section */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5 pt-2">
+                      {/* Is Student Toggle */}
+                      <div className="space-y-2">
+                        <div className="flex items-center justify-between">
+                          <label
+                            htmlFor="isStudent"
+                            className="text-sm font-medium text-gray-500 dark:text-gray-400"
+                          >
+                            Student
+                          </label>
+                          <motion.button
+                            onClick={async () => {
+                              if (!editingGuest?._id) return;
+                              const newStudentStatus = !editData.isStudent;
+                              setEditData({
+                                ...editData,
+                                isStudent: newStudentStatus,
+                              });
+                              try {
+                                await updateStudentStatus({
+                                  id: editingGuest._id,
+                                  isStudent: newStudentStatus,
+                                  untilWhen: newStudentStatus
+                                    ? editData.untilWhen ?? null
+                                    : null,
+                                }).unwrap();
+                                refetch();
+                              } catch (error) {
+                                console.error(
+                                  "Failed to update student status:",
+                                  error
+                                );
+                              }
+                            }}
+                            className={`relative w-14 h-7 flex items-center rounded-full p-1 transition-colors duration-300 focus:outline-none ${
+                              editData.isStudent
+                                ? "bg-gradient-to-r from-rich-gold to-accent-amber"
+                                : "bg-gray-300 dark:bg-gray-600"
+                            }`}
+                            whileTap={{ scale: 0.95 }}
+                          >
+                            <motion.span
+                              className="absolute bg-white w-5 h-5 rounded-full shadow-md transform transition-transform duration-300"
+                              animate={{
+                                translateX: editData.isStudent ? 26 : 0,
+                              }}
+                            />
+                          </motion.button>
+                        </div>
+
+                        {editData.isStudent && (
+                          <motion.div
+                            initial={{ opacity: 0, height: 0 }}
+                            animate={{ opacity: 1, height: "auto" }}
+                            exit={{ opacity: 0, height: 0 }}
+                            transition={{ duration: 0.3 }}
+                          >
+                            <label
+                              htmlFor="validUntil"
+                              className="block text-sm font-medium text-gray-500 dark:text-gray-400 mb-1"
+                            >
+                              Valid Until
+                            </label>
+                            <input
+                              id="validUntil"
+                              type="date"
+                              value={
+                                editData.untilWhen
+                                  ? new Date(editData.untilWhen)
+                                      .toISOString()
+                                      .split("T")[0]
+                                  : ""
+                              }
+                              onChange={(e) => {
+                                const parsedDate = new Date(e.target.value);
+                                setEditData({
+                                  ...editData,
+                                  untilWhen: isNaN(parsedDate.getTime())
+                                    ? null
+                                    : parsedDate,
+                                });
+                              }}
+                              className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-rich-gold dark:focus:ring-accent-amber focus:border-rich-gold dark:focus:border-accent-amber text-warm-charcoal dark:text-white transition-all duration-300"
+                            />
+                          </motion.div>
+                        )}
+                      </div>
+
+                      {/* Is Lady Toggle */}
+                      <div className="flex items-center justify-between">
+                        <label
+                          htmlFor="isLady"
+                          className="text-sm font-medium text-gray-500 dark:text-gray-400"
+                        >
+                          Lady
+                        </label>
+                        <motion.button
+                          onClick={async () => {
+                            if (!editingGuest?._id) return;
+                            const newLadyStatus = !editData.isLady;
+                            setEditData({ ...editData, isLady: newLadyStatus });
+                            try {
+                              await updateLadyStatus({
+                                id: editingGuest._id,
+                                isLady: newLadyStatus,
+                              }).unwrap();
+                              refetch();
+                            } catch (error) {
+                              console.error(
+                                "Failed to update lady status:",
+                                error
+                              );
+                            }
+                          }}
+                          className={`relative w-14 h-7 flex items-center rounded-full p-1 transition-colors duration-300 focus:outline-none ${
+                            editData.isLady
+                              ? "bg-gradient-to-r from-rich-gold to-accent-amber"
+                              : "bg-gray-300 dark:bg-gray-600"
+                          }`}
+                          whileTap={{ scale: 0.95 }}
+                        >
+                          <motion.span
+                            className="absolute bg-white w-5 h-5 rounded-full shadow-md transform transition-transform duration-300"
+                            animate={{
+                              translateX: editData.isLady ? 26 : 0,
+                            }}
+                          />
+                        </motion.button>
+                      </div>
+
+                      {/* Free Entry Toggle */}
+                      <div className="flex items-center justify-between col-span-1 md:col-span-2">
+                        <label
+                          htmlFor="freeEntry"
+                          className="text-sm font-medium text-gray-500 dark:text-gray-400"
+                        >
+                          Free Entry
+                        </label>
+                        <motion.button
+                          onClick={async () => {
+                            if (!editingGuest?._id) return;
+                            const newFreeEntryStatus = !editData.freeEntry;
+                            setEditData({
+                              ...editData,
+                              freeEntry: newFreeEntryStatus,
+                            });
+                            try {
+                              await updateGuest({
+                                id: editingGuest._id,
+                                data: { freeEntry: newFreeEntryStatus },
+                              }).unwrap();
+                              refetch();
+                            } catch (error) {
+                              console.error(
+                                "Failed to update free entry status:",
+                                error
+                              );
+                            }
+                          }}
+                          className={`relative w-14 h-7 flex items-center rounded-full p-1 transition-colors duration-300 focus:outline-none ${
+                            editData.freeEntry
+                              ? "bg-gradient-to-r from-rich-gold to-accent-amber"
+                              : "bg-gray-300 dark:bg-gray-600"
+                          }`}
+                          whileTap={{ scale: 0.95 }}
+                        >
+                          <motion.span
+                            className="absolute bg-white w-5 h-5 rounded-full shadow-md transform transition-transform duration-300"
+                            animate={{
+                              translateX: editData.freeEntry ? 26 : 0,
+                            }}
+                          />
+                        </motion.button>
+                      </div>
+                    </div>
+
+                    {/* Action Buttons */}
+                    <div className="flex gap-4 pt-6">
+                      <motion.button
+                        onClick={handleUpdateGuest}
+                        className="flex-1 px-6 py-3 rounded-lg bg-gradient-to-r from-rich-gold to-accent-amber text-deep-navy font-medium shadow-md"
+                        whileHover={{
+                          scale: 1.02,
+                          boxShadow: "0 5px 15px rgba(212, 175, 55, 0.25)",
+                        }}
+                        whileTap={{ scale: 0.98 }}
+                      >
+                        Save Changes
+                      </motion.button>
+
+                      <motion.button
+                        onClick={openDeleteModal}
+                        className="flex-1 px-6 py-3 rounded-lg bg-gradient-to-r from-warm-charcoal to-deep-navy text-soft-cream border border-rich-gold/30 font-medium shadow-md"
+                        whileHover={{
+                          scale: 1.02,
+                          boxShadow: "0 5px 15px rgba(212, 175, 55, 0.1)",
+                        }}
+                        whileTap={{ scale: 0.98 }}
+                        disabled={!guest || guest.name === "Master"}
+                      >
+                        Delete Guest
+                      </motion.button>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+
+              {/* Back Button */}
+              <div className="flex justify-center mt-6 pt-6 border-t border-gray-100 dark:border-gray-700/30">
+                <motion.button
+                  onClick={() => router.push("/guests")}
+                  className="px-6 py-3 rounded-lg bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-500 hover:to-gray-600 text-white font-medium shadow-md"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
                 >
-                  Delete
-                </button>
+                  Back to Guest List
+                </motion.button>
               </div>
             </div>
-          </>
-        )}
+          </div>
+        </motion.section>
+      </div>
 
-        {/* Delete Confirmation Modal */}
+      {/* Delete Confirmation Modal */}
+      <AnimatePresence>
         {showDeleteModal && (
           <Modal
             isOpen={showDeleteModal}
             onClose={closeDeleteModal}
             title="Confirm Deletion"
           >
-            <p className="text-white dark:text-gray-300 mb-6">
-              Are you sure you want to delete this guest?
-            </p>
-            <div className="flex justify-end space-x-4">
-              <button
-                onClick={closeDeleteModal}
-                className="bg-gray-500 text-white px-4 py-2 rounded-sm hover:bg-gray-600 transition duration-300"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleDeleteGuest}
-                className="bg-red-500 text-white px-4 py-2 rounded-sm hover:bg-red-600 transition duration-300"
-              >
-                Delete
-              </button>
+            <div className="space-y-6">
+              <div className="flex items-center justify-center w-16 h-16 mx-auto rounded-full bg-red-100 dark:bg-red-900/30">
+                <svg
+                  className="w-8 h-8 text-red-600 dark:text-red-500"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                  />
+                </svg>
+              </div>
+
+              <div className="text-center">
+                <h3 className="text-lg font-medium text-warm-charcoal dark:text-white mb-2">
+                  Delete Guest
+                </h3>
+                <p className="text-gray-600 dark:text-gray-400">
+                  Are you sure you want to delete this guest? This action cannot
+                  be undone.
+                </p>
+              </div>
+
+              <div className="flex gap-3 pt-3">
+                <motion.button
+                  onClick={closeDeleteModal}
+                  className="flex-1 px-4 py-3 rounded-lg bg-gray-200 dark:bg-gray-700 text-warm-charcoal dark:text-white font-medium"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  Cancel
+                </motion.button>
+                <motion.button
+                  onClick={handleDeleteGuest}
+                  className="flex-1 px-4 py-3 rounded-lg bg-gradient-to-r from-warm-charcoal to-deep-navy text-soft-cream border border-rich-gold/30 font-medium shadow-md"
+                  whileHover={{
+                    scale: 1.02,
+                    boxShadow: "0 5px 15px rgba(212, 175, 55, 0.1)",
+                  }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  Yes, Delete
+                </motion.button>
+              </div>
             </div>
           </Modal>
         )}
+      </AnimatePresence>
 
-        {/* Back to Guest List Button */}
-        <div className="flex justify-center mt-6">
-          <button
-            onClick={() => router.push("/guests")}
-            className="bg-gray-600 hover:bg-gray-300 text-white px-4 py-2 rounded-sm transition-all duration-300 ease-in-out"
-          >
-            Back to Guest List
-          </button>
-        </div>
-      </div>
-
+      {/* Alert Modal */}
       <AnimatePresence>
         {showAlertModal && (
           <Modal
@@ -609,6 +927,13 @@ export default function GuestDetail() {
           </Modal>
         )}
       </AnimatePresence>
-    </div>
+
+      {/* Background Decorative Elements */}
+      <div className="fixed inset-0 pointer-events-none -z-10 overflow-hidden">
+        <div className="absolute top-0 left-[10%] w-64 h-64 bg-rich-gold/5 rounded-full blur-3xl transform -translate-y-1/2"></div>
+        <div className="absolute bottom-0 right-[10%] w-96 h-96 bg-accent-amber/5 rounded-full blur-3xl transform translate-y-1/2"></div>
+        <div className="absolute top-1/3 right-[15%] w-48 h-48 bg-rich-gold/5 rounded-full blur-2xl"></div>
+      </div>
+    </motion.div>
   );
 }

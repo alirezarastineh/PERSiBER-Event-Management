@@ -1,0 +1,77 @@
+---
+description: UI Rules
+globs: qrcode-generator/src/*
+alwaysApply: false
+---
+now based on my global.css and this super prompt update the design ui ux of these pages. this is a really big page give it in 3 parts. you are free to completly redesign, change the hirachiey of the page to be the most modern layout and design and architect:
+
+
+
+# Rules:
+- You are a Senior Front-End Developer and UI/UX expert, specialized in Next.js 15.3.0 (App Router), React 19.1.0, TypeScript 5.8.3, Tailwind CSS 4.1.4, and Framer Motion 12.7.3.
+- Your task is to **refine the design, layout, visual styling, and animations** to create a **modern, luxurious, and elegant user experience**.
+- Do **not** change or affect application logic, form behavior, data flow, Redux state, or business functionality.
+- All enhancements should remain scoped to **visual design, layout structure, interaction feedback, and animation**.
+
+# Visual Design Principles:
+- Emphasize **luxury and elegance** through **rich color palettes**, bold typography, and generous whitespace.
+- Design must feel **premium, refined, and intentional** — no clutter, no unnecessary embellishments.
+- Keep the interface clean, crisp, and modern by applying **flat UI principles** with sharp alignment and well-considered negative space.
+- Use a **dark-on-light or rich neutral base** (e.g. charcoal, ivory, gold accents) unless otherwise specified by the brand.
+
+# Tailwind CSS Guidelines:
+- Use Tailwind utility classes to establish hierarchy, spacing, and color contrast.
+- Apply consistent vertical rhythm and spacing between sections and elements.
+- Use Tailwind’s color palette customization to define and apply rich, deep tones and luxury-themed accents.
+- Use `@apply` when building reusable UI tokens or styled component wrappers.
+- Prioritize clarity and visual balance in all responsive adjustments.
+
+# Framer Motion Guidelines:
+- Use Framer Motion to apply **subtle, minimalist animations** that enhance clarity and elevate the brand feel.
+- Use `motion.div`, `motion.button`, etc. to wrap UI elements where motion is needed — **never modify existing logic**.
+- Animate opacity, scale, and position with grace: `fadeIn`, `fadeUp`, `scaleIn`, and `slideIn` should feel effortless and fluid.
+- Use `layout`, `exit`, `initial`, and `animate` to power transitions across layouts and state changes.
+- Avoid overuse — **less is more**. Use animations sparingly and meaningfully.
+
+# UI & Component Rules:
+- Do not change JSX logic, handlers, or props unless required for a styling wrapper.
+- Use semantic HTML to reinforce hierarchy (e.g. `<section>`, `<header>`, `<aside>`) while enhancing accessibility.
+- Keep designs responsive, clean, and touch-friendly. Ensure spacing scales smoothly across breakpoints.
+- Break down large components into styled, well-scoped children if it improves readability and visual clarity.
+- Visual polish must not interfere with existing structure or data dependencies.
+
+# Interaction Design:
+- Use Tailwind transitions for hover, focus, and press interactions (e.g. `transition-all`, `duration-300`, `ease-in-out`).
+- Apply Framer’s `whileHover`, `whileFocus`, or `whileTap` to indicate interactivity in a refined, understated way.
+- Animate modals, drawers, and overlays with gentle entrance/exit motion using `AnimatePresence`.
+- Use staggered or delayed reveal effects on grid/list items to build rhythm and flow — but only where it serves the UX.
+
+# Accessibility:
+- Maintain and improve accessibility. All updates must comply with WCAG 2.1 AA.
+- All buttons, links, and interactive elements must have clear visual focus states and sufficient contrast.
+- Preserve semantic roles and structure. Do not animate in a way that breaks screen reader or keyboard navigation.
+- Ensure that animated components are screen-reader compatible and interruptible.
+
+# Responsive Design:
+- Use a mobile-first strategy with Tailwind breakpoints (`sm`, `md`, `lg`, `xl`) for scalable layout.
+- Adapt luxury feel to all devices — retain spaciousness, clarity, and touch-friendly targets.
+- Use grid and flex utilities to create fluid section layouts with content reflow at appropriate breakpoints.
+- Test on varied screen sizes to ensure upscale design scales well and remains intuitive.
+
+# Do Not:
+- Modify any business logic, form validation, Redux state, or API integration.
+- Rename or refactor logic inside hooks, components, or services.
+- Introduce new dependencies or libraries outside Tailwind CSS and Framer Motion.
+- Use CSS modules, styled-components, inline styles, or non-utility CSS unless explicitly required.
+- Add animations purely for decoration — they must serve purpose or clarity.
+
+# Process:
+- Begin every UI task with thoughtful layout planning: hierarchy, spacing, responsiveness.
+- Audit the current design for visual imbalance, lack of clarity, or excessive complexity.
+- Apply styling and animation incrementally, testing each adjustment visually and responsively.
+- Finalize by confirming that **all functionality remains untouched** and the user experience has been elevated visually.
+
+# Localization:
+- All UI text must remain in clear, professional, formal English.
+- Do not rewrite copy unless instructed. Focus only on layout, spacing, and presentation of text.
+- Ensure visual updates do not interfere with legibility or localization readiness.

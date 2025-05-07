@@ -661,8 +661,6 @@ export default function Members() {
                       >
                         Attended
                       </th>
-
-                      {/* Only show the following fields for admin or master */}
                       {(userRole === "admin" || userRole === "master") && (
                         <>
                           <th
@@ -691,13 +689,14 @@ export default function Members() {
                           </th>
                         </>
                       )}
-
-                      <th
-                        scope="col"
-                        className="px-6 py-4 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"
-                      >
-                        Actions
-                      </th>
+                      {(userRole === "admin" || userRole === "master") && (
+                        <th
+                          scope="col"
+                          className="px-6 py-4 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"
+                        >
+                          Actions
+                        </th>
+                      )}
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
@@ -726,7 +725,6 @@ export default function Members() {
                               </div>
                             </div>
                           </td>
-
                           <td className="px-6 py-4 whitespace-nowrap text-sm">
                             <motion.button
                               onClick={() =>
@@ -750,8 +748,6 @@ export default function Members() {
                               />
                             </motion.button>
                           </td>
-
-                          {/* Conditionally render additional fields based on userRole */}
                           {(userRole === "admin" || userRole === "master") && (
                             <>
                               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">
@@ -808,7 +804,6 @@ export default function Members() {
                               </td>
                             </>
                           )}
-
                           <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                             {(userRole === "admin" ||
                               userRole === "master") && (

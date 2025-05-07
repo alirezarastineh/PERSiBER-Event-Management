@@ -331,6 +331,8 @@ export class GuestsService {
     ladiesCount?: number;
     drinksCouponsCount?: number;
     freeEntryCount?: number;
+    studentDiscountActive?: boolean;
+    ladyDiscountActive?: boolean;
   }> {
     const totalCount = await this.guestModel.countDocuments().exec();
     const attendedCount = await this.guestModel
@@ -366,9 +368,28 @@ export class GuestsService {
         ladiesCount,
         drinksCouponsCount,
         freeEntryCount,
+        studentDiscountActive: this.studentDiscountActive,
+        ladyDiscountActive: this.ladyDiscountActive,
       };
     }
 
     return { attendedCount, totalCount };
+  }
+
+  async adjustDrinksCoupon(
+    id: string,
+    adjustment: number,
+  ): Promise<GuestDocument> {
+    const guest = await this.guestModel.findById(id).exec();
+    if (!guest) {
+      throw new NotFoundException(`Guest with ID "${id}" not found`);
+    }
+
+    guest.drinksCoupon += adjustment;
+    // Ensure drink coupons don't go below 0
+    guest.drinksCoupon = Math.max(0, guest.drinksCoupon);
+
+    await guest.save();
+    return guest;
   }
 }

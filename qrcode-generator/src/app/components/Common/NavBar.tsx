@@ -24,6 +24,7 @@ export default function NavBar() {
   const handleMembersRedirect = () => router.push("/members");
   const handleBppListRedirect = () => router.push("/bpplist");
   const handleQRRedirect = () => router.push("/admin/qrcode");
+  const handleScannerRedirect = () => router.push("/scanner");
 
   const handleLogout = () => {
     dispatch(logout());
@@ -259,15 +260,13 @@ export default function NavBar() {
                                 strokeLinecap="round"
                                 strokeLinejoin="round"
                                 strokeWidth="2"
-                                d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"
+                                d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"
                               />
                             </svg>
                           }
-                          label="Register"
-                          onClick={() =>
-                            handleMenuItemClick(handleRegisterRedirect)
-                          }
-                          isActive={isActive("/auth/register")}
+                          label="QR Codes"
+                          onClick={() => handleMenuItemClick(handleQRRedirect)}
+                          isActive={isActive("/admin/qrcode")}
                           variants={desktopItemVariants}
                         />
 
@@ -283,13 +282,15 @@ export default function NavBar() {
                                 strokeLinecap="round"
                                 strokeLinejoin="round"
                                 strokeWidth="2"
-                                d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"
+                                d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"
                               />
                             </svg>
                           }
-                          label="QR Codes"
-                          onClick={() => handleMenuItemClick(handleQRRedirect)}
-                          isActive={isActive("/admin/qrcode")}
+                          label="Register"
+                          onClick={() =>
+                            handleMenuItemClick(handleRegisterRedirect)
+                          }
+                          isActive={isActive("/auth/register")}
                           variants={desktopItemVariants}
                         />
 
@@ -322,6 +323,34 @@ export default function NavBar() {
                     )}
 
                     {/* Common navigation items */}
+                    <DesktopNavItem
+                      icon={
+                        <svg
+                          className="size-4.5"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"
+                          />
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"
+                          />
+                        </svg>
+                      }
+                      label="Scanner"
+                      onClick={() => handleMenuItemClick(handleScannerRedirect)}
+                      isActive={isActive("/scanner")}
+                      variants={desktopItemVariants}
+                    />
+
                     <DesktopNavItem
                       icon={
                         <svg
@@ -640,9 +669,31 @@ export default function NavBar() {
                       </div>
                     </motion.div>
 
-                    {/* Admin/Master only menu items */}
+                    {/* Admin-only menu items */}
                     {(user?.role === "admin" || user?.role === "master") && (
                       <>
+                        <MobileNavItem
+                          icon={
+                            <svg
+                              className="size-5"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="2"
+                                d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"
+                              />
+                            </svg>
+                          }
+                          label="QR Codes"
+                          onClick={() => handleMenuItemClick(handleQRRedirect)}
+                          isActive={isActive("/admin/qrcode")}
+                          variants={itemVariants}
+                        />
+
                         <MobileNavItem
                           icon={
                             <svg
@@ -659,7 +710,7 @@ export default function NavBar() {
                               />
                             </svg>
                           }
-                          label="Register New User"
+                          label="Register"
                           onClick={() =>
                             handleMenuItemClick(handleRegisterRedirect)
                           }
@@ -679,48 +730,49 @@ export default function NavBar() {
                                 strokeLinecap="round"
                                 strokeLinejoin="round"
                                 strokeWidth="2"
-                                d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"
-                              />
-                            </svg>
-                          }
-                          label="QR Code Management"
-                          onClick={() => handleMenuItemClick(handleQRRedirect)}
-                          isActive={isActive("/admin/qrcode")}
-                          variants={itemVariants}
-                        />
-
-                        <MobileNavItem
-                          icon={
-                            <svg
-                              className="size-5"
-                              fill="none"
-                              stroke="currentColor"
-                              viewBox="0 0 24 24"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth="2"
                                 d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
                               />
                             </svg>
                           }
-                          label="User Management"
+                          label="Users"
                           onClick={() =>
                             handleMenuItemClick(handleUsersRedirect)
                           }
                           isActive={isActive("/admin/users")}
                           variants={itemVariants}
                         />
-
-                        <motion.div
-                          className="w-full h-px my-3 bg-gradient-to-r from-transparent via-amber-500/10 to-transparent"
-                          variants={itemVariants}
-                        />
                       </>
                     )}
 
                     {/* Common menu items */}
+                    <MobileNavItem
+                      icon={
+                        <svg
+                          className="size-5"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"
+                          />
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"
+                          />
+                        </svg>
+                      }
+                      label="Scanner"
+                      onClick={() => handleMenuItemClick(handleScannerRedirect)}
+                      isActive={isActive("/scanner")}
+                      variants={itemVariants}
+                    />
+
                     <MobileNavItem
                       icon={
                         <svg

@@ -1,0 +1,98 @@
+---
+description: Server Rules
+globs: qrcode-generator-server/event-managment-server/src*
+alwaysApply: false
+---
+# Rules:
+- You are a Senior Backend Engineer and API Architect, specialized in:
+  - NestJS 11.0.19
+  - TypeScript 5.8.3
+  - Mongoose 8.13.2
+  - Passport JWT (with `@nestjs/passport` 11.0.5 and `@nestjs/jwt` 11.0.0)
+  - RxJS 7.8.2
+  - class-validator 0.14.1
+- Follow the user's instructions precisely. Deliver secure, clean, modular, well-tested, and production-ready code.
+- Prioritize performance, readability, consistency, security, and best practices. Avoid complex or abstract patterns that hinder maintainability.
+- Do not duplicate logic. Reuse via shared modules, providers, guards, pipes, interceptors, decorators, or utility services.
+- Use `async/await` consistently. All asynchronous logic must be handled with proper `try/catch` or global exception handling.
+
+# Architecture:
+- Organize the `src/` folder by feature modules (e.g. `auth`, `users`, `events`, `tickets`), each with its own `controller`, `service`, `dto`, `schema`, and optional `guard`, `interceptor`, or `pipe`.
+- Each module must be registered in its respective `@Module()` and follow the single responsibility principle.
+- Controllers must only handle routing, validation, and formatting. All business logic belongs in services.
+- Use Dependency Injection via `@Injectable()` for all classes. Never instantiate services manually.
+- Group common functionality under `/common` (e.g. `decorators`, `interceptors`, `filters`, `guards`, `constants`, `pipes`).
+- Shared utilities and helpers should go in `/utils` or `/lib`.
+
+# Configuration:
+- Use `@nestjs/config` v4.0.2 to manage environment variables.
+- Load `.env` files securely and define a configuration schema using `Joi` for validation.
+- Access all environment variables through `ConfigService`. Do not hardcode sensitive values.
+
+# Authentication and Authorization:
+- Use `@nestjs/jwt` for stateless token-based authentication.
+- Integrate `Passport` with a custom `JwtStrategy` and `AuthGuard`.
+- Protect sensitive routes using guards (`@UseGuards`) and role-based access control where required.
+- Hash and compare passwords using `bcrypt`. Never store plain text credentials.
+- Use `cookie-parser` to support secure cookies (`HttpOnly`, `Secure`, `SameSite=Strict`) when needed.
+
+# Database:
+- Use `@nestjs/mongoose` for MongoDB integration with schema-based modeling.
+- Define clear Mongoose schemas with types, indexes, and virtuals as needed.
+- Prefer `.lean()` for read-only queries to improve performance.
+- Avoid putting logic inside schema hooks; use services instead.
+- Abstract all database access within services. Controllers must remain thin.
+
+# DTOs and Validation:
+- Validate all user inputs using `class-validator` and `class-transformer`.
+- Create separate DTOs for create, update, and query operations.
+- Apply validation pipes globally using `app.useGlobalPipes()` or locally with `@UsePipes`.
+- Ensure all DTOs are strictly typed and decorated appropriately for automatic validation and transformation.
+
+# API Design:
+- Use RESTful, versioned route structures such as `/api/v1/auth`, `/api/v1/users`, `/api/v1/events/:id`.
+- All API responses should follow a unified structure containing `success`, `message`, `data`, and `error` keys.
+- Implement centralized exception handling using `HttpException` or custom `ExceptionFilter`.
+- Always use the correct HTTP verbs (`GET`, `POST`, `PATCH`, `DELETE`) and status codes (e.g. 200, 201, 400, 401, 403, 404, 500).
+
+# Error Handling:
+- Implement a global exception filter using `@Catch()` to handle all uncaught exceptions.
+- Return clean, consistent error responses. Never expose stack traces or sensitive internals in production.
+- Use a centralized logger to capture critical failures and integration errors.
+
+# Testing:
+- Use `jest` and `ts-jest` for unit and end-to-end testing.
+- Place all unit tests in `.spec.ts` files located near the files they test.
+- Mock external systems (e.g. database, JWT, mail services) in unit tests.
+- Ensure high coverage of critical business logic, input validation, and security features.
+
+# Development Workflow:
+- Use `start:dev` with file watching during development.
+- Enforce coding standards using ESLint (with `@typescript-eslint` and `eslint-config-prettier`) and Prettier.
+- Define and resolve module paths via `tsconfig.json` and `tsconfig-paths`.
+- Organize commits clearly and keep pull requests focused and minimal.
+
+# Performance:
+- Use `lean()` queries and projections to optimize database reads.
+- Avoid large populations or deeply nested documents when possible.
+- Implement caching and batching strategies for frequently accessed data.
+- Use pagination and filtering for listing endpoints.
+
+# Security:
+- Sanitize and validate all external input using DTOs and validation pipes.
+- Enforce HTTPS in production environments.
+- Sign and verify all JWTs securely. Avoid long-lived tokens.
+- Set CORS policies explicitly. Never use wildcard origins in production.
+- Regularly check for vulnerabilities and keep dependencies up to date.
+
+# Deployment:
+- Use `start:prod` to launch the compiled app from `dist/main.js`.
+- Ensure `.env.production` is loaded using `ConfigService`.
+- Add health checks, structured logging, and metrics for monitoring.
+- Containerize with Docker if necessary and automate deployment with CI/CD pipelines.
+
+# Localization:
+- All system messages (errors, validation feedback, logs, API responses, etc.) must be written in clear, professional English.
+- Avoid informal tone, idioms, slang, abbreviations, or regional language.
+- Use consistent and precise wording suitable for a business or enterprise environment.
+- Prepare static messages for internationalization (i18n) if multi-language support is planned.ig for full enforcement of the rules.

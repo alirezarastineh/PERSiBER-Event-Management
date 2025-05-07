@@ -99,6 +99,16 @@ export class GuestsController {
     return this.guestsService.updateLadyStatus(guestId, isLady);
   }
 
+  @Patch(':id/drinks-coupon')
+  @Roles('admin', 'master')
+  @UseGuards(RolesGuard)
+  async adjustDrinksCoupon(
+    @Param('id') guestId: string,
+    @Body('adjustment') adjustment: number,
+  ) {
+    return this.guestsService.adjustDrinksCoupon(guestId, adjustment);
+  }
+
   @Patch('discounts/toggle-student')
   @Roles('admin', 'master')
   @UseGuards(RolesGuard)

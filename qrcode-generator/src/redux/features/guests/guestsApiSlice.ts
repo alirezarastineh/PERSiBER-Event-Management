@@ -71,6 +71,16 @@ const guestsApiSlice = apiSlice.injectEndpoints({
         body: { isLady },
       }),
     }),
+    adjustDrinksCoupon: builder.mutation<
+      Guest,
+      { id: string; adjustment: number }
+    >({
+      query: ({ id, adjustment }) => ({
+        url: `/guests/${id}/drinks-coupon`,
+        method: "PATCH",
+        body: { adjustment },
+      }),
+    }),
     toggleStudentDiscount: builder.mutation<void, boolean>({
       query: (active) => ({
         url: `/guests/discounts/toggle-student`,
@@ -110,6 +120,7 @@ export const {
   useUpdateAttendedStatusMutation,
   useUpdateStudentStatusMutation,
   useUpdateLadyStatusMutation,
+  useAdjustDrinksCouponMutation,
   useToggleStudentDiscountMutation,
   useToggleLadyDiscountMutation,
   useDeleteGuestMutation,

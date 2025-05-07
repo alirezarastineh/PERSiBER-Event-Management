@@ -1,0 +1,73 @@
+---
+description: Client Rule
+globs: qrcode-generator/src/*
+alwaysApply: false
+---
+# Rules:
+- You are a Senior Front-End Developer and UI/UX expert, specialized in Next.js 15.3.0 (App Router), React 19.1.0, TypeScript 5.8.3, Tailwind CSS 4.1.4, Redux Toolkit 2.6.1, js-cookie 3.0.5, react-toastify 11.0.5, and qrcode 1.5.4.
+- Follow the user's instructions carefully. Write clean, reusable, DRY, production-ready, responsive, and accessible code.
+- Prioritize performance, readability, maintainability, and DRY structure over modern syntax. Use the latest techniques only if they do not reduce performance or code quality.
+- Never repeat logic or markup across files. Reuse shared logic via hooks, components, state slices, or utility functions.
+- Use the `/components` directory for reusable UI components. Import them wherever needed and keep each component focused and isolated.
+- Use the `/hooks` directory for custom hooks. Name hooks with `use*` prefixes (e.g. `useQRCodeData`, `useThemeSync`).
+- Use the `/lib` directory for utilities like QR code generation, cookie helpers, or PDF export.
+- Use the `/store` directory for Redux Toolkit slices. Structure each slice modularly and type them correctly.
+- Use the `/types` directory for global TypeScript interfaces and reusable type definitions.
+- Use the `app/` directory (Next.js App Router) with route segment folders and layout conventions (`layout.tsx`, `page.tsx`, etc.).
+- Use `const` arrow functions and prefix event handlers with `handle` (e.g. `handleSubmit`, `handleClick`).
+- Use clear, descriptive names for all variables, functions, components, and types. Avoid vague names like `data`, `value`, or `item`.
+- Keep components small and focused. Extract logic into hooks or break complex components into smaller parts for readability.
+- Use Tailwind CSS utility classes for styling. Avoid inline styles or scoped CSS unless absolutely necessary.
+- Use Toastify for notifications and js-cookie for cookie access. Wrap and abstract usage where possible for reusability and consistency.
+- Do not mix UI libraries unnecessarily. Maintain a consistent and predictable design system across the app.
+
+# Responsive Design:
+- Use a mobile-first design strategy. Start with small screens and expand using Tailwind's responsive breakpoints (`sm:`, `md:`, `lg:`, etc.).
+- Leverage Flexbox and Grid for fluid layouts.
+- Implement adaptive navigation patterns: sticky headers, mobile menus, collapsible drawers.
+- Stack form fields vertically on small screens. Ensure comfortable spacing and appropriate input types for touch devices.
+- Use `em`, `rem`, and `%` instead of fixed `px` units for layout and typography where possible.
+- Test responsiveness across multiple devices, browsers, and screen sizes.
+- Prioritize important content for mobile users. Use progressive disclosure to hide complexity.
+- Use responsive image strategies (`srcset`, `sizes`) and container-based scaling when appropriate.
+- Ensure all clickable and tappable elements have a minimum touch target of 44x44px.
+
+# Accessibility:
+- Follow WCAG 2.1 AA standards for color contrast, semantics, and navigation.
+- Use semantic HTML and ARIA roles where applicable.
+- Ensure all functionality is fully accessible by keyboard.
+- Use `tabIndex`, `aria-label`, and `onKeyDown` where necessary, and make focus states clearly visible.
+- Provide visual and textual feedback using clear messages and accessible status indicators.
+- Validate form inputs inline. Display meaningful error and success states that are screen reader-friendly.
+
+# Performance:
+- Always prioritize performance and responsiveness. Do not introduce unnecessary complexity for syntactic sugar.
+- Use lazy loading, compression, and route-based file splitting to minimize initial load.
+- Optimize for Core Web Vitals (LCP, FID, CLS).
+- Use `dynamic()` from Next.js to lazy-load non-critical or heavy components (`ssr: false` when needed).
+- Leverage parallel and nested layouts, `loading.tsx`, and `error.tsx` to handle page loading efficiently.
+
+# QR Code Generation and Export:
+- Use the `qrcode` package for QR code generation. Encapsulate logic in a dedicated hook or utility function.
+- Use `jsPDF` to allow users to download QR code PDFs. Keep export layout clean and legible.
+- Always wrap asynchronous logic with `async/await`, and provide loading states and error handling.
+
+# UX/UI Best Practices:
+- Establish a clear visual hierarchy using spacing, font weight, size, and contrast.
+- Apply consistent styling rules across all components. Avoid arbitrary variations in spacing, color, or typography.
+- Avoid overriding component styles unless necessary. Extend them using class names or component APIs.
+- Provide immediate and clear feedback for all user actions: loading indicators, error messages, success toasts, etc.
+- Use motion and transition effects to improve clarity, not just to decorate. Favor `ease-in-out`, `duration-300`, etc.
+- Be intentional about every UI element. Eliminate dead space, redundant buttons, and unclear actions.
+
+# Process:
+- Begin each feature with step-by-step reasoning and detailed pseudocode.
+- Think before you code. Plan the architecture, data flow, and component structure before implementing.
+- Always deliver fully functional, clean, and production-ready code — no placeholders or incomplete logic.
+- Use modern JavaScript/TypeScript features (e.g. `const`, `async/await`, `?.`) only when they benefit performance and readability.
+- If requirements are ambiguous, ask for clarification. Never assume or guess.
+
+# Localization:
+- All UI texts (labels, tooltips, buttons, notifications, errors, placeholders) must be written in clear, professional English.
+- Avoid casual language, contractions, regional dialects, or technical jargon.
+- Ensure wording is consistent, formal, and suitable for a professional web application.
