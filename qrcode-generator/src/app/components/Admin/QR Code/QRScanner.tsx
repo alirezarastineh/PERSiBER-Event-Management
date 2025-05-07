@@ -53,6 +53,22 @@ const QRScanner = () => {
   const [alertTitle, setAlertTitle] = useState("");
   const [alertMessage, setAlertMessage] = useState("");
 
+  // Function to check camera permissions
+  const checkCameraPermission = async () => {
+    try {
+      console.log("Checking camera permissions");
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      console.log("Camera permission granted");
+
+      // Stop all tracks to release the camera
+      stream.getTracks().forEach((track) => track.stop());
+      return true;
+    } catch (error) {
+      console.error("Camera permission denied:", error);
+      return false;
+    }
+  };
+
   // Show custom alert
   const showCustomAlert = (
     title: string,
@@ -83,17 +99,28 @@ const QRScanner = () => {
   useEffect(() => {
     const loadScript = async () => {
       try {
+        // Check if library is already available globally
+        if ((window as any).Html5QrcodeScanner) {
+          console.log("Html5QrcodeScanner already loaded");
+          setScriptLoaded(true);
+          setIsLoading(false);
+          return;
+        }
+
+        // Check if script tag already exists
         if (!document.querySelector('script[src*="html5-qrcode.min.js"]')) {
+          console.log("Loading Html5QrcodeScanner script");
           const script = document.createElement("script");
           script.src =
             "https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js";
           script.async = true;
           script.onload = () => {
+            console.log("Html5QrcodeScanner script loaded successfully");
             setScriptLoaded(true);
             setIsLoading(false);
           };
-          script.onerror = () => {
-            console.error("Failed to load html5-qrcode script");
+          script.onerror = (error) => {
+            console.error("Failed to load html5-qrcode script:", error);
             setIsScannerSupported(false);
             setIsLoading(false);
             showCustomAlert(
@@ -104,6 +131,7 @@ const QRScanner = () => {
           };
           document.body.appendChild(script);
         } else {
+          console.log("Html5QrcodeScanner script tag already exists");
           setScriptLoaded(true);
           setIsLoading(false);
         }
@@ -128,51 +156,74 @@ const QRScanner = () => {
 
   // Initialize scanner when script is loaded
   useEffect(() => {
-    if (!scriptLoaded || !isScannerSupported) return;
+    if (!scriptLoaded) return;
 
-    try {
-      // Access the global Html5QrcodeScanner function
-      const Html5QrcodeScanner = (window as any)
-        .Html5QrcodeScanner as Html5QrcodeScanner;
+    const initializeScanner = async () => {
+      try {
+        // Check if Html5QrcodeScanner is available in the window object
+        if (!(window as any).Html5QrcodeScanner) {
+          console.error("Html5QrcodeScanner not found in window object");
+          setIsScannerSupported(false);
+          showCustomAlert(
+            "Browser Not Supported",
+            "Your browser doesn't support the QR code scanner.",
+            "error"
+          );
+          return;
+        }
 
-      if (!Html5QrcodeScanner) {
+        // Check camera permissions
+        if (!(await checkCameraPermission())) {
+          console.error("Camera permission denied");
+          setIsScannerSupported(false);
+          showCustomAlert(
+            "Camera Access Denied",
+            "Please allow camera access to use the QR scanner. You may need to reset permissions in your browser settings.",
+            "error"
+          );
+          return;
+        }
+
+        const config: Html5QrcodeScannerConfig = {
+          fps: 10,
+          qrbox: { width: 250, height: 250 },
+          rememberLastUsedCamera: true,
+          showTorchButtonIfSupported: true,
+          html5qrcodeScannerStrings: {
+            scanButtonStopScanningText: "Stop Scanning",
+            textIfCameraScanSelected: "Select Camera",
+          },
+        };
+
+        console.log("Creating HTML5QrcodeScanner instance");
+        // Use the proper new constructor
+        scannerRef.current = new (window as any).Html5QrcodeScanner(
+          "qr-reader",
+          config,
+          false
+        );
+        console.log("HTML5QrcodeScanner instance created successfully");
+
+        setIsScanning(true);
+      } catch (error) {
+        console.error("Error initializing scanner:", error);
         setIsScannerSupported(false);
         showCustomAlert(
-          "Browser Not Supported",
-          "Your browser doesn't support the QR code scanner.",
+          "Scanner Error",
+          "Could not initialize the QR scanner. Your device may not be compatible.",
           "error"
         );
-        return;
       }
+    };
 
-      const config: Html5QrcodeScannerConfig = {
-        fps: 10,
-        qrbox: { width: 250, height: 250 },
-        rememberLastUsedCamera: true,
-        showTorchButtonIfSupported: true,
-        html5qrcodeScannerStrings: {
-          scanButtonStopScanningText: "Stop Scanning",
-          textIfCameraScanSelected: "Select Camera",
-        },
-      };
-
-      scannerRef.current = Html5QrcodeScanner("qr-reader", config, false);
-
-      setIsScanning(true);
-    } catch (error) {
-      console.error("Error initializing scanner:", error);
-      setIsScannerSupported(false);
-      showCustomAlert(
-        "Scanner Error",
-        "Could not initialize the QR scanner. Your device may not be compatible.",
-        "error"
-      );
-    }
-  }, [scriptLoaded, isScannerSupported]);
+    initializeScanner();
+  }, [scriptLoaded]);
 
   // Add custom styling for the scanner
   useEffect(() => {
     if (!scriptLoaded || !isScannerSupported) return;
+
+    console.log("Applying custom styles to scanner UI");
 
     // Style customization for the scanner UI
     const styleStopButton = (button: HTMLButtonElement) => {
@@ -352,7 +403,15 @@ const QRScanner = () => {
 
   // Start scanning when scanner is initialized
   useEffect(() => {
-    if (!isScanning || !scannerRef.current) return;
+    if (!isScanning || !scannerRef.current) {
+      console.log("Not scanning or scanner ref not initialized", {
+        isScanning,
+        hasRef: !!scannerRef.current,
+      });
+      return;
+    }
+
+    console.log("Setting up scan handlers for QR scanner");
 
     const handleScanSuccess = async (
       decodedText: string,
