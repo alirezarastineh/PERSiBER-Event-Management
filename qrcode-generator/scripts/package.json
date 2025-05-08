@@ -1,0 +1,7 @@
+{
+  "name": "qrcode-generator-scripts",
+  "version": "1.0.0",
+  "description": "Scripts for qrcode-generator project",
+  "type": "module",
+  "private": true
+} 

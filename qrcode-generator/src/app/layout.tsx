@@ -1,6 +1,5 @@
 "use client";
 
-import type { Metadata } from "next";
 import "./globals.css";
 import { ReactNode } from "react";
 import CustomProvider from "@/redux/provider";
@@ -23,8 +22,12 @@ export default function RootLayout({
       <head>
         <title>{metadataConfig.title}</title>
         <meta name="description" content={metadataConfig.description} />
-        <link rel="icon" href="/icon" type="image/png" />
-        <link rel="icon" href="/icon" type="image/svg+xml" />
+        <link rel="icon" href="/icon" type="image/x-icon" />
+        <link rel="shortcut icon" href="/icon" type="image/x-icon" />
+        <link rel="apple-touch-icon" href="/icon" />
+        <link rel="apple-touch-icon" sizes="152x152" href="/icon" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/icon" />
+        <link rel="apple-touch-icon" sizes="167x167" href="/icon" />
       </head>
       <body className="flex flex-col">
         <CustomProvider>
