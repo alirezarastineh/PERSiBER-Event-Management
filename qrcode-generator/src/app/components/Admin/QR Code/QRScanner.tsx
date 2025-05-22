@@ -2,11 +2,13 @@
 
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useRouter } from "next/navigation";
 import Modal from "../../Common/Modal";
 import { AlertType } from "@/types/types";
 import Spinner from "../../Common/Spinner";
-import { useUpdateAttendedStatusMutation } from "@/redux/features/guests/guestsApiSlice";
+import {
+  useGetGuestByIdQuery,
+  useUpdateAttendedStatusMutation,
+} from "@/redux/features/guests/guestsApiSlice";
 
 // Types for the Html5QrcodeScanner which we'll load dynamically
 type Html5QrcodeScannerConfig = {
@@ -39,13 +41,25 @@ type Html5QrcodeScanner = (
 ) => Html5QrcodeScannerType;
 
 const QRScanner = () => {
-  const router = useRouter();
   const [isScanning, setIsScanning] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [isScannerSupported, setIsScannerSupported] = useState(true);
   const [scriptLoaded, setScriptLoaded] = useState(false);
   const scannerRef = useRef<Html5QrcodeScannerType | null>(null);
   const [updateAttendedStatus] = useUpdateAttendedStatusMutation();
+
+  // Track last scanned guest ID
+  const [lastScannedGuestId, setLastScannedGuestId] = useState<string | null>(
+    null
+  );
+
+  // Get guest details if we have a lastScannedGuestId
+  const { data: scannedGuest } = useGetGuestByIdQuery(
+    lastScannedGuestId ?? "",
+    {
+      skip: !lastScannedGuestId,
+    }
+  );
 
   // Alert state
   const [showAlertModal, setShowAlertModal] = useState(false);
@@ -435,40 +449,29 @@ const QRScanner = () => {
         // Use the decoded text as is
       }
 
-      // Stop scanning after successful scan
-      if (scannerRef.current) {
-        try {
-          await scannerRef.current.clear();
+      try {
+        // Update attendance status to "Yes"
+        const updatedGuest = await updateAttendedStatus({
+          id: guestId,
+          attended: "Yes",
+        }).unwrap();
 
-          // Update attendance status to "Yes"
-          await updateAttendedStatus({
-            id: guestId,
-            attended: "Yes",
-          }).unwrap();
+        // Set the last scanned guest ID to fetch details
+        setLastScannedGuestId(guestId);
 
-          showCustomAlert(
-            "QR Code Scanned",
-            "Successfully scanned the QR code. Guest marked as attended. Redirecting...",
-            "success"
-          );
-
-          // Redirect to the guest page after a short delay
-          setTimeout(() => {
-            router.push(`/guests/${guestId}`);
-          }, 1500);
-        } catch (error) {
-          console.error("Error processing scan:", error);
-          showCustomAlert(
-            "Error",
-            "QR code scanned, but there was an error updating attendance status.",
-            "error"
-          );
-
-          // Still redirect to guest page even if attendance update fails
-          setTimeout(() => {
-            router.push(`/guests/${guestId}`);
-          }, 1500);
-        }
+        // Show success modal with guest's name
+        showCustomAlert(
+          "QR Code Scanned",
+          `Guest "${updatedGuest.name}" has been marked as attended.`,
+          "success"
+        );
+      } catch (error) {
+        console.error("Error processing scan:", error);
+        showCustomAlert(
+          "Error",
+          "QR code scanned, but there was an error updating attendance status.",
+          "error"
+        );
       }
     };
 
@@ -479,7 +482,19 @@ const QRScanner = () => {
     };
 
     scannerRef.current.render(handleScanSuccess, handleScanFailure);
-  }, [isScanning, router, updateAttendedStatus]);
+  }, [isScanning, updateAttendedStatus]);
+
+  // Handle alert modal close
+  const handleAlertClose = () => {
+    setShowAlertModal(false);
+  };
+
+  // Get info for guest card display
+  const getAttendedStatusBadgeColor = (status: string) => {
+    return status === "Yes"
+      ? "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400"
+      : "bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-400";
+  };
 
   // Animation variants from Guests.tsx
   const containerVariants = {
@@ -729,7 +744,7 @@ const QRScanner = () => {
         {showAlertModal && (
           <Modal
             isOpen={showAlertModal}
-            onClose={() => setShowAlertModal(false)}
+            onClose={handleAlertClose}
             title={alertTitle}
           >
             <div className="space-y-6">
@@ -810,9 +825,74 @@ const QRScanner = () => {
                 </p>
               </div>
 
+              {/* Guest Information Card (only show for success scans) */}
+              {alertType === "success" && scannedGuest && (
+                <div className="mt-4 p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg border border-gray-200 dark:border-gray-700/50">
+                  <h4 className="font-medium text-center mb-3 text-warm-charcoal dark:text-white">
+                    Guest Details
+                  </h4>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex justify-between">
+                      <span className="text-gray-600 dark:text-gray-400">
+                        Name:
+                      </span>
+                      <span className="font-medium text-warm-charcoal dark:text-white">
+                        {scannedGuest.name}
+                      </span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600 dark:text-gray-400">
+                        Status:
+                      </span>
+                      <span
+                        className={`px-2 py-0.5 rounded-full text-xs font-medium ${getAttendedStatusBadgeColor(
+                          scannedGuest.attended
+                        )}`}
+                      >
+                        {scannedGuest.attended}
+                      </span>
+                    </div>
+                    {scannedGuest.invitedFrom && (
+                      <div className="flex justify-between">
+                        <span className="text-gray-600 dark:text-gray-400">
+                          Invited By:
+                        </span>
+                        <span className="font-medium text-warm-charcoal dark:text-white">
+                          {scannedGuest.invitedFrom}
+                        </span>
+                      </div>
+                    )}
+                    <div className="flex justify-between">
+                      <span className="text-gray-600 dark:text-gray-400">
+                        Drinks Coupon:
+                      </span>
+                      <span className="font-medium text-warm-charcoal dark:text-white">
+                        {scannedGuest.drinksCoupon || 0}
+                      </span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600 dark:text-gray-400">
+                        Free Entry:
+                      </span>
+                      <span className="font-medium text-warm-charcoal dark:text-white">
+                        {scannedGuest.freeEntry ? "Yes" : "No"}
+                      </span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600 dark:text-gray-400">
+                        Student:
+                      </span>
+                      <span className="font-medium text-warm-charcoal dark:text-white">
+                        {scannedGuest.isStudent ? "Yes" : "No"}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              )}
+
               <div className="flex gap-3 pt-3 justify-center">
                 <motion.button
-                  onClick={() => setShowAlertModal(false)}
+                  onClick={handleAlertClose}
                   className="px-6 py-3 rounded-lg bg-gradient-to-r from-rich-gold to-accent-amber text-deep-navy font-medium shadow-md min-w-[120px]"
                   whileHover={{
                     scale: 1.02,
