@@ -46,7 +46,12 @@ export class MembersService {
       throw new BadRequestException('A member cannot invite themselves.');
     }
 
-    const createdMember = new this.memberModel(createMemberDto);
+    const memberData = {
+      ...createMemberDto,
+      attendedAt: createMemberDto.attended === 'Yes' ? new Date() : null,
+    };
+
+    const createdMember = new this.memberModel(memberData);
     const member = await createdMember.save();
 
     if (createMemberDto.invitedFrom) {
@@ -108,6 +113,12 @@ export class MembersService {
     }
 
     Object.assign(member, updateMemberDto);
+
+    if (updateMemberDto.attended !== undefined) {
+      member.attendedAt =
+        updateMemberDto.attended === 'Yes' ? new Date() : null;
+    }
+
     return member.save();
   }
 
@@ -116,7 +127,19 @@ export class MembersService {
     if (!member) {
       throw new NotFoundException(`Member with ID "${id}" not found`);
     }
+
+    if (member.attended === 'Yes' && attended === 'Yes') {
+      throw new BadRequestException('Member is already attended');
+    }
+
     member.attended = attended;
+
+    if (attended === 'Yes') {
+      member.attendedAt = new Date();
+    } else {
+      member.attendedAt = null;
+    }
+
     await member.save();
 
     await this.getAttendanceStatistics();

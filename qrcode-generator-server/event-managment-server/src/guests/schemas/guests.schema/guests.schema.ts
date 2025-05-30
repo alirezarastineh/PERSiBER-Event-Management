@@ -8,6 +8,7 @@ export interface GuestDocument extends Document<unknown, {}, Guest> {
   freeEntry: boolean;
   drinksCoupon: number;
   attended: string;
+  attendedAt: Date | null;
   invitedFrom: string;
   isStudent: boolean;
   isLady: boolean;
@@ -31,6 +32,9 @@ export class Guest {
 
   @Prop({ default: 'Still Not', enum: ['Still Not', 'Yes'] })
   attended: string;
+
+  @Prop({ type: Date, default: null })
+  attendedAt: Date | null;
 
   @Prop({ default: '' })
   invitedFrom: string;

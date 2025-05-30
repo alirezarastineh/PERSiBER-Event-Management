@@ -46,7 +46,12 @@ export class BpplistService {
       throw new BadRequestException('A member cannot invite themselves.');
     }
 
-    const createdBpplist = new this.bpplistModel(createBpplistDto);
+    const bpplistData = {
+      ...createBpplistDto,
+      attendedAt: createBpplistDto.attended === 'Yes' ? new Date() : null,
+    };
+
+    const createdBpplist = new this.bpplistModel(bpplistData);
     const bpplistItem = await createdBpplist.save();
 
     if (createBpplistDto.invitedFrom) {
@@ -111,6 +116,12 @@ export class BpplistService {
     }
 
     Object.assign(bpplistItem, updateBpplistDto);
+
+    if (updateBpplistDto.attended !== undefined) {
+      bpplistItem.attendedAt =
+        updateBpplistDto.attended === 'Yes' ? new Date() : null;
+    }
+
     return bpplistItem.save();
   }
 
@@ -119,7 +130,19 @@ export class BpplistService {
     if (!bpplistItem) {
       throw new NotFoundException(`BBP list item with ID "${id}" not found`);
     }
+
+    if (bpplistItem.attended === 'Yes' && attended === 'Yes') {
+      throw new BadRequestException('BBP list item is already attended');
+    }
+
     bpplistItem.attended = attended;
+
+    if (attended === 'Yes') {
+      bpplistItem.attendedAt = new Date();
+    } else {
+      bpplistItem.attendedAt = null;
+    }
+
     await bpplistItem.save();
 
     await this.getAttendanceStatistics();

@@ -15,6 +15,9 @@ export class CreateMemberDto {
   readonly attended?: string;
 
   @IsOptional()
+  readonly attendedAt?: Date | null;
+
+  @IsOptional()
   @IsString()
   @IsIn(['Kourosh', 'Sobhan', 'Mutual'], {
     message: 'Organizer must be either "Kourosh", "Sobhan", or "Mutual".',

@@ -10,6 +10,9 @@ export class Member {
   @Prop({ default: 'No', enum: ['No', 'Yes'] })
   attended: string;
 
+  @Prop({ type: Date, default: null })
+  attendedAt: Date | null;
+
   @Prop({
     default: '',
     enum: ['Kourosh', 'Sobhan', 'Mutual'],

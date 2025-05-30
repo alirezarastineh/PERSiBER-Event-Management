@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Guest, GuestDocument } from './schemas/guests.schema/guests.schema';
 import { Document, Model } from 'mongoose';
@@ -41,10 +45,13 @@ export class GuestsService {
       createGuestDto.attended = 'Yes';
     }
 
-    const createdGuest = new this.guestModel({
+    const guestData = {
       ...createGuestDto,
       addedBy: userName,
-    });
+      attendedAt: createGuestDto.attended === 'Yes' ? new Date() : null,
+    };
+
+    const createdGuest = new this.guestModel(guestData);
 
     return createdGuest.save();
   }
@@ -93,35 +100,15 @@ export class GuestsService {
 
     const previousInvitedFrom = guest.invitedFrom;
 
-    if (
-      updateGuestDto.invitedFrom &&
-      updateGuestDto.invitedFrom === guest.name
-    ) {
-      throw new Error('A guest cannot invite themselves.');
-    }
-
-    if (updateGuestDto.invitedFrom) {
-      const inviterExists = await this.guestModel
-        .findOne({ name: updateGuestDto.invitedFrom })
-        .exec();
-      if (!inviterExists) {
-        throw new Error(
-          `Inviter "${updateGuestDto.invitedFrom}" does not exist in the guest list.`,
-        );
-      }
-    }
-
-    if (updateGuestDto.invitedFrom !== guest.invitedFrom) {
-      if (updateGuestDto.invitedFrom) {
-        await this.incrementDrinksCoupon(updateGuestDto.invitedFrom);
-      }
-
-      if (previousInvitedFrom) {
-        await this.decrementDrinksCoupon(previousInvitedFrom);
-      }
-    }
+    await this.validateInviter(updateGuestDto.invitedFrom, guest.name);
+    await this.handleInviterChange(
+      updateGuestDto.invitedFrom,
+      previousInvitedFrom,
+    );
 
     Object.assign(guest, updateGuestDto);
+
+    this.handleAttendanceTimestamp(guest, updateGuestDto.attended);
 
     await guest.save();
 
@@ -135,6 +122,50 @@ export class GuestsService {
     return guest;
   }
 
+  private async validateInviter(
+    inviterName: string,
+    guestName: string,
+  ): Promise<void> {
+    if (!inviterName) return;
+
+    if (inviterName === guestName) {
+      throw new Error('A guest cannot invite themselves.');
+    }
+
+    const inviterExists = await this.guestModel
+      .findOne({ name: inviterName })
+      .exec();
+    if (!inviterExists) {
+      throw new Error(
+        `Inviter "${inviterName}" does not exist in the guest list.`,
+      );
+    }
+  }
+
+  private async handleInviterChange(
+    newInviter: string,
+    previousInviter: string,
+  ): Promise<void> {
+    if (newInviter === previousInviter) return;
+
+    if (newInviter) {
+      await this.incrementDrinksCoupon(newInviter);
+    }
+
+    if (previousInviter) {
+      await this.decrementDrinksCoupon(previousInviter);
+    }
+  }
+
+  private handleAttendanceTimestamp(
+    guest: GuestDocument,
+    attended: string,
+  ): void {
+    if (attended === undefined) return;
+
+    guest.attendedAt = attended === 'Yes' ? new Date() : null;
+  }
+
   async updateAttended(
     id: string,
     attended: string,
@@ -144,7 +175,19 @@ export class GuestsService {
     if (!guest) {
       throw new NotFoundException(`Guest with ID "${id}" not found`);
     }
+
+    if (guest.attended === 'Yes' && attended === 'Yes') {
+      throw new BadRequestException('Guest is already attended');
+    }
+
     guest.attended = attended;
+
+    if (attended === 'Yes') {
+      guest.attendedAt = new Date();
+    } else {
+      guest.attendedAt = null;
+    }
+
     await guest.save();
 
     await this.getAttendanceStatistics(userRole);

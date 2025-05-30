@@ -18,6 +18,9 @@ export class UpdateGuestDto {
   readonly attended?: string;
 
   @IsOptional()
+  readonly attendedAt?: Date | null;
+
+  @IsOptional()
   @IsString()
   readonly invitedFrom?: string;
 
