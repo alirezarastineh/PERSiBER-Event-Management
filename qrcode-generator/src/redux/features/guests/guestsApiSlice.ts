@@ -17,18 +17,23 @@ const guestsApiSlice = apiSlice.injectEndpoints({
         url: "/guests",
         method: "GET",
       }),
+      providesTags: ["Guest"],
     }),
     getGuestByName: builder.query<Guest, string>({
       query: (name) => ({
         url: `/guests/${name}`,
         method: "GET",
       }),
+      providesTags: (result, error, name) => [
+        { type: "Guest" as const, id: name },
+      ],
     }),
     getGuestById: builder.query<Guest, string>({
       query: (id) => ({
         url: `/guests/${id}`,
         method: "GET",
       }),
+      providesTags: (result, error, id) => [{ type: "Guest" as const, id }],
     }),
     createGuest: builder.mutation<Guest, CreateGuestDto>({
       query: (newGuest) => ({
@@ -36,6 +41,7 @@ const guestsApiSlice = apiSlice.injectEndpoints({
         method: "POST",
         body: newGuest,
       }),
+      invalidatesTags: ["Guest"],
     }),
     updateGuest: builder.mutation<Guest, { id: string; data: UpdateGuestDto }>({
       query: ({ id, data }) => ({
@@ -43,6 +49,10 @@ const guestsApiSlice = apiSlice.injectEndpoints({
         method: "PATCH",
         body: data,
       }),
+      invalidatesTags: (result, error, { id }) => [
+        { type: "Guest" as const, id },
+        "Guest",
+      ],
     }),
     updateAttendedStatus: builder.mutation<
       Guest,
@@ -53,6 +63,10 @@ const guestsApiSlice = apiSlice.injectEndpoints({
         method: "PATCH",
         body: { attended },
       }),
+      invalidatesTags: (result, error, { id }) => [
+        { type: "Guest" as const, id },
+        "Guest",
+      ],
     }),
     updateStudentStatus: builder.mutation<
       Guest,
@@ -63,6 +77,10 @@ const guestsApiSlice = apiSlice.injectEndpoints({
         method: "PATCH",
         body: { isStudent, untilWhen },
       }),
+      invalidatesTags: (result, error, { id }) => [
+        { type: "Guest" as const, id },
+        "Guest",
+      ],
     }),
     updateLadyStatus: builder.mutation<Guest, { id: string; isLady: boolean }>({
       query: ({ id, isLady }) => ({
@@ -70,6 +88,10 @@ const guestsApiSlice = apiSlice.injectEndpoints({
         method: "PATCH",
         body: { isLady },
       }),
+      invalidatesTags: (result, error, { id }) => [
+        { type: "Guest" as const, id },
+        "Guest",
+      ],
     }),
     adjustDrinksCoupon: builder.mutation<
       Guest,
@@ -80,6 +102,10 @@ const guestsApiSlice = apiSlice.injectEndpoints({
         method: "PATCH",
         body: { adjustment },
       }),
+      invalidatesTags: (result, error, { id }) => [
+        { type: "Guest" as const, id },
+        "Guest",
+      ],
     }),
     toggleStudentDiscount: builder.mutation<void, boolean>({
       query: (active) => ({
@@ -87,6 +113,7 @@ const guestsApiSlice = apiSlice.injectEndpoints({
         method: "PATCH",
         body: { active },
       }),
+      invalidatesTags: ["Guest"],
     }),
     toggleLadyDiscount: builder.mutation<void, boolean>({
       query: (active) => ({
@@ -94,12 +121,17 @@ const guestsApiSlice = apiSlice.injectEndpoints({
         method: "PATCH",
         body: { active },
       }),
+      invalidatesTags: ["Guest"],
     }),
     deleteGuest: builder.mutation<void, string>({
       query: (id) => ({
         url: `/guests/${id}`,
         method: "DELETE",
       }),
+      invalidatesTags: (result, error, id) => [
+        { type: "Guest" as const, id },
+        "Guest",
+      ],
     }),
     findOrCreateGuest: builder.mutation<Guest, string>({
       query: (name) => ({
@@ -107,6 +139,7 @@ const guestsApiSlice = apiSlice.injectEndpoints({
         method: "POST",
         body: { name },
       }),
+      invalidatesTags: ["Guest"],
     }),
   }),
 });

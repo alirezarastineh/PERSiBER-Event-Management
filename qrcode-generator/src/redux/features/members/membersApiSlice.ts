@@ -17,13 +17,15 @@ const membersApiSlice = apiSlice.injectEndpoints({
         url: "/members",
         method: "GET",
       }),
+      providesTags: ["Member"],
     }),
     createMember: builder.mutation<Member, CreateMemberDto>({
       query: (newMember) => ({
-        url: "/members",
+        url: "/members/add",
         method: "POST",
         body: newMember,
       }),
+      invalidatesTags: ["Member"],
     }),
     updateMember: builder.mutation<
       Member,
@@ -34,6 +36,10 @@ const membersApiSlice = apiSlice.injectEndpoints({
         method: "PATCH",
         body: data,
       }),
+      invalidatesTags: (result, error, { id }) => [
+        { type: "Member" as const, id },
+        "Member",
+      ],
     }),
     updateAttendedStatus: builder.mutation<
       Member,
@@ -44,6 +50,10 @@ const membersApiSlice = apiSlice.injectEndpoints({
         method: "PATCH",
         body: { attended },
       }),
+      invalidatesTags: (result, error, { id }) => [
+        { type: "Member" as const, id },
+        "Member",
+      ],
     }),
     updateHasLeftStatus: builder.mutation<
       Member,
@@ -54,6 +64,10 @@ const membersApiSlice = apiSlice.injectEndpoints({
         method: "PATCH",
         body: { hasLeft },
       }),
+      invalidatesTags: (result, error, { id }) => [
+        { type: "Member" as const, id },
+        "Member",
+      ],
     }),
     updateStudentStatus: builder.mutation<
       Member,
@@ -64,16 +78,23 @@ const membersApiSlice = apiSlice.injectEndpoints({
         method: "PATCH",
         body: { isStudent, untilWhen },
       }),
+      invalidatesTags: (result, error, { id }) => [
+        { type: "Member" as const, id },
+        "Member",
+      ],
     }),
     deleteMember: builder.mutation<void, string>({
       query: (id) => ({
         url: `/members/${id}`,
         method: "DELETE",
       }),
+      invalidatesTags: (result, error, id) => [
+        { type: "Member" as const, id },
+        "Member",
+      ],
     }),
   }),
 });
-
 
 export const {
   useGetAllMembersQuery,

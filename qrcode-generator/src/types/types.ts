@@ -47,6 +47,7 @@ export interface Member {
   _id: string;
   name: string;
   attended: string;
+  attendedAt: Date | null;
   organizer: string;
   invitedFrom: string;
   membersInvited: number;
@@ -58,6 +59,7 @@ export interface Member {
 export interface CreateMemberDto {
   name: string;
   attended?: string;
+  attendedAt?: Date | null;
   organizer?: string;
   invitedFrom?: string;
   hasLeft?: boolean;
@@ -68,6 +70,7 @@ export interface CreateMemberDto {
 export interface UpdateMemberDto {
   name?: string;
   attended?: string;
+  attendedAt?: Date | null;
   organizer?: string;
   invitedFrom?: string;
   hasLeft?: boolean;
@@ -89,6 +92,7 @@ export interface Guest {
   freeEntry: boolean;
   drinksCoupon: number;
   attended: string;
+  attendedAt: Date | null;
   invitedFrom: string;
   isStudent: boolean;
   untilWhen: Date | null;
@@ -101,6 +105,7 @@ export interface CreateGuestDto {
   alreadyPaid?: boolean;
   freeEntry?: boolean;
   attended?: string;
+  attendedAt?: Date | null;
   invitedFrom?: string;
   isStudent?: boolean;
   untilWhen?: Date | null;
@@ -111,6 +116,7 @@ export interface UpdateGuestDto {
   alreadyPaid?: boolean;
   freeEntry?: boolean;
   attended?: string;
+  attendedAt?: Date | null;
   invitedFrom?: string;
   isStudent?: boolean;
   untilWhen?: Date | null;
@@ -172,6 +178,7 @@ export interface Bpplist {
   _id: string;
   name: string;
   attended: string;
+  attendedAt: Date | null;
   organizer: string;
   invitedFrom: string;
   membersInvited: number;
@@ -183,6 +190,7 @@ export interface Bpplist {
 export interface CreateBpplistDto {
   name: string;
   attended?: string;
+  attendedAt?: Date | null;
   organizer?: string;
   invitedFrom?: string;
   hasLeft?: boolean;
@@ -193,6 +201,7 @@ export interface CreateBpplistDto {
 export interface UpdateBpplistDto {
   name?: string;
   attended?: string;
+  attendedAt?: Date | null;
   organizer?: string;
   invitedFrom?: string;
   hasLeft?: boolean;

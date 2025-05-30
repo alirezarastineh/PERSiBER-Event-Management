@@ -17,13 +17,15 @@ const bpplistApiSlice = apiSlice.injectEndpoints({
         url: "/bpplist",
         method: "GET",
       }),
+      providesTags: ["Bpplist"],
     }),
     createBpplistItem: builder.mutation<Bpplist, CreateBpplistDto>({
-      query: (newItem) => ({
-        url: "/bpplist",
+      query: (newBpplistItem) => ({
+        url: "/bpplist/add",
         method: "POST",
-        body: newItem,
+        body: newBpplistItem,
       }),
+      invalidatesTags: ["Bpplist"],
     }),
     updateBpplistItem: builder.mutation<
       Bpplist,
@@ -34,6 +36,10 @@ const bpplistApiSlice = apiSlice.injectEndpoints({
         method: "PATCH",
         body: data,
       }),
+      invalidatesTags: (result, error, { id }) => [
+        { type: "Bpplist" as const, id },
+        "Bpplist",
+      ],
     }),
     updateAttendedStatus: builder.mutation<
       Bpplist,
@@ -44,6 +50,10 @@ const bpplistApiSlice = apiSlice.injectEndpoints({
         method: "PATCH",
         body: { attended },
       }),
+      invalidatesTags: (result, error, { id }) => [
+        { type: "Bpplist" as const, id },
+        "Bpplist",
+      ],
     }),
     updateHasLeftStatus: builder.mutation<
       Bpplist,
@@ -54,6 +64,10 @@ const bpplistApiSlice = apiSlice.injectEndpoints({
         method: "PATCH",
         body: { hasLeft },
       }),
+      invalidatesTags: (result, error, { id }) => [
+        { type: "Bpplist" as const, id },
+        "Bpplist",
+      ],
     }),
     updateStudentStatus: builder.mutation<
       Bpplist,
@@ -64,12 +78,20 @@ const bpplistApiSlice = apiSlice.injectEndpoints({
         method: "PATCH",
         body: { isStudent, untilWhen },
       }),
+      invalidatesTags: (result, error, { id }) => [
+        { type: "Bpplist" as const, id },
+        "Bpplist",
+      ],
     }),
     deleteBpplistItem: builder.mutation<void, string>({
       query: (id) => ({
         url: `/bpplist/${id}`,
         method: "DELETE",
       }),
+      invalidatesTags: (result, error, id) => [
+        { type: "Bpplist" as const, id },
+        "Bpplist",
+      ],
     }),
   }),
 });
