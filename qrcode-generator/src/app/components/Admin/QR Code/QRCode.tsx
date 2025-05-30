@@ -115,9 +115,9 @@ const QRCodeComponent = () => {
     const doc = new jsPDF();
     const pageWidth = doc.internal.pageSize.getWidth();
     const pageHeight = doc.internal.pageSize.getHeight();
-    const qrCodeSize = 120; // Slightly smaller for better layout
+    const qrCodeSize = 100; // Make QR code smaller to fit everything
     const qrCodeX = (pageWidth - qrCodeSize) / 2;
-    const qrCodeY = pageHeight / 2 - 10; // Position slightly above center
+    const qrCodeY = pageHeight / 2 - 30; // Move QR code higher up
 
     // Format the guest name with proper casing
     const formattedText = currentGuest
@@ -127,126 +127,90 @@ const QRCodeComponent = () => {
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
       .join(" ");
 
-    // ===== BACKGROUND =====
-    // Create a premium dark gradient background
-    doc.setFillColor(26, 26, 46); // Deep navy from color scheme
-    doc.rect(0, 0, pageWidth, pageHeight, "F");
-
-    // Add subtle gradient layer
+    // ===== TROPICAL GRADIENT BACKGROUND =====
+    // Create blue to golden gradient background like the flyer
     for (let i = 0; i < pageHeight; i += 2) {
-      const alpha = 1 - (i / pageHeight) * 0.7;
-      doc.setFillColor(45, 45, 65, alpha);
+      const ratio = i / pageHeight;
+      // Blue to golden gradient (RGB values based on flyer)
+      const r = Math.round(65 + (255 - 65) * ratio); // Blue to golden red component
+      const g = Math.round(130 + (215 - 130) * ratio); // Blue to golden green component
+      const b = Math.round(246 - (246 - 135) * ratio); // Blue to golden blue component
+      doc.setFillColor(r, g, b);
       doc.rect(0, i, pageWidth, 2, "F");
     }
 
-    // ===== DECORATIVE ELEMENTS =====
-    // Gold border
-    const borderWidth = 5;
-    const borderMargin = 15;
-    doc.setDrawColor(212, 175, 55); // Rich gold
+    // ===== TROPICAL BORDER =====
+    const borderWidth = 4;
+    const borderMargin = 12;
+    doc.setDrawColor(255, 165, 0); // Orange border like flyer elements
     doc.setLineWidth(borderWidth);
-    doc.rect(
+    doc.roundedRect(
       borderMargin,
       borderMargin,
       pageWidth - 2 * borderMargin,
       pageHeight - 2 * borderMargin,
+      5,
+      5,
       "S"
     );
 
-    // Decorative corner accents
-    const cornerSize = 15;
-    const cornerOffset = borderMargin - 2;
-
-    // Top left corner accent
-    doc.setFillColor(212, 175, 55);
-    doc.triangle(
-      cornerOffset,
-      cornerOffset,
-      cornerOffset + cornerSize,
-      cornerOffset,
-      cornerOffset,
-      cornerOffset + cornerSize,
-      "F"
-    );
-
-    // Top right corner accent
-    doc.triangle(
-      pageWidth - cornerOffset,
-      cornerOffset,
-      pageWidth - cornerOffset - cornerSize,
-      cornerOffset,
-      pageWidth - cornerOffset,
-      cornerOffset + cornerSize,
-      "F"
-    );
-
-    // Bottom left corner accent
-    doc.triangle(
-      cornerOffset,
-      pageHeight - cornerOffset,
-      cornerOffset + cornerSize,
-      pageHeight - cornerOffset,
-      cornerOffset,
-      pageHeight - cornerOffset - cornerSize,
-      "F"
-    );
-
-    // Bottom right corner accent
-    doc.triangle(
-      pageWidth - cornerOffset,
-      pageHeight - cornerOffset,
-      pageWidth - cornerOffset - cornerSize,
-      pageHeight - cornerOffset,
-      pageWidth - cornerOffset,
-      pageHeight - cornerOffset - cornerSize,
-      "F"
-    );
-
-    // ===== HEADER =====
-    // Event name in elegant gold at top
-    doc.setTextColor(212, 175, 55);
-    doc.setFontSize(28);
+    // ===== HEADER - SUMMER PARTY BRANDING =====
+    // "Private Summer Party" all in one line
+    doc.setTextColor(255, 215, 0); // Golden yellow
+    doc.setFontSize(24);
     doc.setFont("helvetica", "bold");
-    doc.text("2-YEAR ANNIVERSARY 2025", pageWidth / 2, 45, { align: "center" });
+    doc.text("Private Summer Party", pageWidth / 2, 45, { align: "center" });
 
-    // Add decorative divider
-    const dividerWidth = 120;
-    const dividerY = 55;
-    doc.setDrawColor(212, 175, 55);
-    doc.setLineWidth(1);
-    doc.line(
-      (pageWidth - dividerWidth) / 2,
-      dividerY,
-      (pageWidth + dividerWidth) / 2,
-      dividerY
-    );
-
-    // Add small ornament in the middle of divider
-    const ornSize = 4;
-    doc.setFillColor(212, 175, 55);
-    doc.circle(pageWidth / 2, dividerY, ornSize, "F");
+    // "BBQ, INDOOR & OPEN AIR PARTY ALL NIGHT LONG" below title
+    doc.setFontSize(8);
+    doc.setTextColor(255, 255, 255); // White
+    doc.setFont("helvetica", "bold");
+    doc.text("BBQ, INDOOR & OPEN AIR PARTY ALL NIGHT LONG", pageWidth / 2, 55, {
+      align: "center",
+    });
 
     // ===== GUEST NAME =====
     // "INVITATION FOR" text
-    doc.setFontSize(14);
-    doc.setTextColor(255, 220, 154); // Lighter gold
+    doc.setFontSize(12);
+    doc.setTextColor(255, 255, 255); // White
     doc.setFont("helvetica", "normal");
 
     // Guest name with larger, elegant font
-    doc.setFontSize(32);
-    doc.setTextColor(255, 255, 255);
+    doc.setFontSize(28);
+    doc.setTextColor(255, 215, 0); // Golden yellow for guest name
     doc.setFont("helvetica", "bold");
-    doc.text(formattedText, pageWidth / 2, 95, { align: "center" });
+    doc.text(formattedText, pageWidth / 2, 80, { align: "center" });
 
-    // ===== QR CODE =====
-    // Frame for QR code
-    doc.setDrawColor(212, 175, 55);
-    doc.setLineWidth(2);
+    // Dress code below guest name
+    doc.setFontSize(12);
+    doc.setTextColor(255, 215, 0); // Golden
+    doc.setFont("helvetica", "bold");
+    doc.text("DRESS CODE: HAWAIIAN", pageWidth / 2, 95, {
+      align: "center",
+    });
+
+    // ===== QR CODE WITH TROPICAL FRAME =====
+    // Tropical-themed frame for QR code
+    doc.setDrawColor(255, 165, 0); // Orange frame
+    doc.setLineWidth(3);
     doc.roundedRect(
-      qrCodeX - 5,
-      qrCodeY - 5,
-      qrCodeSize + 10,
-      qrCodeSize + 10,
+      qrCodeX - 6,
+      qrCodeY - 6,
+      qrCodeSize + 12,
+      qrCodeSize + 12,
+      5,
+      5,
+      "S"
+    );
+
+    // Add inner golden frame
+    doc.setDrawColor(255, 215, 0);
+    doc.setLineWidth(1);
+    doc.roundedRect(
+      qrCodeX - 3,
+      qrCodeY - 3,
+      qrCodeSize + 6,
+      qrCodeSize + 6,
       3,
       3,
       "S"
@@ -258,39 +222,22 @@ const QRCodeComponent = () => {
 
     doc.addImage(qrCodeUrl, "PNG", qrCodeX, qrCodeY, qrCodeSize, qrCodeSize);
 
-    // ===== FOOTER =====
-    // Event details - pure white color for better visibility
-    doc.setFontSize(14);
-    doc.setTextColor(255, 255, 255); // Changed to white for better visibility
-    doc.setFont("helvetica", "bold"); // Bold for better visibility
-    doc.text(
-      "See you on the Dancefloor!",
-      pageWidth / 2,
-      qrCodeY + qrCodeSize + 25,
-      { align: "center" }
-    );
-
-    // Date and organizer - Moved up to ensure it's fully visible
-    doc.setFontSize(12);
+    // ===== EVENT DETAILS =====
+    // Date and day on one line
+    doc.setFontSize(20);
     doc.setTextColor(255, 255, 255);
-    doc.text("MAY 17, 2025", pageWidth / 2, qrCodeY + qrCodeSize + 35, {
+    doc.setFont("helvetica", "bold");
+    doc.text("SATURDAY AUGUST 16", pageWidth / 2, qrCodeY + qrCodeSize + 30, {
       align: "center",
     });
 
-    // Add PERSiBER branding - Also adjusted position
-    doc.setFontSize(16);
-    doc.setTextColor(212, 175, 55);
-    doc.setFont("helvetica", "bold");
-    doc.text("PERSi", pageWidth / 2 - 10, qrCodeY + qrCodeSize + 50, {
-      align: "right",
-    });
-    doc.setTextColor(255, 179, 71); // Accent amber
-    doc.text("BER", pageWidth / 2 + 10, qrCodeY + qrCodeSize + 50, {
-      align: "left",
+    doc.setFontSize(14);
+    doc.text("6 PM - 4 AM", pageWidth / 2, qrCodeY + qrCodeSize + 45, {
+      align: "center",
     });
 
     // ===== SAVE FILE =====
-    const pdfFileName = `${formattedText} - 2-Year Anniversary - PERSiBER 17.05.2025.pdf`;
+    const pdfFileName = `${formattedText} - Summer Party - PERSiBER August 16.pdf`;
     doc.save(pdfFileName);
   };
 
@@ -479,7 +426,7 @@ const QRCodeComponent = () => {
                     <p className="mt-4 text-sm text-center text-gray-500 dark:text-gray-400">
                       PDF includes personalized invitation for{" "}
                       <span className="font-semibold">{currentGuest}</span> to
-                      the 2-Year Anniversary
+                      the Private Summer Party
                     </p>
                   </motion.div>
                 </motion.div>
