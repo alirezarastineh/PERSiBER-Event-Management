@@ -268,8 +268,14 @@ export default function Guests() {
         [guestId]: newStatus,
       }));
       refetch();
-    } catch (error) {
+    } catch (error: any) {
       console.error("Failed to update attended status:", error);
+      // Show error message to user
+      const errorMessage =
+        error?.data?.message ??
+        error?.message ??
+        "Failed to update attendance status";
+      showCustomAlert("Attendance Error", errorMessage, "error");
     }
   };
 
@@ -723,6 +729,12 @@ export default function Guests() {
                         scope="col"
                         className="px-6 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"
                       >
+                        Attended At
+                      </th>
+                      <th
+                        scope="col"
+                        className="px-6 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"
+                      >
                         Drinks Coupon
                       </th>
                       <th
@@ -811,6 +823,11 @@ export default function Guests() {
                                 }}
                               />
                             </motion.button>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">
+                            {guest.attendedAt && guest.attended === "Yes"
+                              ? new Date(guest.attendedAt).toLocaleString()
+                              : "Not attended"}
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">
                             {guest.drinksCoupon || 0}
@@ -976,6 +993,17 @@ export default function Guests() {
                           }`}
                         >
                           {guest.freeEntry ? "Yes" : "No"}
+                        </span>
+                      </div>
+
+                      <div className="flex flex-col">
+                        <span className="text-xs text-gray-500 dark:text-gray-400">
+                          Attended At
+                        </span>
+                        <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                          {guest.attendedAt && guest.attended === "Yes"
+                            ? new Date(guest.attendedAt).toLocaleString()
+                            : "Not attended"}
                         </span>
                       </div>
 
@@ -1262,14 +1290,14 @@ export default function Guests() {
               </div>
 
               {/* Drinks Coupon Control */}
-              <div className="space-y-2">
+              <div className="space-y-3">
                 <label
                   htmlFor="drinksCoupon"
                   className="block text-sm font-medium text-warm-charcoal dark:text-gray-300"
                 >
                   Drinks Coupon
                 </label>
-                <div className="flex items-center space-x-2">
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-2">
                   <motion.input
                     id="drinksCoupon"
                     type="number"
@@ -1322,7 +1350,7 @@ export default function Guests() {
                         );
                       }
                     }}
-                    className="px-4 py-3 rounded-lg bg-gradient-to-r from-rich-gold to-accent-amber text-deep-navy font-medium shadow-md"
+                    className="w-full sm:w-auto px-4 py-3 rounded-lg bg-gradient-to-r from-rich-gold to-accent-amber text-deep-navy font-medium shadow-md whitespace-nowrap"
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.98 }}
                   >
@@ -1375,9 +1403,9 @@ export default function Guests() {
                 )}
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-5 pt-2">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 pt-2">
                 {/* Switch Toggle for Is Student */}
-                <div className="space-y-2">
+                <div className="space-y-3">
                   <div className="flex items-center justify-between">
                     <label
                       htmlFor="isStudent"
@@ -1417,7 +1445,7 @@ export default function Guests() {
                     >
                       <label
                         htmlFor="validUntil"
-                        className="block text-sm font-medium text-warm-charcoal dark:text-gray-300 mb-1"
+                        className="block text-sm font-medium text-warm-charcoal dark:text-gray-300 mb-2"
                       >
                         Valid Until
                       </label>
@@ -1475,7 +1503,7 @@ export default function Guests() {
                 </div>
 
                 {/* Switch Toggle for Free Entry */}
-                <div className="flex items-center justify-between col-span-1 md:col-span-2">
+                <div className="flex items-center justify-between sm:col-span-2">
                   <label
                     htmlFor="freeEntry"
                     className="text-sm font-medium text-warm-charcoal dark:text-gray-300"
@@ -1506,10 +1534,10 @@ export default function Guests() {
                 </div>
               </div>
 
-              <div className="flex gap-4 pt-6">
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-6">
                 <motion.button
                   onClick={handleUpdateGuest}
-                  className="flex-1 px-4 py-3 rounded-lg bg-gradient-to-r from-rich-gold to-accent-amber text-deep-navy font-medium shadow-md"
+                  className="w-full px-4 py-3 rounded-lg bg-gradient-to-r from-rich-gold to-accent-amber text-deep-navy font-medium shadow-md order-2 sm:order-1"
                   whileHover={{
                     scale: 1.02,
                     boxShadow: "0 5px 15px rgba(212, 175, 55, 0.25)",
@@ -1520,7 +1548,7 @@ export default function Guests() {
                 </motion.button>
                 <motion.button
                   onClick={() => setEditingGuest(null)}
-                  className="flex-1 px-4 py-3 rounded-lg bg-gray-200 dark:bg-gray-700 text-warm-charcoal dark:text-white font-medium"
+                  className="w-full px-4 py-3 rounded-lg bg-gray-200 dark:bg-gray-700 text-warm-charcoal dark:text-white font-medium order-1 sm:order-2"
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                 >
