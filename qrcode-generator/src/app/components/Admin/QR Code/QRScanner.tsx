@@ -53,6 +53,11 @@ const QRScanner = () => {
     null
   );
 
+  // Debounce mechanism to prevent duplicate scans
+  const lastScanTime = useRef<number>(0);
+  const lastScannedCode = useRef<string>("");
+  const SCAN_COOLDOWN_MS = 2000; // 2 seconds cooldown
+
   // Get guest details if we have a lastScannedGuestId
   const { data: scannedGuest } = useGetGuestByIdQuery(
     lastScannedGuestId ?? "",
@@ -433,6 +438,21 @@ const QRScanner = () => {
     ) => {
       console.log(`Scan result: ${decodedText}`, decodedResult);
 
+      // Debounce mechanism - prevent duplicate scans
+      const currentTime = Date.now();
+      const isSameCode = lastScannedCode.current === decodedText;
+      const isWithinCooldown =
+        currentTime - lastScanTime.current < SCAN_COOLDOWN_MS;
+
+      if (isSameCode && isWithinCooldown) {
+        console.log(`Duplicate scan detected for ${decodedText}, ignoring...`);
+        return; // Ignore duplicate scan
+      }
+
+      // Update scan tracking
+      lastScanTime.current = currentTime;
+      lastScannedCode.current = decodedText;
+
       // Extract ID from URL if it's a guest URL from our app
       let guestId = decodedText;
       try {
@@ -465,13 +485,24 @@ const QRScanner = () => {
           `Guest "${updatedGuest.name}" has been marked as attended.`,
           "success"
         );
-      } catch (error) {
+      } catch (error: any) {
         console.error("Error processing scan:", error);
-        showCustomAlert(
-          "Error",
-          "QR code scanned, but there was an error updating attendance status.",
-          "error"
-        );
+
+        // Check if the error is related to already attended guest
+        const errorMessage = error?.data?.message ?? error?.message ?? "";
+        if (errorMessage.includes("already attended")) {
+          showCustomAlert(
+            "Already Attended",
+            "This guest has already been marked as attended.",
+            "warning"
+          );
+        } else {
+          showCustomAlert(
+            "Error",
+            "QR code scanned, but there was an error updating attendance status.",
+            "error"
+          );
+        }
       }
     };
 
