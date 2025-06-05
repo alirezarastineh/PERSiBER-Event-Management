@@ -1,15 +1,21 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useQRScanner } from "@/app/hooks/qr/useQRScanner";
-import { useAlert } from "@/app/hooks/useAlert";
+import { AlertType } from "@/types/common";
 import QRScannerView from "../../QRScanner/QRScannerView";
 import QRScannerInstructions from "../../QRScanner/QRScannerInstructions";
 import GuestDetailsCard from "../../GuestDetail/GuestDetailsCard";
 import AlertModal from "../../Common/AlertModal";
 
 const QRScanner = () => {
+  // Alert state - managed directly like in the working version
+  const [showAlertModal, setShowAlertModal] = useState(false);
+  const [alertType, setAlertType] = useState<AlertType>("info");
+  const [alertTitle, setAlertTitle] = useState("");
+  const [alertMessage, setAlertMessage] = useState("");
+
   // Custom hooks
   const {
     isLoading,
@@ -18,19 +24,39 @@ const QRScanner = () => {
     setScanSuccessCallback,
   } = useQRScanner();
 
-  const {
-    showAlertModal,
-    alertType,
-    alertTitle,
-    alertMessage,
-    showCustomAlert,
-    hideAlert,
-    getAlertBackgroundColor,
-  } = useAlert();
+  // Show custom alert - like in working version
+  const showCustomAlert = (
+    title: string,
+    message: string,
+    type: AlertType = "info"
+  ) => {
+    setAlertTitle(title);
+    setAlertMessage(message);
+    setAlertType(type);
+    setShowAlertModal(true);
+  };
 
-  // Set up scan success callback
-  React.useEffect(() => {
-    setScanSuccessCallback((result) => {
+  const hideAlert = () => {
+    setShowAlertModal(false);
+  };
+
+  const getAlertBackgroundColor = (type: AlertType) => {
+    switch (type) {
+      case "success":
+        return "rgba(16, 185, 129, 0.2)";
+      case "error":
+        return "rgba(239, 68, 68, 0.2)";
+      case "warning":
+        return "rgba(245, 158, 11, 0.2)";
+      case "info":
+      default:
+        return "rgba(59, 130, 246, 0.2)";
+    }
+  };
+
+  // Set up scan success callback - following exact pattern of working version
+  useEffect(() => {
+    const handleScanResult = (result: any) => {
       if (result.success) {
         showCustomAlert("QR Code Scanned", result.message, "success");
       } else if (result.error === "warning") {
@@ -38,8 +64,10 @@ const QRScanner = () => {
       } else if (result.error === "error") {
         showCustomAlert("Error", result.message, "error");
       }
-    });
-  }, [setScanSuccessCallback, showCustomAlert]);
+    };
+
+    setScanSuccessCallback(handleScanResult);
+  }, [setScanSuccessCallback]); // Remove showCustomAlert dependency to avoid circular dependency
 
   // Animation variants
   const containerVariants = {

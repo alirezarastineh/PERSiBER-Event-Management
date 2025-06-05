@@ -42,14 +42,13 @@ export const useQRScanner = () => {
   const [lastScannedGuestId, setLastScannedGuestId] = useState<string | null>(
     null
   );
-  const [onScanSuccessCallback, setOnScanSuccessCallback] = useState<
-    ((result: ScanResult) => void) | null
-  >(null);
 
   const scannerRef = useRef<Html5QrcodeScannerType | null>(null);
   const lastScanTime = useRef<number>(0);
   const lastScannedCode = useRef<string>("");
-  const SCAN_COOLDOWN_MS = 2000; // 2 seconds cooldown
+  const onScanSuccessRef = useRef<((result: ScanResult) => void) | null>(null);
+  const isRenderingRef = useRef<boolean>(false); // Prevent multiple renders
+  const SCAN_COOLDOWN_MS = 3000; // Increase cooldown to 3 seconds for better protection
 
   const [updateAttendedStatus] = useUpdateAttendedStatusMutation();
 
@@ -180,27 +179,45 @@ export const useQRScanner = () => {
     initializeScanner();
   }, [scriptLoaded]);
 
-  // Scan success handler
-  const handleScanSuccess = useCallback(
-    async (decodedText: string, decodedResult: any): Promise<ScanResult> => {
+  // Start scanning when scanner is initialized - using the same pattern as the working version
+  useEffect(() => {
+    if (!isScanning || !scannerRef.current || isRenderingRef.current) {
+      console.log(
+        "Not scanning, scanner ref not initialized, or already rendering",
+        {
+          isScanning,
+          hasRef: !!scannerRef.current,
+          isRendering: isRenderingRef.current,
+        }
+      );
+      return;
+    }
+
+    console.log("Setting up scan handlers for QR scanner");
+    isRenderingRef.current = true; // Mark as rendering to prevent multiple calls
+
+    const handleScanSuccess = async (
+      decodedText: string,
+      decodedResult: any
+    ) => {
       console.log(`Scan result: ${decodedText}`, decodedResult);
 
-      // Debounce mechanism - prevent duplicate scans
+      // Enhanced debounce mechanism - prevent duplicate scans
       const currentTime = Date.now();
       const isSameCode = lastScannedCode.current === decodedText;
       const isWithinCooldown =
         currentTime - lastScanTime.current < SCAN_COOLDOWN_MS;
 
       if (isSameCode && isWithinCooldown) {
-        console.log(`Duplicate scan detected for ${decodedText}, ignoring...`);
-        return {
-          success: false,
-          message: "Duplicate scan ignored",
-          error: "warning",
-        };
+        console.log(
+          `Duplicate scan detected for "${decodedText}", ignoring... (cooldown: ${Math.round(
+            (SCAN_COOLDOWN_MS - (currentTime - lastScanTime.current)) / 1000
+          )}s remaining)`
+        );
+        return;
       }
 
-      // Update scan tracking
+      // Update scan tracking immediately to block subsequent calls
       lastScanTime.current = currentTime;
       lastScannedCode.current = decodedText;
 
@@ -237,11 +254,9 @@ export const useQRScanner = () => {
         };
 
         // Call the callback if it exists
-        if (onScanSuccessCallback) {
-          onScanSuccessCallback(result);
+        if (onScanSuccessRef.current) {
+          onScanSuccessRef.current(result);
         }
-
-        return result;
       } catch (error: any) {
         console.error("Error processing scan:", error);
 
@@ -261,37 +276,32 @@ export const useQRScanner = () => {
             };
 
         // Call the callback if it exists
-        if (onScanSuccessCallback) {
-          onScanSuccessCallback(result);
+        if (onScanSuccessRef.current) {
+          onScanSuccessRef.current(result);
         }
-
-        return result;
       }
-    },
-    [updateAttendedStatus, onScanSuccessCallback]
-  );
+    };
 
-  // Scan failure handler
-  const handleScanFailure = useCallback((error: string) => {
-    // This will be called frequently when no QR code is in view
-    console.debug("QR code scanning failed", error);
-  }, []);
+    const handleScanFailure = (error: string) => {
+      // This will be called frequently when no QR code is in view
+      console.debug("QR code scanning failed", error);
+    };
 
-  // Start scanning when scanner is initialized
-  useEffect(() => {
-    if (!isScanning || !scannerRef.current) {
-      console.log("Not scanning or scanner ref not initialized", {
-        isScanning,
-        hasRef: !!scannerRef.current,
-      });
-      return;
+    try {
+      scannerRef.current.render(handleScanSuccess, handleScanFailure);
+      console.log("Scanner handlers registered successfully");
+    } catch (error) {
+      console.error("Error setting up scanner handlers:", error);
+      isRenderingRef.current = false; // Reset on error
     }
 
-    console.log("Setting up scan handlers for QR scanner");
-    scannerRef.current.render(handleScanSuccess, handleScanFailure);
-  }, [isScanning, handleScanSuccess, handleScanFailure]);
+    // Cleanup function to reset rendering flag
+    return () => {
+      isRenderingRef.current = false;
+    };
+  }, [isScanning]); // Remove updateAttendedStatus from dependencies as it's stable in RTK Query
 
-  // Apply custom styling for the scanner
+  // Apply custom styling for the scanner - same as working version
   useEffect(() => {
     if (!scriptLoaded || !isScannerSupported) return;
 
@@ -399,10 +409,10 @@ export const useQRScanner = () => {
     };
   }, [scriptLoaded, isScannerSupported]);
 
-  // Function to set the scan success callback
+  // Function to set the scan success callback - using ref to avoid re-renders
   const setScanSuccessCallback = useCallback(
     (callback: (result: ScanResult) => void) => {
-      setOnScanSuccessCallback(() => callback);
+      onScanSuccessRef.current = callback;
     },
     []
   );
