@@ -1,4 +1,4 @@
-import { UpdateUserRoleDto, User } from "@/types/types";
+import { UpdateUserRoleDto, User } from "@/types/auth";
 import apiSlice from "../../api/apiSlice";
 
 const usersApiSlice = apiSlice.injectEndpoints({

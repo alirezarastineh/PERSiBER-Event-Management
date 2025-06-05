@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { InputProps } from "@/types/types";
+import { InputProps } from "@/types/common";
 
 export default function Input({
   label,

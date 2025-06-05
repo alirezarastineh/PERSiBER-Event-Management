@@ -1,36 +1,34 @@
 import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
 import { User, UserDocument } from './schemas/users.schema/users.schema';
-import { Model } from 'mongoose';
+import { UserCrudService, CreateUserDto } from './services/user-crud.service';
+import { UserValidationService } from './services/user-validation.service';
 
 @Injectable()
 export class UsersService {
   constructor(
-    @InjectModel(User.name) private readonly userModel: Model<UserDocument>,
+    private readonly crudService: UserCrudService,
+    private readonly validationService: UserValidationService,
   ) {}
 
-  async create(createUserDto: {
-    username: string;
-    password: string;
-    role?: string;
-  }): Promise<User> {
-    const createdUser = new this.userModel(createUserDto);
-    return createdUser.save();
+  async create(createUserDto: CreateUserDto): Promise<User> {
+    await this.validationService.validateCreateUser(createUserDto);
+    return this.crudService.create(createUserDto);
   }
 
   async findOne(username: string): Promise<UserDocument | undefined> {
-    return this.userModel.findOne({ username }).exec();
+    const user = await this.crudService.findOne(username);
+    return user || undefined;
   }
 
   async findById(userId: string): Promise<UserDocument | null> {
-    return this.userModel.findById(userId).exec();
+    return this.crudService.findById(userId);
   }
 
   async findAll(): Promise<UserDocument[]> {
-    return this.userModel.find().exec();
+    return this.crudService.findAll();
   }
 
   async deleteUser(userId: string): Promise<void> {
-    await this.userModel.findByIdAndDelete(userId).exec();
+    return this.crudService.deleteUser(userId);
   }
 }

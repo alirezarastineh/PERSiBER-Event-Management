@@ -4,7 +4,7 @@ import {
   RegisterRequest,
   User,
   VerifyTokenRequest,
-} from "@/types/types";
+} from "@/types/auth";
 import apiSlice from "../../api/apiSlice";
 import { logout, setAuth } from "./authSlice";
 

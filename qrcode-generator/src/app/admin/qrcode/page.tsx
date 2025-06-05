@@ -5,7 +5,7 @@ import Heading from "@/app/utils/Heading";
 export default function Home() {
   return (
     <ProtectedRoute allowedRoles={["admin", "master"]}>
-      <Heading title="QR COde" />
+      <Heading title="QR Code Generator" />
       <QRCodeComponent />
     </ProtectedRoute>
   );

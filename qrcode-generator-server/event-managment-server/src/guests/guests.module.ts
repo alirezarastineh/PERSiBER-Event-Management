@@ -5,6 +5,13 @@ import { GuestsService } from './guests.service';
 import { GuestsController } from './guests.controller';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { GuestStatisticsService } from './services/guest-statistics.service';
+import { GuestDiscountsService } from './services/guest-discounts.service';
+import { DrinksCouponService } from './services/drinks-coupon.service';
+import { GuestValidationService } from './services/guest-validation.service';
+import { GuestCrudService } from './services/guest-crud.service';
+import { GuestAttendanceService } from './services/guest-attendance.service';
+import { GuestStatusService } from './services/guest-status.service';
 
 @Module({
   imports: [
@@ -19,7 +26,16 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     }),
     ConfigModule,
   ],
-  providers: [GuestsService],
+  providers: [
+    GuestsService,
+    GuestCrudService,
+    GuestAttendanceService,
+    GuestStatusService,
+    GuestStatisticsService,
+    GuestDiscountsService,
+    DrinksCouponService,
+    GuestValidationService,
+  ],
   controllers: [GuestsController],
 })
 export class GuestsModule {}

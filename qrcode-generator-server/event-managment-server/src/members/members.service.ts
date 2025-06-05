@@ -1,159 +1,95 @@
-import {
-  Injectable,
-  NotFoundException,
-  BadRequestException,
-} from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
+import { Injectable } from '@nestjs/common';
 import {
   Member,
   MemberDocument,
 } from './schemas/members.schema/members.schema';
-import { Model } from 'mongoose';
 import { CreateMemberDto } from './dto/create-member.dto/create-member.dto';
 import { UpdateMemberDto } from './dto/update-member.dto/update-member.dto';
+import { MemberCrudService } from './services/member-crud.service';
+import { MemberValidationService } from './services/member-validation.service';
+import { MemberInvitationService } from './services/member-invitation.service';
+import { MemberStatisticsService } from './services/member-statistics.service';
+import { MemberAttendanceService } from './services/member-attendance.service';
+import { MemberStatusService } from './services/member-status.service';
 
 @Injectable()
 export class MembersService {
   constructor(
-    @InjectModel(Member.name)
-    private readonly memberModel: Model<MemberDocument>,
+    private readonly crudService: MemberCrudService,
+    private readonly validationService: MemberValidationService,
+    private readonly invitationService: MemberInvitationService,
+    private readonly statisticsService: MemberStatisticsService,
+    private readonly attendanceService: MemberAttendanceService,
+    private readonly statusService: MemberStatusService,
   ) {}
 
   async findAll(): Promise<{
     members: Member[];
     statistics: { attendedCount: number; totalCount: number };
   }> {
-    const members = await this.memberModel.find().exec();
-    await this.recalculateMembersInvited();
-    const statistics = await this.getAttendanceStatistics();
+    const members = await this.crudService.findAll();
+    await this.invitationService.recalculateMembersInvited();
+    const statistics = await this.statisticsService.getAttendanceStatistics();
     return { members, statistics };
   }
 
   async create(createMemberDto: CreateMemberDto): Promise<Member> {
-    if (
-      createMemberDto.organizer &&
-      !['Kourosh', 'Sobhan', 'Mutual'].includes(createMemberDto.organizer)
-    ) {
-      throw new BadRequestException(
-        'Organizer must be either "Kourosh", "Sobhan", or "Mutual".',
-      );
-    }
+    this.validationService.validateOrganizerForCreate(createMemberDto);
+    this.validationService.validateSelfInvitationForCreate(createMemberDto);
 
-    if (
-      createMemberDto.invitedFrom &&
-      createMemberDto.invitedFrom === createMemberDto.name
-    ) {
-      throw new BadRequestException('A member cannot invite themselves.');
-    }
-
-    const memberData = {
-      ...createMemberDto,
-      attendedAt: createMemberDto.attended === 'Yes' ? new Date() : null,
-    };
-
-    const createdMember = new this.memberModel(memberData);
-    const member = await createdMember.save();
+    const member = await this.crudService.create(createMemberDto);
 
     if (createMemberDto.invitedFrom) {
-      await this.incrementMembersInvited(createMemberDto.invitedFrom);
+      await this.invitationService.incrementMembersInvited(
+        createMemberDto.invitedFrom,
+      );
     }
 
     return member;
   }
 
   async delete(id: string): Promise<void> {
-    const member = await this.memberModel.findById(id).exec();
-    if (!member) {
-      throw new NotFoundException(`Member with ID "${id}" not found`);
-    }
+    const member = await this.crudService.findById(id);
 
     if (member.invitedFrom) {
-      await this.decrementMembersInvited(member.invitedFrom);
+      await this.invitationService.decrementMembersInvited(member.invitedFrom);
     }
 
-    await member.deleteOne();
+    await this.crudService.delete(member);
   }
 
   async update(id: string, updateMemberDto: UpdateMemberDto): Promise<Member> {
-    const member = await this.memberModel.findById(id).exec();
-    if (!member) {
-      throw new NotFoundException(`Member with ID "${id}" not found`);
-    }
+    const member = await this.crudService.findById(id);
 
-    if (
-      updateMemberDto.organizer &&
-      !['Kourosh', 'Sobhan', 'Mutual'].includes(updateMemberDto.organizer)
-    ) {
-      throw new BadRequestException(
-        'Organizer must be either "Kourosh", "Sobhan", or "Mutual".',
-      );
-    }
-
-    if (
-      updateMemberDto.invitedFrom &&
-      updateMemberDto.invitedFrom === member.name
-    ) {
-      throw new BadRequestException('A member cannot invite themselves.');
-    }
+    this.validationService.validateOrganizerForUpdate(updateMemberDto);
+    this.validationService.validateSelfInvitationForUpdate(
+      updateMemberDto,
+      member.name,
+    );
 
     const previousInvitedFrom = member.invitedFrom;
 
-    if (
-      updateMemberDto.invitedFrom &&
-      updateMemberDto.invitedFrom !== member.invitedFrom
-    ) {
-      await this.incrementMembersInvited(updateMemberDto.invitedFrom);
-      if (previousInvitedFrom) {
-        await this.decrementMembersInvited(previousInvitedFrom);
-      }
-    }
-
-    if (!updateMemberDto.invitedFrom && previousInvitedFrom) {
-      await this.decrementMembersInvited(previousInvitedFrom);
-    }
+    await this.invitationService.handleInviterChange(
+      updateMemberDto.invitedFrom,
+      previousInvitedFrom,
+    );
 
     Object.assign(member, updateMemberDto);
 
-    if (updateMemberDto.attended !== undefined) {
-      member.attendedAt =
-        updateMemberDto.attended === 'Yes' ? new Date() : null;
-    }
+    this.validationService.handleAttendanceTimestamp(
+      member,
+      updateMemberDto.attended,
+    );
 
-    return member.save();
+    return this.crudService.save(member);
   }
 
   async updateAttended(id: string, attended: string): Promise<Member> {
-    const member = await this.memberModel.findById(id).exec();
-    if (!member) {
-      throw new NotFoundException(`Member with ID "${id}" not found`);
-    }
-
-    if (member.attended === 'Yes' && attended === 'Yes') {
-      throw new BadRequestException('Member is already attended');
-    }
-
-    member.attended = attended;
-
-    if (attended === 'Yes') {
-      member.attendedAt = new Date();
-    } else {
-      member.attendedAt = null;
-    }
-
-    await member.save();
-
-    await this.getAttendanceStatistics();
-
-    return member;
+    return this.attendanceService.updateAttended(id, attended);
   }
 
   async updateHasLeft(id: string, hasLeft: boolean): Promise<Member> {
-    const member = await this.memberModel.findById(id).exec();
-    if (!member) {
-      throw new NotFoundException(`Member with ID "${id}" not found`);
-    }
-    member.hasLeft = hasLeft;
-    return member.save();
+    return this.statusService.updateHasLeft(id, hasLeft);
   }
 
   async updateStudentStatus(
@@ -161,73 +97,17 @@ export class MembersService {
     isStudent: boolean,
     untilWhen: Date | null,
   ): Promise<Member> {
-    const member = await this.memberModel.findById(id).exec();
-    if (!member) {
-      throw new NotFoundException(`Member with ID "${id}" not found`);
-    }
-    member.isStudent = isStudent;
-    member.untilWhen = isStudent ? untilWhen : null;
-    return member.save();
+    return this.statusService.updateStudentStatus(id, isStudent, untilWhen);
   }
 
   async getStatistics(): Promise<{ attended: number; total: number }> {
-    const total = await this.memberModel.countDocuments().exec();
-    const attended = await this.memberModel
-      .countDocuments({ attended: 'Yes' })
-      .exec();
-    return { attended, total };
-  }
-
-  private async incrementMembersInvited(inviterName: string): Promise<void> {
-    const inviter = await this.memberModel
-      .findOne({ name: inviterName })
-      .exec();
-    if (inviter) {
-      inviter.membersInvited += 1;
-      await inviter.save();
-    }
-  }
-
-  private async decrementMembersInvited(inviterName: string): Promise<void> {
-    const inviter = await this.memberModel
-      .findOne({ name: inviterName })
-      .exec();
-    if (inviter) {
-      inviter.membersInvited = Math.max(0, inviter.membersInvited - 1);
-      await inviter.save();
-    }
-  }
-
-  private async recalculateMembersInvited(): Promise<void> {
-    const members = await this.memberModel.find().exec();
-
-    await this.memberModel.updateMany({}, { membersInvited: 0 });
-
-    const invitedMap: { [key: string]: number } = {};
-
-    members.forEach((member) => {
-      if (member.invitedFrom) {
-        invitedMap[member.invitedFrom] =
-          (invitedMap[member.invitedFrom] || 0) + 1;
-      }
-    });
-
-    for (const [name, count] of Object.entries(invitedMap)) {
-      await this.memberModel.updateMany(
-        { name },
-        { $set: { membersInvited: count } },
-      );
-    }
+    return this.statisticsService.getBasicStatistics();
   }
 
   async getAttendanceStatistics(): Promise<{
     attendedCount: number;
     totalCount: number;
   }> {
-    const totalCount = await this.memberModel.countDocuments().exec();
-    const attendedCount = await this.memberModel
-      .countDocuments({ attended: 'Yes' })
-      .exec();
-    return { attendedCount, totalCount };
+    return this.statisticsService.getAttendanceStatistics();
   }
 }

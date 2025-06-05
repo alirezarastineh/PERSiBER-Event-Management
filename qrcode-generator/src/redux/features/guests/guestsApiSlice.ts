@@ -3,7 +3,7 @@ import {
   Guest,
   GuestStatistics,
   UpdateGuestDto,
-} from "@/types/types";
+} from "@/types/guests";
 import { apiSlice } from "./../../api/apiSlice";
 
 const guestsApiSlice = apiSlice.injectEndpoints({

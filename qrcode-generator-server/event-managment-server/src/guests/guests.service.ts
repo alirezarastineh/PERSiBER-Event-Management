@@ -1,21 +1,25 @@
-import {
-  Injectable,
-  NotFoundException,
-  BadRequestException,
-} from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Guest, GuestDocument } from './schemas/guests.schema/guests.schema';
-import { Document, Model } from 'mongoose';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { GuestDocument } from './schemas/guests.schema/guests.schema';
 import { CreateGuestDto } from './dto/create-guest.dto/create-guest.dto';
 import { UpdateGuestDto } from './dto/update-guest.dto/update-guest.dto';
+import { GuestStatisticsService } from './services/guest-statistics.service';
+import { GuestDiscountsService } from './services/guest-discounts.service';
+import { DrinksCouponService } from './services/drinks-coupon.service';
+import { GuestValidationService } from './services/guest-validation.service';
+import { GuestCrudService } from './services/guest-crud.service';
+import { GuestAttendanceService } from './services/guest-attendance.service';
+import { GuestStatusService } from './services/guest-status.service';
 
 @Injectable()
 export class GuestsService {
-  private studentDiscountActive = false;
-  private ladyDiscountActive = false;
-
   constructor(
-    @InjectModel(Guest.name) private readonly guestModel: Model<GuestDocument>,
+    private readonly crudService: GuestCrudService,
+    private readonly attendanceService: GuestAttendanceService,
+    private readonly statusService: GuestStatusService,
+    private readonly statisticsService: GuestStatisticsService,
+    private readonly discountsService: GuestDiscountsService,
+    private readonly drinksCouponService: DrinksCouponService,
+    private readonly validationService: GuestValidationService,
   ) {}
 
   async findAll(userRole: string): Promise<{
@@ -29,8 +33,12 @@ export class GuestsService {
       freeEntryCount?: number;
     };
   }> {
-    const guests = await this.guestModel.find().exec();
-    const statistics = await this.getAttendanceStatistics(userRole);
+    const guests = await this.crudService.findAll();
+    const statistics = await this.statisticsService.getAttendanceStatistics(
+      userRole,
+      this.discountsService.getStudentDiscountStatus(),
+      this.discountsService.getLadyDiscountStatus(),
+    );
     return { guests, statistics };
   }
 
@@ -38,22 +46,8 @@ export class GuestsService {
     createGuestDto: CreateGuestDto,
     userRole: string,
     userName: string,
-  ): Promise<
-    Document<unknown, {}, GuestDocument> & GuestDocument & { __v: number }
-  > {
-    if (userRole === 'user') {
-      createGuestDto.attended = 'Yes';
-    }
-
-    const guestData = {
-      ...createGuestDto,
-      addedBy: userName,
-      attendedAt: createGuestDto.attended === 'Yes' ? new Date() : null,
-    };
-
-    const createdGuest = new this.guestModel(guestData);
-
-    return createdGuest.save();
+  ): Promise<GuestDocument> {
+    return this.crudService.create(createGuestDto, userRole, userName);
   }
 
   async findOrCreateGuest(
@@ -61,109 +55,56 @@ export class GuestsService {
     userRole: string,
     userName: string,
   ): Promise<GuestDocument> {
-    let guest = await this.guestModel.findOne({ name }).exec();
-
-    if (!guest) {
-      const createGuestDto: CreateGuestDto = { name };
-      guest = (await this.create(
-        createGuestDto,
-        userRole,
-        userName,
-      )) as Document<unknown, {}, GuestDocument> &
-        GuestDocument & { __v: number };
-    }
-    return guest;
+    return this.attendanceService.findOrCreateGuest(name, userRole, userName);
   }
 
   async delete(id: string): Promise<void> {
-    const guest = await this.guestModel.findById(id).exec();
-    if (!guest) {
-      throw new NotFoundException(`Guest with ID "${id}" not found`);
-    }
+    const guest = await this.crudService.findById(id);
 
     if (guest.invitedFrom) {
-      await this.decrementDrinksCoupon(guest.invitedFrom);
+      await this.drinksCouponService.decrementDrinksCoupon(guest.invitedFrom);
     }
 
-    await guest.deleteOne();
-    await this.recalculateDrinksCoupons();
+    await this.crudService.delete(guest);
+    await this.drinksCouponService.recalculateDrinksCoupons(
+      this.discountsService.getStudentDiscountStatus(),
+      this.discountsService.getLadyDiscountStatus(),
+    );
   }
 
   async update(
     id: string,
     updateGuestDto: UpdateGuestDto,
   ): Promise<GuestDocument> {
-    const guest = await this.guestModel.findById(id).exec();
-    if (!guest) {
-      throw new NotFoundException(`Guest with ID "${id}" not found`);
-    }
-
+    const guest = await this.crudService.findById(id);
     const previousInvitedFrom = guest.invitedFrom;
 
-    await this.validateInviter(updateGuestDto.invitedFrom, guest.name);
-    await this.handleInviterChange(
+    await this.validationService.validateInviter(
+      updateGuestDto.invitedFrom,
+      guest.name,
+    );
+    await this.drinksCouponService.handleInviterChange(
       updateGuestDto.invitedFrom,
       previousInvitedFrom,
     );
 
     Object.assign(guest, updateGuestDto);
 
-    this.handleAttendanceTimestamp(guest, updateGuestDto.attended);
+    this.validationService.handleAttendanceTimestamp(
+      guest,
+      updateGuestDto.attended,
+    );
 
-    await guest.save();
+    await this.crudService.save(guest);
 
     if (
       updateGuestDto.isStudent !== undefined ||
       updateGuestDto.isLady !== undefined
     ) {
-      await this.applyDiscounts(guest);
+      await this.discountsService.applyDiscounts(guest);
     }
 
     return guest;
-  }
-
-  private async validateInviter(
-    inviterName: string,
-    guestName: string,
-  ): Promise<void> {
-    if (!inviterName) return;
-
-    if (inviterName === guestName) {
-      throw new Error('A guest cannot invite themselves.');
-    }
-
-    const inviterExists = await this.guestModel
-      .findOne({ name: inviterName })
-      .exec();
-    if (!inviterExists) {
-      throw new Error(
-        `Inviter "${inviterName}" does not exist in the guest list.`,
-      );
-    }
-  }
-
-  private async handleInviterChange(
-    newInviter: string,
-    previousInviter: string,
-  ): Promise<void> {
-    if (newInviter === previousInviter) return;
-
-    if (newInviter) {
-      await this.incrementDrinksCoupon(newInviter);
-    }
-
-    if (previousInviter) {
-      await this.decrementDrinksCoupon(previousInviter);
-    }
-  }
-
-  private handleAttendanceTimestamp(
-    guest: GuestDocument,
-    attended: string,
-  ): void {
-    if (attended === undefined) return;
-
-    guest.attendedAt = attended === 'Yes' ? new Date() : null;
   }
 
   async updateAttended(
@@ -171,27 +112,7 @@ export class GuestsService {
     attended: string,
     userRole: string,
   ): Promise<GuestDocument> {
-    const guest = await this.guestModel.findById(id).exec();
-    if (!guest) {
-      throw new NotFoundException(`Guest with ID "${id}" not found`);
-    }
-
-    if (guest.attended === 'Yes' && attended === 'Yes') {
-      throw new BadRequestException('Guest is already attended');
-    }
-
-    guest.attended = attended;
-
-    if (attended === 'Yes') {
-      guest.attendedAt = new Date();
-    } else {
-      guest.attendedAt = null;
-    }
-
-    await guest.save();
-
-    await this.getAttendanceStatistics(userRole);
-    return guest;
+    return this.attendanceService.updateAttended(id, attended, userRole);
   }
 
   async updateStudentStatus(
@@ -199,172 +120,31 @@ export class GuestsService {
     isStudent: boolean,
     untilWhen: Date | null,
   ): Promise<GuestDocument> {
-    const guest = await this.guestModel.findById(id).exec();
-    if (!guest) {
-      throw new NotFoundException(`Guest with ID "${id}" not found`);
-    }
-
-    if (guest.isStudent !== isStudent && this.studentDiscountActive) {
-      guest.drinksCoupon += isStudent ? 1 : -1;
-      guest.drinksCoupon = Math.max(0, guest.drinksCoupon);
-    }
-
-    guest.isStudent = isStudent;
-    guest.untilWhen = isStudent ? untilWhen : null;
-    await guest.save();
-
-    return guest;
+    return this.statusService.updateStudentStatus(id, isStudent, untilWhen);
   }
 
   async updateLadyStatus(id: string, isLady: boolean): Promise<GuestDocument> {
-    const guest = await this.guestModel.findById(id).exec();
-    if (!guest) {
-      throw new NotFoundException(`Guest with ID "${id}" not found`);
-    }
-
-    if (guest.isLady !== isLady && this.ladyDiscountActive) {
-      guest.drinksCoupon += isLady ? 1 : -1;
-      guest.drinksCoupon = Math.max(0, guest.drinksCoupon);
-    }
-
-    guest.isLady = isLady;
-    await guest.save();
-
-    return guest;
+    return this.statusService.updateLadyStatus(id, isLady);
   }
 
   async findByName(name: string): Promise<GuestDocument> {
-    const guest = await this.guestModel.findOne({ name }).exec();
-    if (!guest) {
-      throw new NotFoundException(`Guest with name "${name}" not found`);
-    }
-    return guest;
+    return this.crudService.findByNameOrThrow(name);
   }
 
   async findById(id: string): Promise<GuestDocument> {
-    const guest = await this.guestModel.findById(id).exec();
-    if (!guest) {
-      throw new NotFoundException(`Guest with ID "${id}" not found`);
-    }
-    return guest;
+    return this.crudService.findById(id);
   }
 
   async getStatistics(): Promise<{ attended: number; total: number }> {
-    const total = await this.guestModel.countDocuments().exec();
-    const attended = await this.guestModel
-      .countDocuments({ attended: 'Yes' })
-      .exec();
-    return { attended, total };
-  }
-
-  private async incrementDrinksCoupon(inviterName: string): Promise<void> {
-    const inviter = await this.guestModel.findOne({ name: inviterName }).exec();
-    if (inviter) {
-      inviter.drinksCoupon += 1;
-      await inviter.save();
-    }
-  }
-
-  private async decrementDrinksCoupon(inviterName: string): Promise<void> {
-    const inviter = await this.guestModel.findOne({ name: inviterName }).exec();
-    if (inviter) {
-      inviter.drinksCoupon = Math.max(0, inviter.drinksCoupon - 1);
-      await inviter.save();
-    }
+    return this.statisticsService.getBasicStatistics();
   }
 
   toggleStudentDiscount(active: boolean): void {
-    if (this.studentDiscountActive !== active) {
-      this.studentDiscountActive = active;
-      this.adjustDrinksCouponsForDiscount('student', active);
-    }
+    this.discountsService.toggleStudentDiscount(active);
   }
 
   toggleLadyDiscount(active: boolean): void {
-    if (this.ladyDiscountActive !== active) {
-      this.ladyDiscountActive = active;
-      this.adjustDrinksCouponsForDiscount('lady', active);
-    }
-  }
-
-  private async adjustDrinksCouponsForDiscount(
-    type: 'student' | 'lady',
-    active: boolean,
-  ): Promise<void> {
-    const guests = await this.guestModel.find().exec();
-
-    guests.forEach(async (guest) => {
-      if (type === 'student' && guest.isStudent) {
-        guest.drinksCoupon = active
-          ? guest.drinksCoupon + 1
-          : Math.max(0, guest.drinksCoupon - 1);
-      }
-
-      if (type === 'lady' && guest.isLady) {
-        guest.drinksCoupon = active
-          ? guest.drinksCoupon + 1
-          : Math.max(0, guest.drinksCoupon - 1);
-      }
-
-      await guest.save();
-    });
-  }
-
-  private async applyDiscounts(guest: GuestDocument): Promise<void> {
-    let discountCoupons = 0;
-
-    if (this.studentDiscountActive && guest.isStudent) {
-      discountCoupons += 1;
-    }
-
-    if (this.ladyDiscountActive && guest.isLady) {
-      discountCoupons += 1;
-    }
-
-    if (guest.drinksCoupon !== discountCoupons) {
-      guest.drinksCoupon = discountCoupons;
-      await guest.save();
-    }
-  }
-
-  private async recalculateDrinksCoupons(): Promise<void> {
-    const guests = await this.guestModel.find().exec();
-
-    const invitedMap: { [key: string]: number } = {};
-
-    await this.guestModel.updateMany({}, { drinksCoupon: 0 });
-
-    guests.forEach((guest) => {
-      if (guest.invitedFrom) {
-        invitedMap[guest.invitedFrom] =
-          (invitedMap[guest.invitedFrom] || 0) + 1;
-      }
-    });
-
-    for (const [name, count] of Object.entries(invitedMap)) {
-      await this.guestModel.updateOne(
-        { name },
-        { $inc: { drinksCoupon: count } },
-      );
-    }
-
-    guests.forEach(async (guest) => {
-      let discountCoupons = 0;
-
-      if (this.studentDiscountActive && guest.isStudent) {
-        discountCoupons += 1;
-      }
-
-      if (this.ladyDiscountActive && guest.isLady) {
-        discountCoupons += 1;
-      }
-
-      const totalDrinksCoupon = guest.drinksCoupon + discountCoupons;
-      await this.guestModel.updateOne(
-        { _id: guest._id },
-        { drinksCoupon: totalDrinksCoupon },
-      );
-    });
+    this.discountsService.toggleLadyDiscount(active);
   }
 
   async getAttendanceStatistics(userRole?: string): Promise<{
@@ -377,62 +157,17 @@ export class GuestsService {
     studentDiscountActive?: boolean;
     ladyDiscountActive?: boolean;
   }> {
-    const totalCount = await this.guestModel.countDocuments().exec();
-    const attendedCount = await this.guestModel
-      .countDocuments({ attended: 'Yes' })
-      .exec();
-
-    if (userRole === 'admin' || userRole === 'master') {
-      const studentsCount = await this.guestModel
-        .countDocuments({ isStudent: true })
-        .exec();
-      const ladiesCount = await this.guestModel
-        .countDocuments({ isLady: true })
-        .exec();
-      const drinksCouponsCount = await this.guestModel
-        .aggregate([
-          {
-            $group: {
-              _id: null,
-              totalDrinks: { $sum: '$drinksCoupon' },
-            },
-          },
-        ])
-        .exec()
-        .then((result) => (result[0] ? result[0].totalDrinks : 0));
-      const freeEntryCount = await this.guestModel
-        .countDocuments({ freeEntry: true })
-        .exec();
-
-      return {
-        attendedCount,
-        totalCount,
-        studentsCount,
-        ladiesCount,
-        drinksCouponsCount,
-        freeEntryCount,
-        studentDiscountActive: this.studentDiscountActive,
-        ladyDiscountActive: this.ladyDiscountActive,
-      };
-    }
-
-    return { attendedCount, totalCount };
+    return this.statisticsService.getAttendanceStatistics(
+      userRole,
+      this.discountsService.getStudentDiscountStatus(),
+      this.discountsService.getLadyDiscountStatus(),
+    );
   }
 
   async adjustDrinksCoupon(
     id: string,
     adjustment: number,
   ): Promise<GuestDocument> {
-    const guest = await this.guestModel.findById(id).exec();
-    if (!guest) {
-      throw new NotFoundException(`Guest with ID "${id}" not found`);
-    }
-
-    guest.drinksCoupon += adjustment;
-    // Ensure drink coupons don't go below 0
-    guest.drinksCoupon = Math.max(0, guest.drinksCoupon);
-
-    await guest.save();
-    return guest;
+    return this.drinksCouponService.adjustDrinksCoupon(id, adjustment);
   }
 }

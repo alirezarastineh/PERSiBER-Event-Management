@@ -5,7 +5,7 @@ import {
   fetchBaseQuery,
   FetchBaseQueryError,
 } from "@reduxjs/toolkit/query/react";
-import { AuthResponse, RefreshTokenRequest } from "@/types/types";
+import { AuthResponse, RefreshTokenRequest } from "@/types/auth";
 import { Mutex } from "async-mutex";
 import { logout, setAuth } from "../features/auth/authSlice";
 

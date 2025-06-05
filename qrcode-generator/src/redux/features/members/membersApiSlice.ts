@@ -4,7 +4,7 @@ import {
   Member,
   MemberStatistics,
   UpdateMemberDto,
-} from "@/types/types";
+} from "@/types/members";
 
 const membersApiSlice = apiSlice.injectEndpoints({
   overrideExisting: true,
@@ -21,7 +21,7 @@ const membersApiSlice = apiSlice.injectEndpoints({
     }),
     createMember: builder.mutation<Member, CreateMemberDto>({
       query: (newMember) => ({
-        url: "/members/add",
+        url: "/members",
         method: "POST",
         body: newMember,
       }),

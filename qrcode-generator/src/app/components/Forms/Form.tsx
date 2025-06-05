@@ -1,4 +1,4 @@
-import { FormProps } from "@/types/types";
+import { FormProps } from "@/types/common";
 import Input from "./Input";
 import Spinner from "../Common/Spinner";
 

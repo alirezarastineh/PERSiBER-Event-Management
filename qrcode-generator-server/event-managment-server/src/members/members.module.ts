@@ -5,6 +5,12 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { Member, MemberSchema } from './schemas/members.schema/members.schema';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { MemberCrudService } from './services/member-crud.service';
+import { MemberValidationService } from './services/member-validation.service';
+import { MemberInvitationService } from './services/member-invitation.service';
+import { MemberStatisticsService } from './services/member-statistics.service';
+import { MemberAttendanceService } from './services/member-attendance.service';
+import { MemberStatusService } from './services/member-status.service';
 
 @Module({
   imports: [
@@ -19,7 +25,15 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     }),
     ConfigModule,
   ],
-  providers: [MembersService],
+  providers: [
+    MembersService,
+    MemberCrudService,
+    MemberValidationService,
+    MemberInvitationService,
+    MemberStatisticsService,
+    MemberAttendanceService,
+    MemberStatusService,
+  ],
   controllers: [MembersController],
 })
 export class MembersModule {}

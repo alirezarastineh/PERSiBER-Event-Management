@@ -1,6 +1,18 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Document, Types } from 'mongoose';
 
-export type BpplistDocument = Bpplist & Document;
+export interface BpplistDocument extends Document<unknown, {}, Bpplist> {
+  _id: Types.ObjectId;
+  name: string;
+  attended: string;
+  attendedAt: Date | null;
+  organizer: string;
+  invitedFrom: string;
+  membersInvited: number;
+  hasLeft: boolean;
+  isStudent: boolean;
+  untilWhen: Date | null;
+}
 
 @Schema()
 export class Bpplist {

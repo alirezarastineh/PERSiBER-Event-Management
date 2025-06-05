@@ -1,14 +1,15 @@
 import cn from "classnames";
 import { motion } from "framer-motion";
+import { SpinnerProps } from "@/types/common";
 
-interface SpinnerProps {
-  readonly sm?: boolean;
-  readonly md?: boolean;
-  readonly lg?: boolean;
-  readonly xl?: boolean;
-}
-
-export default function Spinner({ sm, md, lg, xl }: SpinnerProps) {
+export default function Spinner({
+  sm,
+  md,
+  lg,
+  xl,
+  fullscreen = false,
+  className,
+}: Readonly<SpinnerProps>) {
   // Default to md if no size is specified
   const size = { sm, md: !sm && !lg && !xl, lg, xl };
 
@@ -19,7 +20,7 @@ export default function Spinner({ sm, md, lg, xl }: SpinnerProps) {
     "w-12 h-12": size.xl,
   });
 
-  return (
+  const spinnerElement = (
     <output
       aria-busy="true"
       className="inline-flex justify-center items-center"
@@ -62,8 +63,45 @@ export default function Spinner({ sm, md, lg, xl }: SpinnerProps) {
         >
           <div className="w-1/3 h-1/3 rounded-full bg-rich-gold/80 dark:bg-rich-gold/80 blur-[1px]"></div>
         </motion.div>
+
+        {/* Enhanced glow effect for larger sizes */}
+        {(size.lg || size.xl) && (
+          <motion.div
+            className={cn(
+              "absolute inset-0 rounded-full bg-rich-gold/20 dark:bg-rich-gold/20 blur-sm",
+              sizeClass
+            )}
+            animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.6, 0.3] }}
+            transition={{
+              duration: 2.5,
+              repeat: Infinity,
+              repeatType: "reverse",
+              ease: "easeInOut",
+            }}
+          ></motion.div>
+        )}
       </div>
       <span className="sr-only">Loading...</span>
     </output>
   );
+
+  // If fullscreen is true, wrap in fullscreen container
+  if (fullscreen) {
+    return (
+      <motion.div
+        className={cn(
+          "flex justify-center items-center min-h-[70vh] bg-gradient-to-b from-soft-cream to-gray-100 dark:from-deep-navy dark:to-gray-900",
+          className
+        )}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
+        {spinnerElement}
+      </motion.div>
+    );
+  }
+
+  // Return just the spinner element with optional className
+  return <div className={className}>{spinnerElement}</div>;
 }

@@ -1,21 +1,15 @@
 "use client";
 
-import { ReactNode, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-
-type ModalProps = {
-  readonly isOpen: boolean;
-  readonly onClose: () => void;
-  readonly children: ReactNode;
-  readonly title?: string;
-};
+import { ModalProps } from "@/types/common";
 
 export default function Modal({
   isOpen,
   onClose,
   children,
   title = "Modal Title",
-}: ModalProps) {
+}: Readonly<ModalProps>) {
   const contentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {

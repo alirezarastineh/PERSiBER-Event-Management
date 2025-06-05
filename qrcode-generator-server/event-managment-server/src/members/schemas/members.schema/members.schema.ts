@@ -1,6 +1,18 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Document, Types } from 'mongoose';
 
-export type MemberDocument = Member & Document;
+export interface MemberDocument extends Document<unknown, {}, Member> {
+  _id: Types.ObjectId;
+  name: string;
+  attended: string;
+  attendedAt: Date | null;
+  organizer: string;
+  invitedFrom: string;
+  membersInvited: number;
+  hasLeft: boolean;
+  isStudent: boolean;
+  untilWhen: Date | null;
+}
 
 @Schema()
 export class Member {

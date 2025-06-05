@@ -4,7 +4,7 @@ import {
   BpplistStatistics,
   CreateBpplistDto,
   UpdateBpplistDto,
-} from "@/types/types";
+} from "@/types/bpplist";
 
 const bpplistApiSlice = apiSlice.injectEndpoints({
   overrideExisting: true,

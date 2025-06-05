@@ -2,14 +2,10 @@
 
 import { RootState } from "@/redux/store";
 import { useRouter } from "next/navigation";
-import { ReactNode, useEffect } from "react";
+import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import Spinner from "./Common/Spinner";
-
-interface ProtectedRouteProps {
-  children: ReactNode;
-  allowedRoles: string[];
-}
+import { ProtectedRouteProps } from "@/types/auth";
 
 const ProtectedRoute = ({ children, allowedRoles }: ProtectedRouteProps) => {
   const isAuthenticated = useSelector(

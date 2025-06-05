@@ -1,7 +1,7 @@
 "use client";
 
 import { ToastContainer } from "react-toastify";
-import useVerify from "../hooks/use-verify";
+import useVerify from "../hooks/auth/use-verify";
 import "react-toastify/dist/ReactToastify.css";
 import "../styles/custom-toasts.css"; // We'll create this file
 

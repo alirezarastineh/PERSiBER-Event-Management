@@ -5,7 +5,7 @@ import ProtectedRoute from "../components/ProtectedRoute";
 export default function ScannerPage() {
   return (
     <ProtectedRoute allowedRoles={["user", "admin", "master"]}>
-      <Heading title="QR Scanner" />
+      <Heading title="QR Code Scanner" />
       <QRScanner />
     </ProtectedRoute>
   );
