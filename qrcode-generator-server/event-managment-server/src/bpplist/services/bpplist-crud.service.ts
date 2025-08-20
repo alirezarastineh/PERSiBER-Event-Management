@@ -1,11 +1,12 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+
+import { CreateBpplistDto } from '../dto/create-bpplist.dto/create-bpplist.dto';
 import {
   Bpplist,
   BpplistDocument,
 } from '../schemas/bpplist.schema/bpplist.schema';
-import { Model } from 'mongoose';
-import { CreateBpplistDto } from '../dto/create-bpplist.dto/create-bpplist.dto';
 
 @Injectable()
 export class BpplistCrudService {

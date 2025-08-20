@@ -20,7 +20,7 @@ async function handleFaviconRequest(
   if (acceptHeader.includes("image/png")) {
     outputContentType = "image/png";
     const resizedBuffer = await sharpInstance.png().toBuffer();
-    return new NextResponse(resizedBuffer, {
+    return new NextResponse(new Uint8Array(resizedBuffer), {
       headers: {
         "Content-Type": outputContentType,
         "Cache-Control": "public, max-age=31536000, immutable",
@@ -30,7 +30,7 @@ async function handleFaviconRequest(
 
   // Default to PNG format with x-icon content type for compatibility
   const resizedBuffer = await sharpInstance.png().toBuffer();
-  return new NextResponse(resizedBuffer, {
+  return new NextResponse(new Uint8Array(resizedBuffer), {
     headers: {
       "Content-Type": outputContentType,
       "Cache-Control": "public, max-age=31536000, immutable",
@@ -141,7 +141,7 @@ export async function GET(request: Request) {
   // Use the content type from the original file or derive it from the output format
   const outputContentType = mime.getType(outputFormat) ?? contentType;
 
-  return new NextResponse(resizedBuffer, {
+  return new NextResponse(new Uint8Array(resizedBuffer), {
     headers: {
       "Content-Type": outputContentType,
       "Cache-Control": "public, max-age=31536000, immutable",

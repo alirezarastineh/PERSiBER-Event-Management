@@ -1,14 +1,15 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { GuestDocument } from './schemas/guests.schema/guests.schema';
+
 import { CreateGuestDto } from './dto/create-guest.dto/create-guest.dto';
 import { UpdateGuestDto } from './dto/update-guest.dto/update-guest.dto';
-import { GuestStatisticsService } from './services/guest-statistics.service';
-import { GuestDiscountsService } from './services/guest-discounts.service';
+import { GuestDocument } from './schemas/guests.schema/guests.schema';
 import { DrinksCouponService } from './services/drinks-coupon.service';
-import { GuestValidationService } from './services/guest-validation.service';
-import { GuestCrudService } from './services/guest-crud.service';
 import { GuestAttendanceService } from './services/guest-attendance.service';
+import { GuestCrudService } from './services/guest-crud.service';
+import { GuestDiscountsService } from './services/guest-discounts.service';
+import { GuestStatisticsService } from './services/guest-statistics.service';
 import { GuestStatusService } from './services/guest-status.service';
+import { GuestValidationService } from './services/guest-validation.service';
 
 @Injectable()
 export class GuestsService {

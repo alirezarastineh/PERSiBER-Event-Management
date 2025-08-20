@@ -8,10 +8,11 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
-import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard/jwt-auth.guard';
-import { BpplistService } from './bpplist.service';
 import { Roles } from 'src/common/decorators/roles.decorator';
+import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard/jwt-auth.guard';
 import { RolesGuard } from 'src/common/guards/roles/roles.guard';
+
+import { BpplistService } from './bpplist.service';
 import { CreateBpplistDto } from './dto/create-bpplist.dto/create-bpplist.dto';
 import { UpdateBpplistDto } from './dto/update-bpplist.dto/update-bpplist.dto';
 

@@ -299,7 +299,7 @@ export const useQRScanner = () => {
     return () => {
       isRenderingRef.current = false;
     };
-  }, [isScanning]); // Remove updateAttendedStatus from dependencies as it's stable in RTK Query
+  }, [isScanning, updateAttendedStatus]);
 
   // Apply custom styling for the scanner - same as working version
   useEffect(() => {

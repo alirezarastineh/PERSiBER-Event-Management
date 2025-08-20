@@ -12,9 +12,10 @@ import {
 import { Roles } from 'src/common/decorators/roles.decorator';
 import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard/jwt-auth.guard';
 import { RolesGuard } from 'src/common/guards/roles/roles.guard';
-import { GuestsService } from './guests.service';
+
 import { CreateGuestDto } from './dto/create-guest.dto/create-guest.dto';
 import { UpdateGuestDto } from './dto/update-guest.dto/update-guest.dto';
+import { GuestsService } from './guests.service';
 
 @Controller('guests')
 @UseGuards(JwtAuthGuard)
@@ -22,18 +23,18 @@ export class GuestsController {
   constructor(private readonly guestsService: GuestsService) {}
 
   @Get()
-  async getAllGuests(@Request() req) {
+  async getAllGuests(@Request() req: any) {
     const userRole = req.user.role;
     const { guests, statistics } = await this.guestsService.findAll(userRole);
     return { guests, statistics };
   }
 
-  @Get(':id')
+  @Get('by-id/:id')
   async getGuestById(@Param('id') id: string) {
     return this.guestsService.findById(id);
   }
 
-  @Get(':name')
+  @Get('by-name/:name')
   async getGuestByName(@Param('name') name: string) {
     return this.guestsService.findByName(name);
   }
@@ -41,14 +42,17 @@ export class GuestsController {
   @Post('add')
   @Roles('admin', 'master', 'user')
   @UseGuards(RolesGuard)
-  async createGuest(@Body() createGuestDto: CreateGuestDto, @Request() req) {
+  async createGuest(
+    @Body() createGuestDto: CreateGuestDto,
+    @Request() req: any,
+  ) {
     const userRole = req.user.role;
     const userName = req.user.username;
     return this.guestsService.create(createGuestDto, userRole, userName);
   }
 
   @Post('find-or-create')
-  async findOrCreateGuest(@Body('name') name: string, @Request() req) {
+  async findOrCreateGuest(@Body('name') name: string, @Request() req: any) {
     const userRole = req.user.role;
     const userName = req.user.username;
     return this.guestsService.findOrCreateGuest(name, userRole, userName);
@@ -68,7 +72,7 @@ export class GuestsController {
   async updateAttendedStatus(
     @Param('id') guestId: string,
     @Body('attended') attended: string,
-    @Request() req,
+    @Request() req: any,
   ) {
     const userRole = req.user.role;
     return this.guestsService.updateAttended(guestId, attended, userRole);

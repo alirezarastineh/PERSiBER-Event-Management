@@ -10,7 +10,7 @@ export default function NavLogo({ onLogoClick }: Readonly<NavLogoProps>) {
       scale: 1,
       opacity: 1,
       transition: {
-        type: "spring",
+        type: "spring" as const,
         stiffness: 400,
         damping: 20,
         delay: 0.2,
@@ -19,7 +19,7 @@ export default function NavLogo({ onLogoClick }: Readonly<NavLogoProps>) {
     hover: {
       scale: 1.05,
       transition: {
-        type: "spring",
+        type: "spring" as const,
         stiffness: 400,
         damping: 10,
       },

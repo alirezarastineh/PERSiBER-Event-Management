@@ -1,4 +1,5 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
+
 import { UserCrudService, CreateUserDto } from './user-crud.service';
 
 @Injectable()

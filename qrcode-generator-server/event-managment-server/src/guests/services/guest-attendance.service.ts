@@ -1,9 +1,11 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
-import { GuestDocument } from '../schemas/guests.schema/guests.schema';
+
 import { CreateGuestDto } from '../dto/create-guest.dto/create-guest.dto';
+import { GuestDocument } from '../schemas/guests.schema/guests.schema';
+
 import { GuestCrudService } from './guest-crud.service';
-import { GuestStatisticsService } from './guest-statistics.service';
 import { GuestDiscountsService } from './guest-discounts.service';
+import { GuestStatisticsService } from './guest-statistics.service';
 
 @Injectable()
 export class GuestAttendanceService {

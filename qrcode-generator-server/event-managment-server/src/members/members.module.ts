@@ -1,16 +1,17 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { JwtModule } from '@nestjs/jwt';
+import { MongooseModule } from '@nestjs/mongoose';
+
 import { MembersController } from './members.controller';
 import { MembersService } from './members.service';
-import { MongooseModule } from '@nestjs/mongoose';
 import { Member, MemberSchema } from './schemas/members.schema/members.schema';
-import { JwtModule } from '@nestjs/jwt';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { MemberAttendanceService } from './services/member-attendance.service';
 import { MemberCrudService } from './services/member-crud.service';
-import { MemberValidationService } from './services/member-validation.service';
 import { MemberInvitationService } from './services/member-invitation.service';
 import { MemberStatisticsService } from './services/member-statistics.service';
-import { MemberAttendanceService } from './services/member-attendance.service';
 import { MemberStatusService } from './services/member-status.service';
+import { MemberValidationService } from './services/member-validation.service';
 
 @Module({
   imports: [

@@ -21,7 +21,7 @@ const guestsApiSlice = apiSlice.injectEndpoints({
     }),
     getGuestByName: builder.query<Guest, string>({
       query: (name) => ({
-        url: `/guests/${name}`,
+        url: `/guests/by-name/${name}`,
         method: "GET",
       }),
       providesTags: (result, error, name) => [
@@ -30,7 +30,7 @@ const guestsApiSlice = apiSlice.injectEndpoints({
     }),
     getGuestById: builder.query<Guest, string>({
       query: (id) => ({
-        url: `/guests/${id}`,
+        url: `/guests/by-id/${id}`,
         method: "GET",
       }),
       providesTags: (result, error, id) => [{ type: "Guest" as const, id }],

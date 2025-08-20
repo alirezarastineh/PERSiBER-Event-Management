@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { UsersService } from 'src/users/users.service';
-import { AuthTokenService, TokenPair } from './services/auth-token.service';
+
 import { AuthPasswordService } from './services/auth-password.service';
-import { AuthValidationService } from './services/auth-validation.service';
 import { AuthRoleService } from './services/auth-role.service';
+import { AuthTokenService, TokenPair } from './services/auth-token.service';
+import { AuthValidationService } from './services/auth-validation.service';
 
 @Injectable()
 export class AuthService {

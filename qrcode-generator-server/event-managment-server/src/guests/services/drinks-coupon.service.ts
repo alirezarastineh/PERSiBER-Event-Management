@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+
 import { Guest, GuestDocument } from '../schemas/guests.schema/guests.schema';
 
 @Injectable()
@@ -69,7 +70,7 @@ export class DrinksCouponService {
     await this.guestModel.updateMany({}, { drinksCoupon: 0 });
 
     // Count invitations for each guest
-    guests.forEach((guest) => {
+    guests.forEach(guest => {
       if (guest.invitedFrom) {
         invitedMap[guest.invitedFrom] =
           (invitedMap[guest.invitedFrom] || 0) + 1;
@@ -85,7 +86,7 @@ export class DrinksCouponService {
     }
 
     // Apply discount coupons
-    guests.forEach(async (guest) => {
+    guests.forEach(async guest => {
       let discountCoupons = 0;
 
       if (studentDiscountActive && guest.isStudent) {

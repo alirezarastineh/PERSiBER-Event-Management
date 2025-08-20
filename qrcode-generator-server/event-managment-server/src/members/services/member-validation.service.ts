@@ -1,4 +1,5 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
+
 import { CreateMemberDto } from '../dto/create-member.dto/create-member.dto';
 import { UpdateMemberDto } from '../dto/update-member.dto/update-member.dto';
 

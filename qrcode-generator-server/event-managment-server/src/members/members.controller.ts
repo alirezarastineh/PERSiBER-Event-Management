@@ -8,12 +8,13 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
-import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard/jwt-auth.guard';
-import { MembersService } from './members.service';
 import { Roles } from 'src/common/decorators/roles.decorator';
+import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard/jwt-auth.guard';
 import { RolesGuard } from 'src/common/guards/roles/roles.guard';
+
 import { CreateMemberDto } from './dto/create-member.dto/create-member.dto';
 import { UpdateMemberDto } from './dto/update-member.dto/update-member.dto';
+import { MembersService } from './members.service';
 
 @Controller('members')
 @UseGuards(JwtAuthGuard)

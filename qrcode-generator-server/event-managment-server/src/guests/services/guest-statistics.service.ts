@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+
 import { Guest, GuestDocument } from '../schemas/guests.schema/guests.schema';
 
 @Injectable()
@@ -53,7 +54,7 @@ export class GuestStatisticsService {
           },
         ])
         .exec()
-        .then((result) => (result[0] ? result[0].totalDrinks : 0));
+        .then(result => (result[0] ? result[0].totalDrinks : 0));
       const freeEntryCount = await this.guestModel
         .countDocuments({ freeEntry: true })
         .exec();

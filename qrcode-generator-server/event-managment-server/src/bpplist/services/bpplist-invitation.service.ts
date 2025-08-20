@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+
 import { BpplistCrudService } from './bpplist-crud.service';
 
 @Injectable()
@@ -30,7 +31,7 @@ export class BpplistInvitationService {
     // Calculate invitation counts
     const invitedMap: { [key: string]: number } = {};
 
-    bpplist.forEach((item) => {
+    bpplist.forEach(item => {
       if (item.invitedFrom) {
         invitedMap[item.invitedFrom] = (invitedMap[item.invitedFrom] || 0) + 1;
       }

@@ -1,5 +1,7 @@
 import { Injectable } from '@nestjs/common';
+
 import { GuestDocument } from '../schemas/guests.schema/guests.schema';
+
 import { GuestCrudService } from './guest-crud.service';
 import { GuestDiscountsService } from './guest-discounts.service';
 

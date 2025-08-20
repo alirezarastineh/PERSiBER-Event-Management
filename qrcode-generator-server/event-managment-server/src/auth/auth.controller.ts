@@ -4,16 +4,17 @@ import {
   Get,
   Post,
   Req,
+  Res,
   UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
-import { AuthService } from './auth.service';
-import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard/jwt-auth.guard';
-import { Request } from 'express';
-import { RequestWithUser } from 'src/common/interfaces/request-with-user.interface';
 import { JwtService } from '@nestjs/jwt';
-import { RolesGuard } from 'src/common/guards/roles/roles.guard';
 import { Roles } from 'src/common/decorators/roles.decorator';
+import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard/jwt-auth.guard';
+import { RolesGuard } from 'src/common/guards/roles/roles.guard';
+import { RequestWithUser } from 'src/common/interfaces/request-with-user.interface';
+
+import { AuthService } from './auth.service';
 
 @Controller('auth')
 export class AuthController {
@@ -29,15 +30,19 @@ export class AuthController {
     @Body('username') username: string,
     @Body('password') password: string,
     @Req() request: RequestWithUser,
+    @Res({ passthrough: true }) reply: any,
   ) {
     const tokens = await this.authService.register(username, password);
 
     const options = {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      path: '/',
     };
-    request.res.cookie('auth-cookie', tokens.accessToken, options);
-    request.res.cookie('refresh-cookie', tokens.refreshToken, options);
+
+    reply.cookie('auth-cookie', tokens.accessToken, options);
+    reply.cookie('refresh-cookie', tokens.refreshToken, options);
 
     return { message: 'User registered successfully' };
   }
@@ -46,7 +51,8 @@ export class AuthController {
   async login(
     @Body('username') username: string,
     @Body('password') password: string,
-    @Req() request: Request,
+    @Req() request: any,
+    @Res({ passthrough: true }) reply: any,
   ) {
     const { accessToken, refreshToken, user } = await this.authService.login(
       username,
@@ -56,15 +62,17 @@ export class AuthController {
     const options = {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      path: '/',
     };
 
-    request.res.cookie('auth-cookie', accessToken, options);
-    request.res.cookie('refresh-cookie', refreshToken, options);
+    reply.cookie('auth-cookie', accessToken, options);
+    reply.cookie('refresh-cookie', refreshToken, options);
 
     return {
       message: 'Login successful',
-      accessToken: accessToken,
-      refreshToken: refreshToken,
+      accessToken,
+      refreshToken,
       user: {
         username: user.username,
         role: user.role,
@@ -73,9 +81,9 @@ export class AuthController {
   }
 
   @Post('logout')
-  async logout(@Req() request: Request) {
-    request.res.clearCookie('auth-cookie');
-    request.res.clearCookie('refresh-cookie');
+  async logout(@Req() request: any, @Res({ passthrough: true }) reply: any) {
+    reply.clearCookie('auth-cookie', { path: '/' });
+    reply.clearCookie('refresh-cookie', { path: '/' });
 
     return { message: 'Logout successful' };
   }
@@ -93,7 +101,7 @@ export class AuthController {
   }
 
   @Post('refresh')
-  async refresh(@Req() request: Request) {
+  async refresh(@Req() request: any, @Res({ passthrough: true }) reply: any) {
     const refreshToken = request.cookies['refresh-cookie'];
     if (!refreshToken) {
       throw new UnauthorizedException('Refresh token not found');
@@ -104,9 +112,12 @@ export class AuthController {
     const options = {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      path: '/',
     };
-    request.res.cookie('auth-cookie', tokens.accessToken, options);
-    request.res.cookie('refresh-cookie', tokens.refreshToken, options);
+
+    reply.cookie('auth-cookie', tokens.accessToken, options);
+    reply.cookie('refresh-cookie', tokens.refreshToken, options);
 
     return tokens;
   }

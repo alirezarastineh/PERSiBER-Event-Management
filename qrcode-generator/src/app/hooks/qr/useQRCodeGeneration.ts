@@ -39,9 +39,9 @@ export const useQRCodeGeneration = () => {
     const doc = new jsPDF();
     const pageWidth = doc.internal.pageSize.getWidth();
     const pageHeight = doc.internal.pageSize.getHeight();
-    const qrCodeSize = 100;
+    const qrCodeSize = 110;
     const qrCodeX = (pageWidth - qrCodeSize) / 2;
-    const qrCodeY = pageHeight / 2 - 30;
+    const qrCodeY = 130;
 
     // Format the guest name with proper casing
     const formattedText = currentGuest
@@ -51,106 +51,105 @@ export const useQRCodeGeneration = () => {
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
       .join(" ");
 
-    // ===== TROPICAL GRADIENT BACKGROUND =====
-    for (let i = 0; i < pageHeight; i += 2) {
-      const ratio = i / pageHeight;
-      const r = Math.round(65 + (255 - 65) * ratio);
-      const g = Math.round(130 + (215 - 130) * ratio);
-      const b = Math.round(246 - (246 - 135) * ratio);
+    // Colors (Persian Gala)
+    const gold = { r: 255, g: 198, b: 71 }; // #ffc647
+    const white = { r: 255, g: 255, b: 255 };
+    const black = { r: 0, g: 0, b: 0 };
+
+    // ===== BACKGROUND: Black -> Gold vertical gradient =====
+    for (let y = 0; y < pageHeight; y += 1) {
+      const t = y / pageHeight;
+      // Bias the interpolation toward black so most of the page is darker
+      const biased = Math.pow(t, 2.2);
+      const r = Math.round(black.r + (gold.r - black.r) * biased);
+      const g = Math.round(black.g + (gold.g - black.g) * biased);
+      const b = Math.round(black.b + (gold.b - black.b) * biased);
       doc.setFillColor(r, g, b);
-      doc.rect(0, i, pageWidth, 2, "F");
+      doc.rect(0, y, pageWidth, 1, "F");
     }
 
-    // ===== TROPICAL BORDER =====
-    const borderWidth = 4;
-    const borderMargin = 12;
-    doc.setDrawColor(255, 165, 0);
-    doc.setLineWidth(borderWidth);
-    doc.roundedRect(
-      borderMargin,
-      borderMargin,
-      pageWidth - 2 * borderMargin,
-      pageHeight - 2 * borderMargin,
-      5,
-      5,
-      "S"
-    );
+    // ===== HEADER (minimal, no shadow) =====
+    doc.setFont("times", "bold");
+    doc.setFontSize(46);
+    doc.setTextColor(white.r, white.g, white.b);
+    doc.text("PERSIAN GALA", pageWidth / 2, 58, { align: "center" });
 
-    // ===== HEADER - SUMMER PARTY BRANDING =====
-    doc.setTextColor(255, 215, 0);
-    doc.setFontSize(24);
-    doc.setFont("helvetica", "bold");
-    doc.text("Private Summer Party", pageWidth / 2, 45, { align: "center" });
-
-    doc.setFontSize(8);
-    doc.setTextColor(255, 255, 255);
-    doc.setFont("helvetica", "bold");
-    doc.text("BBQ, INDOOR & OPEN AIR PARTY ALL NIGHT LONG", pageWidth / 2, 55, {
+    // Date • Day • Time line
+    doc.setFont("times", "normal");
+    doc.setFontSize(13);
+    doc.setTextColor(white.r, white.g, white.b);
+    doc.text("SATURDAY · NOVEMBER 22 · 9 PM – 3 AM", pageWidth / 2, 72, {
       align: "center",
     });
 
-    // ===== GUEST NAME =====
-    doc.setFontSize(12);
-    doc.setTextColor(255, 255, 255);
-    doc.setFont("helvetica", "normal");
+    // Guest name (invitation personalization)
+    if (formattedText) {
+      doc.setFont("times", "bold");
+      doc.setFontSize(28);
+      doc.setTextColor(gold.r, gold.g, gold.b);
+      // Position the guest name lower, closer to the QR code
+      doc.text(formattedText.toUpperCase(), pageWidth / 2, 100, {
+        align: "center",
+      });
+    }
 
-    doc.setFontSize(28);
-    doc.setTextColor(255, 215, 0);
-    doc.setFont("helvetica", "bold");
-    doc.text(formattedText, pageWidth / 2, 80, { align: "center" });
-
-    doc.setFontSize(12);
-    doc.setTextColor(255, 215, 0);
-    doc.setFont("helvetica", "bold");
-    doc.text("DRESS CODE: HAWAIIAN", pageWidth / 2, 95, {
-      align: "center",
-    });
-
-    // ===== QR CODE WITH TROPICAL FRAME =====
-    doc.setDrawColor(255, 165, 0);
-    doc.setLineWidth(3);
+    // ===== QR CODE WITH MODERN DOUBLE FRAME =====
+    doc.setDrawColor(gold.r, gold.g, gold.b);
+    doc.setLineWidth(2.4);
     doc.roundedRect(
-      qrCodeX - 6,
-      qrCodeY - 6,
-      qrCodeSize + 12,
-      qrCodeSize + 12,
-      5,
-      5,
+      qrCodeX - 8,
+      qrCodeY - 8,
+      qrCodeSize + 16,
+      qrCodeSize + 16,
+      6,
+      6,
       "S"
     );
 
-    doc.setDrawColor(255, 215, 0);
-    doc.setLineWidth(1);
+    doc.setDrawColor(white.r, white.g, white.b);
+    doc.setLineWidth(0.8);
     doc.roundedRect(
       qrCodeX - 3,
       qrCodeY - 3,
       qrCodeSize + 6,
       qrCodeSize + 6,
-      3,
-      3,
+      4,
+      4,
       "S"
     );
 
-    doc.setFillColor(255, 255, 255);
-    doc.roundedRect(qrCodeX, qrCodeY, qrCodeSize, qrCodeSize, 2, 2, "F");
-
+    doc.setFillColor(white.r, white.g, white.b);
+    doc.roundedRect(qrCodeX, qrCodeY, qrCodeSize, qrCodeSize, 3, 3, "F");
     doc.addImage(qrCodeUrl, "PNG", qrCodeX, qrCodeY, qrCodeSize, qrCodeSize);
 
     // ===== EVENT DETAILS =====
+    const detailsStartY = qrCodeY + qrCodeSize + 22;
+    doc.setFont("times", "normal");
+    doc.setFontSize(12);
+    doc.setTextColor(black.r, black.g, black.b);
+    doc.text("DRESS CODE", pageWidth / 2, detailsStartY, { align: "center" });
+    doc.setFont("times", "bold");
     doc.setFontSize(20);
-    doc.setTextColor(255, 255, 255);
-    doc.setFont("helvetica", "bold");
-    doc.text("SATURDAY AUGUST 16", pageWidth / 2, qrCodeY + qrCodeSize + 30, {
+    doc.setTextColor(black.r, black.g, black.b);
+    doc.text("COCKTAIL CASUAL", pageWidth / 2, detailsStartY + 12, {
       align: "center",
     });
 
-    doc.setFontSize(14);
-    doc.text("6 PM - 4 AM", pageWidth / 2, qrCodeY + qrCodeSize + 45, {
+    // Admission (no address)
+    doc.setFont("times", "normal");
+    doc.setFontSize(10);
+    doc.setTextColor(white.r, white.g, white.b);
+    doc.text("ADMISSION", pageWidth / 2, detailsStartY + 54, {
       align: "center",
     });
+    doc.setFont("times", "bold");
+    doc.setFontSize(16);
+    doc.setTextColor(black.r, black.g, black.b);
+    // Place €15 slightly lower for emphasis; black text contrasts with gold gradient near bottom
+    doc.text("€15", pageWidth / 2, detailsStartY + 68, { align: "center" });
 
     // ===== SAVE FILE =====
-    const pdfFileName = `${formattedText} - Summer Party - PERSiBER August 16.pdf`;
+    const pdfFileName = `${formattedText} - Persian Gala - PERSiBER Nov 22.pdf`;
     doc.save(pdfFileName);
   };
 

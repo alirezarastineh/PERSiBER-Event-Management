@@ -1,10 +1,17 @@
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
-import * as cookieParser from 'cookie-parser';
+import { NestFactory } from '@nestjs/core';
+import {
+  FastifyAdapter,
+  NestFastifyApplication,
+} from '@nestjs/platform-fastify';
+
+import { AppModule } from './app.module';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestFastifyApplication>(
+    AppModule,
+    new FastifyAdapter(),
+  );
 
   const configService = app.get(ConfigService);
 
@@ -30,10 +37,13 @@ async function bootstrap() {
     credentials: true,
   });
 
-  app.use(cookieParser());
+  // Register Fastify cookie plugin
+  await app.register(require('@fastify/cookie'), {
+    secret: configService.get<string>('COOKIE_SECRET') ?? 'my-secret-key',
+  });
 
   const port = configService.get<number>('PORT', 8000);
-  await app.listen(port);
+  await app.listen(port, '0.0.0.0');
 }
 
 bootstrap();

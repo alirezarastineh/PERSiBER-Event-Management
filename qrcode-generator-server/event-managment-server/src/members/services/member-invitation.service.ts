@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+
 import { MemberCrudService } from './member-crud.service';
 
 @Injectable()
@@ -30,7 +31,7 @@ export class MemberInvitationService {
     // Calculate invitation counts
     const invitedMap: { [key: string]: number } = {};
 
-    members.forEach((member) => {
+    members.forEach(member => {
       if (member.invitedFrom) {
         invitedMap[member.invitedFrom] =
           (invitedMap[member.invitedFrom] || 0) + 1;

@@ -32,7 +32,7 @@ export class AdminController {
 
   @Roles('admin', 'master')
   @Delete('user/:id')
-  async deleteUser(@Param('id') userId: string, @Request() req) {
+  async deleteUser(@Param('id') userId: string, @Request() req: any) {
     const user = await this.usersService.findById(userId);
 
     if (!user) {
@@ -59,7 +59,7 @@ export class AdminController {
   async updateRole(
     @Param('id') userId: string,
     @Body('role') role: string,
-    @Request() req,
+    @Request() req: any,
   ) {
     const user = await this.usersService.findById(userId);
 

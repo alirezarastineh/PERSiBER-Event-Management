@@ -1,14 +1,15 @@
 import { Module } from '@nestjs/common';
-import { AuthService } from './auth.service';
-import { AuthController } from './auth.controller';
-import { UsersModule } from 'src/users/users.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard/jwt-auth.guard';
-import { AuthTokenService } from './services/auth-token.service';
+import { UsersModule } from 'src/users/users.module';
+
+import { AuthController } from './auth.controller';
+import { AuthService } from './auth.service';
 import { AuthPasswordService } from './services/auth-password.service';
-import { AuthValidationService } from './services/auth-validation.service';
 import { AuthRoleService } from './services/auth-role.service';
+import { AuthTokenService } from './services/auth-token.service';
+import { AuthValidationService } from './services/auth-validation.service';
 
 @Module({
   imports: [

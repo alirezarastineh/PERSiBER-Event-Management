@@ -1,5 +1,5 @@
-import { Request } from 'express';
-
-export interface RequestWithUser extends Request {
+export interface RequestWithUser {
   user: any;
+  headers: any;
+  cookies: any;
 }

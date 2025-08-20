@@ -26,7 +26,7 @@ export interface ToggleSwitchProps {
     visible: {
       opacity: number;
       y: number;
-      transition: { type: string; stiffness: number; damping: number };
+      transition: { type: "spring"; stiffness: number; damping: number };
     };
   };
 }

@@ -26,13 +26,13 @@ export default function MobileMenu({
     hidden: {
       x: "100%",
       opacity: 0,
-      transition: { type: "tween", duration: 0.25 },
+      transition: { type: "tween" as const, duration: 0.25 },
     },
     visible: {
       x: 0,
       opacity: 1,
       transition: {
-        type: "spring",
+        type: "spring" as const,
         stiffness: 300,
         damping: 30,
         staggerChildren: 0.05,
@@ -46,7 +46,7 @@ export default function MobileMenu({
     visible: {
       x: 0,
       opacity: 1,
-      transition: { type: "spring", stiffness: 300, damping: 20 },
+      transition: { type: "spring" as const, stiffness: 300, damping: 20 },
     },
   };
 

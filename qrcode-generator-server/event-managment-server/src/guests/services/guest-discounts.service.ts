@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+
 import { Guest, GuestDocument } from '../schemas/guests.schema/guests.schema';
 
 @Injectable()
@@ -80,7 +81,7 @@ export class GuestDiscountsService {
   ): Promise<void> {
     const guests = await this.guestModel.find().exec();
 
-    guests.forEach(async (guest) => {
+    guests.forEach(async guest => {
       if (type === 'student' && guest.isStudent) {
         guest.drinksCoupon = active
           ? guest.drinksCoupon + 1
