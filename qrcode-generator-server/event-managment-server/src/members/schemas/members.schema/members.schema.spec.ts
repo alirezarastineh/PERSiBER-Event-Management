@@ -1,7 +1,7 @@
-import { MembersSchema } from './members.schema';
+import { MemberSchema } from './members.schema';
 
 describe('MembersSchema', () => {
   it('should be defined', () => {
-    expect(new MembersSchema()).toBeDefined();
+    expect(MemberSchema).toBeDefined();
   });
 });

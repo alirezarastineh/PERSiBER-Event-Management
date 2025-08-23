@@ -7,7 +7,7 @@ import {
 
 import { AppModule } from './app.module';
 
-async function bootstrap() {
+async function bootstrap(): Promise<void> {
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
     new FastifyAdapter(),
@@ -34,11 +34,13 @@ async function bootstrap() {
         callback(new Error('Not allowed by CORS'));
       }
     },
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     credentials: true,
   });
 
   // Register Fastify cookie plugin
-  await app.register(require('@fastify/cookie'), {
+  const fastifyCookie = await import('@fastify/cookie');
+  await app.register(fastifyCookie.default, {
     secret: configService.get<string>('COOKIE_SECRET') ?? 'my-secret-key',
   });
 

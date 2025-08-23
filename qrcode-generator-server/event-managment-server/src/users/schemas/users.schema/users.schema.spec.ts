@@ -1,7 +1,7 @@
-import { UsersSchema } from './users.schema';
+import { UserSchema } from './users.schema';
 
 describe('UsersSchema', () => {
   it('should be defined', () => {
-    expect(new UsersSchema()).toBeDefined();
+    expect(UserSchema).toBeDefined();
   });
 });

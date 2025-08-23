@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 
 import { CreateGuestDto } from './dto/create-guest.dto/create-guest.dto';
 import { UpdateGuestDto } from './dto/update-guest.dto/update-guest.dto';
@@ -13,6 +13,7 @@ import { GuestValidationService } from './services/guest-validation.service';
 
 @Injectable()
 export class GuestsService {
+  private readonly logger = new Logger(GuestsService.name);
   constructor(
     private readonly crudService: GuestCrudService,
     private readonly attendanceService: GuestAttendanceService,
@@ -59,8 +60,12 @@ export class GuestsService {
     return this.attendanceService.findOrCreateGuest(name, userRole, userName);
   }
 
-  async delete(id: string): Promise<void> {
+  async delete(id: string, userRole: string, userName: string): Promise<void> {
     const guest = await this.crudService.findById(id);
+
+    this.logger.log(
+      `Guest ${guest.name} (${id}) deleted by ${userName} (${userRole})`,
+    );
 
     if (guest.invitedFrom) {
       await this.drinksCouponService.decrementDrinksCoupon(guest.invitedFrom);
@@ -76,9 +81,15 @@ export class GuestsService {
   async update(
     id: string,
     updateGuestDto: UpdateGuestDto,
+    userRole: string,
+    userName: string,
   ): Promise<GuestDocument> {
     const guest = await this.crudService.findById(id);
     const previousInvitedFrom = guest.invitedFrom;
+
+    this.logger.log(
+      `Guest ${guest.name} (${id}) updated by ${userName} (${userRole})`,
+    );
 
     await this.validationService.validateInviter(
       updateGuestDto.invitedFrom,
@@ -120,11 +131,24 @@ export class GuestsService {
     id: string,
     isStudent: boolean,
     untilWhen: Date | null,
+    userRole: string,
+    userName: string,
   ): Promise<GuestDocument> {
+    this.logger.log(
+      `Student status for guest ${id} set to ${isStudent} by ${userName} (${userRole})`,
+    );
     return this.statusService.updateStudentStatus(id, isStudent, untilWhen);
   }
 
-  async updateLadyStatus(id: string, isLady: boolean): Promise<GuestDocument> {
+  async updateLadyStatus(
+    id: string,
+    isLady: boolean,
+    userRole: string,
+    userName: string,
+  ): Promise<GuestDocument> {
+    this.logger.log(
+      `Lady status for guest ${id} set to ${isLady} by ${userName} (${userRole})`,
+    );
     return this.statusService.updateLadyStatus(id, isLady);
   }
 
@@ -140,11 +164,25 @@ export class GuestsService {
     return this.statisticsService.getBasicStatistics();
   }
 
-  toggleStudentDiscount(active: boolean): void {
+  toggleStudentDiscount(
+    active: boolean,
+    userRole: string,
+    userName: string,
+  ): void {
+    this.logger.log(
+      `Student discount ${active ? 'enabled' : 'disabled'} by ${userName} (${userRole})`,
+    );
     this.discountsService.toggleStudentDiscount(active);
   }
 
-  toggleLadyDiscount(active: boolean): void {
+  toggleLadyDiscount(
+    active: boolean,
+    userRole: string,
+    userName: string,
+  ): void {
+    this.logger.log(
+      `Lady discount ${active ? 'enabled' : 'disabled'} by ${userName} (${userRole})`,
+    );
     this.discountsService.toggleLadyDiscount(active);
   }
 
@@ -168,7 +206,12 @@ export class GuestsService {
   async adjustDrinksCoupon(
     id: string,
     adjustment: number,
+    userRole: string,
+    userName: string,
   ): Promise<GuestDocument> {
+    this.logger.log(
+      `Drinks coupon for guest ${id} adjusted by ${adjustment} by ${userName} (${userRole})`,
+    );
     return this.drinksCouponService.adjustDrinksCoupon(id, adjustment);
   }
 }

@@ -15,6 +15,7 @@ import { RolesGuard } from 'src/common/guards/roles/roles.guard';
 import { BpplistService } from './bpplist.service';
 import { CreateBpplistDto } from './dto/create-bpplist.dto/create-bpplist.dto';
 import { UpdateBpplistDto } from './dto/update-bpplist.dto/update-bpplist.dto';
+import { Bpplist } from './schemas/bpplist.schema/bpplist.schema';
 
 @Controller('bpplist')
 @UseGuards(JwtAuthGuard)
@@ -22,7 +23,10 @@ export class BpplistController {
   constructor(private readonly bpplistService: BpplistService) {}
 
   @Get()
-  async getAllBpplist() {
+  async getAllBpplist(): Promise<{
+    bpplist: Bpplist[];
+    statistics: { attendedCount: number; totalCount: number };
+  }> {
     const { bpplist, statistics } = await this.bpplistService.findAll();
     return { bpplist, statistics };
   }
@@ -30,7 +34,9 @@ export class BpplistController {
   @Post()
   @Roles('admin', 'master')
   @UseGuards(RolesGuard)
-  async createBpplistItem(@Body() createBpplistDto: CreateBpplistDto) {
+  async createBpplistItem(
+    @Body() createBpplistDto: CreateBpplistDto,
+  ): Promise<Bpplist> {
     return this.bpplistService.create(createBpplistDto);
   }
 
@@ -40,7 +46,7 @@ export class BpplistController {
   async updateBpplistItem(
     @Param('id') itemId: string,
     @Body() updateBpplistDto: UpdateBpplistDto,
-  ) {
+  ): Promise<Bpplist> {
     return this.bpplistService.update(itemId, updateBpplistDto);
   }
 
@@ -48,7 +54,7 @@ export class BpplistController {
   async updateAttendedStatus(
     @Param('id') itemId: string,
     @Body('attended') attended: string,
-  ) {
+  ): Promise<Bpplist> {
     return this.bpplistService.updateAttended(itemId, attended);
   }
 
@@ -58,7 +64,7 @@ export class BpplistController {
   async updateHasLeftStatus(
     @Param('id') itemId: string,
     @Body('hasLeft') hasLeft: boolean,
-  ) {
+  ): Promise<Bpplist> {
     return this.bpplistService.updateHasLeft(itemId, hasLeft);
   }
 
@@ -69,7 +75,7 @@ export class BpplistController {
     @Param('id') itemId: string,
     @Body('isStudent') isStudent: boolean,
     @Body('untilWhen') untilWhen: Date | null,
-  ) {
+  ): Promise<Bpplist> {
     return this.bpplistService.updateStudentStatus(
       itemId,
       isStudent,
@@ -80,7 +86,7 @@ export class BpplistController {
   @Delete(':id')
   @Roles('admin', 'master')
   @UseGuards(RolesGuard)
-  async deleteBpplistItem(@Param('id') itemId: string) {
+  async deleteBpplistItem(@Param('id') itemId: string): Promise<void> {
     return this.bpplistService.delete(itemId);
   }
 }

@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { FilterQuery, Model, UpdateQuery } from 'mongoose';
 
 import { CreateBpplistDto } from '../dto/create-bpplist.dto/create-bpplist.dto';
 import {
@@ -49,11 +49,16 @@ export class BpplistCrudService {
     return bpplistItem.save();
   }
 
-  async countDocuments(filter: any = {}): Promise<number> {
+  async countDocuments(
+    filter: FilterQuery<BpplistDocument> = {},
+  ): Promise<number> {
     return this.bpplistModel.countDocuments(filter).exec();
   }
 
-  async updateMany(filter: any, update: any): Promise<void> {
+  async updateMany(
+    filter: FilterQuery<BpplistDocument>,
+    update: UpdateQuery<BpplistDocument>,
+  ): Promise<void> {
     await this.bpplistModel.updateMany(filter, update);
   }
 }

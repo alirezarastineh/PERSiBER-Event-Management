@@ -44,6 +44,7 @@ export default function AuthFormPanel({
               width={100}
               height={100}
               priority
+              style={{ width: "auto", height: "auto" }}
             />
           </motion.div>
 

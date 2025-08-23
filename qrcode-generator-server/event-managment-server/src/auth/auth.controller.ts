@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  Logger,
   Post,
   Req,
   Res,
@@ -9,15 +10,20 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { CookieOptions, Response } from 'express';
 import { Roles } from 'src/common/decorators/roles.decorator';
 import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard/jwt-auth.guard';
 import { RolesGuard } from 'src/common/guards/roles/roles.guard';
 import { RequestWithUser } from 'src/common/interfaces/request-with-user.interface';
+import { User } from 'src/users/schemas/users.schema/users.schema';
 
 import { AuthService } from './auth.service';
+import { JwtPayload } from './services/auth-token.service';
 
 @Controller('auth')
 export class AuthController {
+  private readonly logger = new Logger(AuthController.name);
+
   constructor(
     private readonly authService: AuthService,
     private readonly jwtService: JwtService,
@@ -30,14 +36,14 @@ export class AuthController {
     @Body('username') username: string,
     @Body('password') password: string,
     @Req() request: RequestWithUser,
-    @Res({ passthrough: true }) reply: any,
-  ) {
+    @Res({ passthrough: true }) reply: Response,
+  ): Promise<{ message: string }> {
     const tokens = await this.authService.register(username, password);
 
     const options = {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
+      sameSite: 'strict' as const,
       path: '/',
     };
 
@@ -51,9 +57,14 @@ export class AuthController {
   async login(
     @Body('username') username: string,
     @Body('password') password: string,
-    @Req() request: any,
-    @Res({ passthrough: true }) reply: any,
-  ) {
+    @Req() request: RequestWithUser,
+    @Res({ passthrough: true }) reply: Response,
+  ): Promise<{
+    message: string;
+    accessToken: string;
+    refreshToken: string;
+    user: { username: string; role: string };
+  }> {
     const { accessToken, refreshToken, user } = await this.authService.login(
       username,
       password,
@@ -62,7 +73,7 @@ export class AuthController {
     const options = {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
+      sameSite: 'strict' as const,
       path: '/',
     };
 
@@ -81,27 +92,33 @@ export class AuthController {
   }
 
   @Post('logout')
-  async logout(@Req() request: any, @Res({ passthrough: true }) reply: any) {
-    reply.clearCookie('auth-cookie', { path: '/' });
-    reply.clearCookie('refresh-cookie', { path: '/' });
+  async logout(
+    @Req() request: RequestWithUser,
+    @Res({ passthrough: true }) reply: Response,
+  ): Promise<{ message: string }> {
+    reply.clearCookie('auth-cookie', { path: '/' } as CookieOptions);
+    reply.clearCookie('refresh-cookie', { path: '/' } as CookieOptions);
 
     return { message: 'Logout successful' };
   }
 
   @UseGuards(JwtAuthGuard)
   @Get('me')
-  async getMe(@Req() request: RequestWithUser) {
-    return this.authService.getUser(request.user.sub);
+  async getMe(@Req() request: RequestWithUser): Promise<User> {
+    return this.authService.getUser(request.user._id.toString());
   }
 
   @UseGuards(JwtAuthGuard)
   @Post('protected')
-  protectedRoute() {
+  protectedRoute(): { message: string } {
     return { message: 'You have access!' };
   }
 
   @Post('refresh')
-  async refresh(@Req() request: any, @Res({ passthrough: true }) reply: any) {
+  async refresh(
+    @Req() request: RequestWithUser,
+    @Res({ passthrough: true }) reply: Response,
+  ): Promise<{ accessToken: string; refreshToken: string }> {
     const refreshToken = request.cookies['refresh-cookie'];
     if (!refreshToken) {
       throw new UnauthorizedException('Refresh token not found');
@@ -112,7 +129,7 @@ export class AuthController {
     const options = {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
+      sameSite: 'strict' as const,
       path: '/',
     };
 
@@ -123,12 +140,15 @@ export class AuthController {
   }
 
   @Post('verify')
-  async verify(@Body('token') token: string) {
+  async verify(@Body('token') token: string): Promise<{
+    valid: boolean;
+    payload: JwtPayload;
+  }> {
     try {
       const payload = this.jwtService.verify(token);
       return { valid: true, payload };
     } catch (error) {
-      console.error('JWT Verification Error:', error.message);
+      this.logger.error('JWT Verification Error:', error.message);
       throw new UnauthorizedException('Invalid or expired token');
     }
   }

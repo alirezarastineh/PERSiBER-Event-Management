@@ -2,10 +2,7 @@ import { Injectable } from '@nestjs/common';
 
 import { CreateBpplistDto } from './dto/create-bpplist.dto/create-bpplist.dto';
 import { UpdateBpplistDto } from './dto/update-bpplist.dto/update-bpplist.dto';
-import {
-  Bpplist,
-  BpplistDocument,
-} from './schemas/bpplist.schema/bpplist.schema';
+import { Bpplist } from './schemas/bpplist.schema/bpplist.schema';
 import { BpplistAttendanceService } from './services/bpplist-attendance.service';
 import { BpplistCrudService } from './services/bpplist-crud.service';
 import { BpplistInvitationService } from './services/bpplist-invitation.service';

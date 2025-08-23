@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { User } from 'src/users/schemas/users.schema/users.schema';
 import { UsersService } from 'src/users/users.service';
 
 import { AuthPasswordService } from './services/auth-password.service';
@@ -34,7 +35,14 @@ export class AuthService {
     );
   }
 
-  async login(username: string, password: string) {
+  async login(
+    username: string,
+    password: string,
+  ): Promise<{
+    accessToken: string;
+    refreshToken: string;
+    user: { username: string; role: string };
+  }> {
     const user = await this.validationService.validateCredentials(
       username,
       password,
@@ -56,11 +64,11 @@ export class AuthService {
     };
   }
 
-  async getUser(userId: string) {
+  async getUser(userId: string): Promise<User> {
     return this.validationService.validateUserById(userId);
   }
 
-  async updateRole(userId: string, role: string) {
+  async updateRole(userId: string, role: string): Promise<User> {
     return this.roleService.updateUserRole(userId, role);
   }
 

@@ -5,9 +5,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { FiMoon, FiSun } from "react-icons/fi";
 
-type ThemeSwitcherProps = {};
-
-export default function ThemeSwitcher(props: ThemeSwitcherProps) {
+export default function ThemeSwitcher() {
   const [mounted, setMounted] = useState(false);
 
   const { setTheme, resolvedTheme } = useTheme();

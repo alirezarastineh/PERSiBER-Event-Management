@@ -99,6 +99,7 @@ export default function HeroSection({
                 className="object-contain w-44 h-44 md:w-64 md:h-64"
                 sizes="(max-width: 768px) 176px, 256px"
                 priority
+                style={{ width: "auto", height: "auto" }}
               />
             </div>
           </motion.div>

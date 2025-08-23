@@ -87,6 +87,8 @@ export default function QRCodePreview({
                   width={300}
                   height={300}
                   className="rounded-lg"
+                  priority
+                  style={{ width: "auto", height: "auto" }}
                 />
               </div>
             </motion.div>

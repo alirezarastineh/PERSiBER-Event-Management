@@ -39,9 +39,7 @@ export class GuestCrudService {
     createGuestDto: CreateGuestDto,
     userRole: string,
     userName: string,
-  ): Promise<
-    Document<unknown, {}, GuestDocument> & GuestDocument & { __v: number }
-  > {
+  ): Promise<Document<unknown, Guest> & GuestDocument & { __v: number }> {
     if (userRole === 'user') {
       createGuestDto.attended = 'Yes';
     }

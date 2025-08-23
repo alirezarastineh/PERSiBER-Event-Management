@@ -6,6 +6,7 @@ import {
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
+import { RequestWithUser } from 'src/common/interfaces/request-with-user.interface';
 
 @Injectable()
 export class JwtAuthGuard implements CanActivate {
@@ -15,7 +16,7 @@ export class JwtAuthGuard implements CanActivate {
   ) {}
 
   canActivate(context: ExecutionContext): boolean {
-    const request = context.switchToHttp().getRequest<any>();
+    const request = context.switchToHttp().getRequest<RequestWithUser>();
     const token = this.extractTokenFromRequest(request);
 
     if (!token) {
@@ -39,7 +40,7 @@ export class JwtAuthGuard implements CanActivate {
     return true;
   }
 
-  private extractTokenFromRequest(request: any): string | null {
+  private extractTokenFromRequest(request: RequestWithUser): string | null {
     const headerToken = request.headers?.authorization?.split(' ')[1];
     if (headerToken) {
       return headerToken;

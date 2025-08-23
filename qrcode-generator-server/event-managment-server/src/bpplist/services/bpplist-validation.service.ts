@@ -2,6 +2,7 @@ import { Injectable, BadRequestException } from '@nestjs/common';
 
 import { CreateBpplistDto } from '../dto/create-bpplist.dto/create-bpplist.dto';
 import { UpdateBpplistDto } from '../dto/update-bpplist.dto/update-bpplist.dto';
+import { BpplistDocument } from '../schemas/bpplist.schema/bpplist.schema';
 
 @Injectable()
 export class BpplistValidationService {
@@ -50,7 +51,10 @@ export class BpplistValidationService {
     }
   }
 
-  handleAttendanceTimestamp(bpplistItem: any, attended?: string): void {
+  handleAttendanceTimestamp(
+    bpplistItem: BpplistDocument,
+    attended?: string,
+  ): void {
     if (attended !== undefined) {
       bpplistItem.attendedAt = attended === 'Yes' ? new Date() : null;
     }

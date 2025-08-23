@@ -1,7 +1,7 @@
-import { GuestsSchema } from './guests.schema';
+import { GuestSchema } from './guests.schema';
 
 describe('GuestsSchema', () => {
   it('should be defined', () => {
-    expect(new GuestsSchema()).toBeDefined();
+    expect(GuestSchema).toBeDefined();
   });
 });

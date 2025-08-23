@@ -60,7 +60,9 @@ export default function NavLogo({ onLogoClick }: Readonly<NavLogoProps>) {
           alt="PERSiBER Logo"
           width={40}
           height={40}
+          priority
           className="object-contain z-10"
+          style={{ width: "auto", height: "auto" }}
         />
       </div>
     </motion.button>

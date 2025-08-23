@@ -7,6 +7,14 @@ export interface TokenPair {
   refreshToken: string;
 }
 
+export interface JwtPayload {
+  sub: string;
+  username: string;
+  role: string;
+  iat?: number;
+  exp?: number;
+}
+
 @Injectable()
 export class AuthTokenService {
   constructor(
@@ -31,7 +39,7 @@ export class AuthTokenService {
     return { accessToken, refreshToken };
   }
 
-  verifyToken(token: string): any {
+  verifyToken(token: string): JwtPayload {
     try {
       return this.jwtService.verify(token);
     } catch (error) {
@@ -43,7 +51,7 @@ export class AuthTokenService {
     }
   }
 
-  verifyRefreshToken(refreshToken: string): any {
+  verifyRefreshToken(refreshToken: string): JwtPayload {
     try {
       return this.jwtService.verify(refreshToken);
     } catch (error) {

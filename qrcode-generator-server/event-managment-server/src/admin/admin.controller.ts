@@ -14,6 +14,8 @@ import { AuthService } from 'src/auth/auth.service';
 import { Roles } from 'src/common/decorators/roles.decorator';
 import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard/jwt-auth.guard';
 import { RolesGuard } from 'src/common/guards/roles/roles.guard';
+import { RequestWithUser } from 'src/common/interfaces/request-with-user.interface';
+import { User } from 'src/users/schemas/users.schema/users.schema';
 import { UsersService } from 'src/users/users.service';
 
 @Controller('admin')
@@ -26,13 +28,16 @@ export class AdminController {
 
   @Roles('admin', 'master')
   @Get('users')
-  async getAllUsers() {
+  async getAllUsers(): Promise<User[]> {
     return this.usersService.findAll();
   }
 
   @Roles('admin', 'master')
   @Delete('user/:id')
-  async deleteUser(@Param('id') userId: string, @Request() req: any) {
+  async deleteUser(
+    @Param('id') userId: string,
+    @Request() req: RequestWithUser,
+  ): Promise<User> {
     const user = await this.usersService.findById(userId);
 
     if (!user) {
@@ -46,12 +51,13 @@ export class AdminController {
     if (
       user.role === 'master' &&
       req.user.role === 'master' &&
-      userId !== req.user.sub
+      userId !== req.user._id.toString()
     ) {
       throw new ForbiddenException('You cannot delete another master');
     }
 
-    return this.usersService.deleteUser(userId);
+    await this.usersService.deleteUser(userId);
+    return user;
   }
 
   @Roles('master')
@@ -59,12 +65,17 @@ export class AdminController {
   async updateRole(
     @Param('id') userId: string,
     @Body('role') role: string,
-    @Request() req: any,
-  ) {
+    @Request() req: RequestWithUser,
+  ): Promise<User> {
     const user = await this.usersService.findById(userId);
 
     if (!user) {
       throw new NotFoundException('User not found');
+    }
+
+    // Only masters can update roles
+    if (req.user.role !== 'master') {
+      throw new ForbiddenException('Only masters can update user roles');
     }
 
     if (role === 'master' || user.role === 'master') {
@@ -73,6 +84,7 @@ export class AdminController {
       );
     }
 
-    return this.authService.updateRole(userId, role);
+    await this.authService.updateRole(userId, role);
+    return this.usersService.findById(userId);
   }
 }

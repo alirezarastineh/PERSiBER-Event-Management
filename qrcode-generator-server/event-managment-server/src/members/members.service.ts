@@ -2,10 +2,7 @@ import { Injectable } from '@nestjs/common';
 
 import { CreateMemberDto } from './dto/create-member.dto/create-member.dto';
 import { UpdateMemberDto } from './dto/update-member.dto/update-member.dto';
-import {
-  Member,
-  MemberDocument,
-} from './schemas/members.schema/members.schema';
+import { Member } from './schemas/members.schema/members.schema';
 import { MemberAttendanceService } from './services/member-attendance.service';
 import { MemberCrudService } from './services/member-crud.service';
 import { MemberInvitationService } from './services/member-invitation.service';

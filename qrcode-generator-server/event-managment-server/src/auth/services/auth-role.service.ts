@@ -3,6 +3,7 @@ import {
   BadRequestException,
   NotFoundException,
 } from '@nestjs/common';
+import { User } from 'src/users/schemas/users.schema/users.schema';
 import { UsersService } from 'src/users/users.service';
 
 @Injectable()
@@ -17,7 +18,7 @@ export class AuthRoleService {
     }
   }
 
-  async updateUserRole(userId: string, role: string) {
+  async updateUserRole(userId: string, role: string): Promise<User> {
     this.validateRole(role);
 
     const user = await this.usersService.findById(userId);

@@ -11,7 +11,7 @@ export default function Spinner({
   className,
 }: Readonly<SpinnerProps>) {
   // Default to md if no size is specified
-  const size = { sm, md: !sm && !lg && !xl, lg, xl };
+  const size = { sm, md: md || (!sm && !lg && !xl), lg, xl };
 
   const sizeClass = cn({
     "w-4 h-4": size.sm,

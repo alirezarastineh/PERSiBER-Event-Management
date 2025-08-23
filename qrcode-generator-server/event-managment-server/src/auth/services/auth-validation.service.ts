@@ -3,6 +3,7 @@ import {
   BadRequestException,
   UnauthorizedException,
 } from '@nestjs/common';
+import { User } from 'src/users/schemas/users.schema/users.schema';
 import { UsersService } from 'src/users/users.service';
 
 import { AuthPasswordService } from './auth-password.service';
@@ -21,7 +22,7 @@ export class AuthValidationService {
     }
   }
 
-  async validateCredentials(username: string, password: string) {
+  async validateCredentials(username: string, password: string): Promise<User> {
     const user = await this.usersService.findOne(username);
     if (!user) {
       throw new UnauthorizedException('Invalid credentials');
@@ -38,7 +39,7 @@ export class AuthValidationService {
     return user;
   }
 
-  async validateUserById(userId: string) {
+  async validateUserById(userId: string): Promise<User> {
     const user = await this.usersService.findById(userId);
     if (!user) {
       throw new UnauthorizedException('User not found');

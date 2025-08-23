@@ -1,5 +1,9 @@
+import { IncomingHttpHeaders } from 'http';
+
+import { User } from 'src/users/schemas/users.schema/users.schema';
+
 export interface RequestWithUser {
-  user: any;
-  headers: any;
-  cookies: any;
+  user: User;
+  headers: IncomingHttpHeaders;
+  cookies: Record<string, string>;
 }

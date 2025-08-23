@@ -2,6 +2,7 @@ import { Injectable, BadRequestException } from '@nestjs/common';
 
 import { CreateMemberDto } from '../dto/create-member.dto/create-member.dto';
 import { UpdateMemberDto } from '../dto/update-member.dto/update-member.dto';
+import { MemberDocument } from '../schemas/members.schema/members.schema';
 
 @Injectable()
 export class MemberValidationService {
@@ -50,7 +51,7 @@ export class MemberValidationService {
     }
   }
 
-  handleAttendanceTimestamp(member: any, attended?: string): void {
+  handleAttendanceTimestamp(member: MemberDocument, attended?: string): void {
     if (attended !== undefined) {
       member.attendedAt = attended === 'Yes' ? new Date() : null;
     }

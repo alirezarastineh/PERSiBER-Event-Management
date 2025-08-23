@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
 
-export interface BpplistDocument extends Document<unknown, {}, Bpplist> {
+export interface BpplistDocument extends Document<unknown, Bpplist> {
   _id: Types.ObjectId;
   name: string;
   attended: string;

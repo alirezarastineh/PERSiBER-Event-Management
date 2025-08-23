@@ -40,6 +40,7 @@ export default function AuthDecorativePanel({
               height={160}
               className="object-contain"
               priority
+              style={{ width: "auto", height: "auto" }}
             />
           </div>
           <h2 className="text-3xl font-bold text-white mb-6">{title}</h2>

@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
 
-export interface MemberDocument extends Document<unknown, {}, Member> {
+export interface MemberDocument extends Document<unknown, Member> {
   _id: Types.ObjectId;
   name: string;
   attended: string;
