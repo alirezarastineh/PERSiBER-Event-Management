@@ -1,6 +1,6 @@
 // ESM style imports
-import * as fs from "fs";
-import * as path from "path";
+import * as fs from "node:fs";
+import * as path from "node:path";
 import sharp from "sharp";
 
 interface IconSize {
@@ -36,16 +36,15 @@ async function generateFavicon(): Promise<void> {
     fs.writeFileSync(outputPath, pngBuffer);
     console.log(`Favicon created successfully at: ${outputPath}`);
   } catch (error) {
-    console.error(
-      "Error generating favicon:",
-      error instanceof Error ? error.message : error
-    );
+    console.error("Error generating favicon:", error instanceof Error ? error.message : error);
     process.exit(1);
   }
 }
 
-// Execute the function
-generateFavicon().catch((error) => {
+// Execute the function with top-level await
+try {
+  await generateFavicon();
+} catch (error) {
   console.error("Unhandled error:", error);
   process.exit(1);
-});
+}

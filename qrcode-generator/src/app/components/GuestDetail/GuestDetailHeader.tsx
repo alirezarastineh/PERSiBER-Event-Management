@@ -2,9 +2,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import { GuestDetailHeaderProps } from "@/types/guests";
 
-export default function GuestDetailHeader({
-  guestName,
-}: Readonly<GuestDetailHeaderProps>) {
+export default function GuestDetailHeader({ guestName }: Readonly<GuestDetailHeaderProps>) {
   return (
     <motion.header
       className="mb-12 text-center"

@@ -81,7 +81,7 @@ export class GuestDiscountsService {
   ): Promise<void> {
     const guests = await this.guestModel.find().exec();
 
-    guests.forEach(async guest => {
+    for (const guest of guests) {
       if (type === 'student' && guest.isStudent) {
         guest.drinksCoupon = active
           ? guest.drinksCoupon + 1
@@ -95,6 +95,6 @@ export class GuestDiscountsService {
       }
 
       await guest.save();
-    });
+    }
   }
 }

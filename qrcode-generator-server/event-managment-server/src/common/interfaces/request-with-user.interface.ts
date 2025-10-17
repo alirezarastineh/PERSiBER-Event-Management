@@ -1,6 +1,6 @@
-import { IncomingHttpHeaders } from 'http';
+import { IncomingHttpHeaders } from 'node:http';
 
-import { User } from 'src/users/schemas/users.schema/users.schema';
+import { User } from '../../users/schemas/users.schema/users.schema';
 
 export interface RequestWithUser {
   user: User;

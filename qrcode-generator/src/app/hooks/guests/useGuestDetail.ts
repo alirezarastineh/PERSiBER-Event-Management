@@ -51,8 +51,7 @@ export const useGuestDetail = () => {
     freeEntry: false,
   });
   const [attendedStatus, setAttendedStatus] = useState<boolean>(false);
-  const [invitedFromSearchTerm, setInvitedFromSearchTerm] =
-    useState<string>("");
+  const [invitedFromSearchTerm, setInvitedFromSearchTerm] = useState<string>("");
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
 
   // User role
@@ -125,7 +124,7 @@ export const useGuestDetail = () => {
       await updateStudentStatus({
         id: editingGuest._id,
         isStudent,
-        untilWhen: isStudent ? editData.untilWhen ?? null : null,
+        untilWhen: isStudent ? (editData.untilWhen ?? null) : null,
       }).unwrap();
       refetch();
     } catch (error) {

@@ -9,8 +9,7 @@ import HeroSection from "./Landing/HeroSection";
 import FeaturesSection from "./Landing/FeaturesSection";
 
 export default function LandingPage() {
-  const { isAuthenticated, containerVariants, itemVariants, featureVariants } =
-    useLandingPage();
+  const { isAuthenticated, containerVariants, itemVariants, featureVariants } = useLandingPage();
 
   return (
     <motion.div

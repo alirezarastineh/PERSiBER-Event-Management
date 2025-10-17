@@ -10,13 +10,14 @@ import {
   Request,
   UseGuards,
 } from '@nestjs/common';
-import { AuthService } from 'src/auth/auth.service';
-import { Roles } from 'src/common/decorators/roles.decorator';
-import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard/jwt-auth.guard';
-import { RolesGuard } from 'src/common/guards/roles/roles.guard';
-import { RequestWithUser } from 'src/common/interfaces/request-with-user.interface';
-import { User } from 'src/users/schemas/users.schema/users.schema';
-import { UsersService } from 'src/users/users.service';
+
+import { AuthService } from '../auth/auth.service';
+import { Roles } from '../common/decorators/roles.decorator';
+import { JwtAuthGuard } from '../common/guards/jwt-auth.guard/jwt-auth.guard';
+import { RolesGuard } from '../common/guards/roles/roles.guard';
+import type { RequestWithUser } from '../common/interfaces/request-with-user.interface';
+import { User } from '../users/schemas/users.schema/users.schema';
+import { UsersService } from '../users/users.service';
 
 @Controller('admin')
 @UseGuards(JwtAuthGuard, RolesGuard)
@@ -85,6 +86,12 @@ export class AdminController {
     }
 
     await this.authService.updateRole(userId, role);
-    return this.usersService.findById(userId);
+    const updatedUser = await this.usersService.findById(userId);
+
+    if (!updatedUser) {
+      throw new NotFoundException('User not found after update');
+    }
+
+    return updatedUser;
   }
 }

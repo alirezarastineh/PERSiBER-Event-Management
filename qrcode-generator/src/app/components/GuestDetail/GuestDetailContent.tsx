@@ -41,12 +41,7 @@ export default function GuestDetailContent({
   };
 
   return (
-    <motion.section
-      className="mb-12"
-      variants={fadeIn}
-      initial="hidden"
-      animate="visible"
-    >
+    <motion.section className="mb-12" variants={fadeIn} initial="hidden" animate="visible">
       <div className="bg-white dark:bg-gray-800/60 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-gray-100 dark:border-gray-700/50">
         <div className="space-y-6">
           {/* Guest Status Section */}

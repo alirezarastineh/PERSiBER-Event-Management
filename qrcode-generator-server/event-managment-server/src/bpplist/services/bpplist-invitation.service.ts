@@ -31,11 +31,11 @@ export class BpplistInvitationService {
     // Calculate invitation counts
     const invitedMap: { [key: string]: number } = {};
 
-    bpplist.forEach(item => {
+    for (const item of bpplist) {
       if (item.invitedFrom) {
         invitedMap[item.invitedFrom] = (invitedMap[item.invitedFrom] || 0) + 1;
       }
-    });
+    }
 
     // Update invitation counts for each item
     for (const [name, count] of Object.entries(invitedMap)) {

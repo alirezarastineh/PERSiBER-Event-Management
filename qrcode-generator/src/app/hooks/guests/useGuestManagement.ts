@@ -12,12 +12,7 @@ import {
 import { Guest, UpdateGuestDto } from "@/types/guests";
 
 export const useGuestManagement = () => {
-  const {
-    data: guestsData,
-    isLoading,
-    isError,
-    refetch,
-  } = useGetAllGuestsQuery();
+  const { data: guestsData, isLoading, isError, refetch } = useGetAllGuestsQuery();
 
   const [deleteGuest] = useDeleteGuestMutation();
   const [updateGuest] = useUpdateGuestMutation();
@@ -41,8 +36,7 @@ export const useGuestManagement = () => {
   useEffect(() => {
     if (guestsData?.statistics) {
       setDiscountStatuses({
-        studentDiscountActive:
-          guestsData.statistics.studentDiscountActive ?? false,
+        studentDiscountActive: guestsData.statistics.studentDiscountActive ?? false,
         ladyDiscountActive: guestsData.statistics.ladyDiscountActive ?? false,
       });
     }
@@ -52,9 +46,9 @@ export const useGuestManagement = () => {
   useEffect(() => {
     if (guestsData?.guests) {
       const initialAttendedStatuses: { [key: string]: boolean } = {};
-      guestsData.guests.forEach((guest) => {
+      for (const guest of guestsData.guests) {
         initialAttendedStatuses[guest._id] = guest.attended === "Yes";
-      });
+      }
       setAttendedStatuses(initialAttendedStatuses);
     }
   }, [guestsData]);
@@ -73,11 +67,7 @@ export const useGuestManagement = () => {
     refetch();
   };
 
-  const handleUpdateGuest = async (
-    guestId: string,
-    data: UpdateGuestDto,
-    originalGuest: Guest
-  ) => {
+  const handleUpdateGuest = async (guestId: string, data: UpdateGuestDto, originalGuest: Guest) => {
     const updatedFields: Partial<UpdateGuestDto> = {};
 
     if (data.name !== originalGuest.name) {
@@ -160,10 +150,7 @@ export const useGuestManagement = () => {
     refetch();
   };
 
-  const handleAdjustDrinksCoupon = async (
-    guestId: string,
-    adjustment: number
-  ) => {
+  const handleAdjustDrinksCoupon = async (guestId: string, adjustment: number) => {
     await adjustDrinksCoupon({
       id: guestId,
       adjustment: adjustment,
@@ -173,7 +160,7 @@ export const useGuestManagement = () => {
 
   // Filtered guests based on search term
   const filteredGuests = guestsData?.guests.filter((guest) =>
-    guest.name.toLowerCase().includes(searchTerm.toLowerCase())
+    guest.name.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
   return {

@@ -18,7 +18,7 @@ export default function QRCodePreview({
         context.clearRect(0, 0, canvas.width, canvas.height);
 
         // Create image for drawing
-        const img = new window.Image();
+        const img = new globalThis.Image();
         img.onload = () => {
           // Set specific dimensions to ensure proper rendering
           canvas.width = 300;
@@ -58,9 +58,7 @@ export default function QRCodePreview({
             {/* Guest Name Display - Only shows the current guest */}
             {currentGuest && (
               <div className="mb-4 text-center">
-                <span className="text-sm font-medium text-gray-500 dark:text-gray-400">
-                  GUEST
-                </span>
+                <span className="text-sm font-medium text-gray-500 dark:text-gray-400">GUEST</span>
                 <h3 className="text-xl font-bold text-warm-charcoal dark:text-white">
                   {currentGuest}
                 </h3>
@@ -74,12 +72,7 @@ export default function QRCodePreview({
             >
               <div className="bg-white p-4 rounded-lg">
                 {/* Keep the canvas for PDF generation but hide it */}
-                <canvas
-                  ref={qrCodeRef}
-                  width="300"
-                  height="300"
-                  className="hidden"
-                />
+                <canvas ref={qrCodeRef} width="300" height="300" className="hidden" />
                 {/* Display the QR code as Image instead of img */}
                 <Image
                   src={qrCodeUrl}
@@ -118,8 +111,7 @@ export default function QRCodePreview({
               {/* Enhanced description with event details - Using currentGuest */}
               <p className="mt-4 text-sm text-center text-gray-500 dark:text-gray-400">
                 PDF includes personalized invitation for{" "}
-                <span className="font-semibold">{currentGuest}</span> to the
-                Private Summer Party
+                <span className="font-semibold">{currentGuest}</span> to the Private Summer Party
               </p>
             </motion.div>
           </motion.div>

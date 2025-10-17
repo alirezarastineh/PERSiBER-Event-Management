@@ -36,9 +36,7 @@ export default function EditBpplistModal({
                 type="text"
                 placeholder="Name"
                 value={editData.name ?? ""}
-                onChange={(e) =>
-                  onEditDataChange({ ...editData, name: e.target.value })
-                }
+                onChange={(e) => onEditDataChange({ ...editData, name: e.target.value })}
                 className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-rich-gold dark:focus:ring-accent-amber focus:border-rich-gold dark:focus:border-accent-amber transition-all duration-300 text-warm-charcoal dark:text-white"
                 whileFocus={{ scale: 1.01 }}
               />
@@ -54,9 +52,7 @@ export default function EditBpplistModal({
               <motion.select
                 id="organizer"
                 value={editData.organizer ?? ""}
-                onChange={(e) =>
-                  onEditDataChange({ ...editData, organizer: e.target.value })
-                }
+                onChange={(e) => onEditDataChange({ ...editData, organizer: e.target.value })}
                 className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-rich-gold dark:focus:ring-accent-amber focus:border-rich-gold dark:focus:border-accent-amber transition-all duration-300 text-warm-charcoal dark:text-white"
                 whileFocus={{ scale: 1.01 }}
               >
@@ -129,9 +125,7 @@ export default function EditBpplistModal({
                 <select
                   id="attendedStatus"
                   value={editData.attended ?? "No"}
-                  onChange={(e) =>
-                    onEditDataChange({ ...editData, attended: e.target.value })
-                  }
+                  onChange={(e) => onEditDataChange({ ...editData, attended: e.target.value })}
                   className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-rich-gold dark:focus:ring-accent-amber focus:border-rich-gold transition-all duration-300 text-warm-charcoal dark:text-white"
                 >
                   <option value="No">No</option>
@@ -158,9 +152,7 @@ export default function EditBpplistModal({
                       })
                     }
                     size="md"
-                    ariaLabel={
-                      editData.hasLeft ? "Set as not left" : "Set as left"
-                    }
+                    ariaLabel={editData.hasLeft ? "Set as not left" : "Set as left"}
                   />
                 </div>
               </div>
@@ -185,11 +177,7 @@ export default function EditBpplistModal({
                       })
                     }
                     size="md"
-                    ariaLabel={
-                      editData.isStudent
-                        ? "Set as not student"
-                        : "Set as student"
-                    }
+                    ariaLabel={editData.isStudent ? "Set as not student" : "Set as student"}
                   />
                 </div>
               </div>
@@ -213,18 +201,14 @@ export default function EditBpplistModal({
                     type="date"
                     value={
                       editData.untilWhen
-                        ? new Date(editData.untilWhen)
-                            .toISOString()
-                            .split("T")[0]
+                        ? new Date(editData.untilWhen).toISOString().split("T")[0]
                         : ""
                     }
                     onChange={(e) => {
                       const parsedDate = new Date(e.target.value);
                       onEditDataChange({
                         ...editData,
-                        untilWhen: isNaN(parsedDate.getTime())
-                          ? null
-                          : parsedDate,
+                        untilWhen: Number.isNaN(parsedDate.getTime()) ? null : parsedDate,
                       });
                     }}
                     className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-rich-gold dark:focus:ring-accent-amber focus:border-rich-gold transition-all duration-300 text-warm-charcoal dark:text-white"

@@ -141,30 +141,7 @@ export default function MobileMenu({
 
               {/* Menu items */}
               <div className="flex-1 overflow-y-auto py-4 px-3 scrollbar-hide">
-                {!isAuthenticated ? (
-                  <motion.button
-                    onClick={() => handleMenuItemClick(handleLoginRedirect)}
-                    className="w-full flex items-center p-4 mb-3 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 text-zinc-900 font-medium"
-                    variants={itemVariants}
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    <svg
-                      className="size-5 mr-3"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"
-                      />
-                    </svg>
-                    Login to Account
-                  </motion.button>
-                ) : (
+                {isAuthenticated ? (
                   <div className="space-y-2">
                     {/* User info card */}
                     <motion.div
@@ -188,13 +165,10 @@ export default function MobileMenu({
                           </svg>
                         </div>
                         <div className="ml-3">
-                          <p className="text-amber-500 font-medium">
-                            {user?.username ?? "User"}
-                          </p>
+                          <p className="text-amber-500 font-medium">{user?.username ?? "User"}</p>
                           <p className="text-xs text-gray-400">
                             {user?.role
-                              ? user.role.charAt(0).toUpperCase() +
-                                user.role.slice(1)
+                              ? user.role.charAt(0).toUpperCase() + user.role.slice(1)
                               : "User"}
                           </p>
                         </div>
@@ -243,9 +217,7 @@ export default function MobileMenu({
                             </svg>
                           }
                           label="Register"
-                          onClick={() =>
-                            handleMenuItemClick(handleRegisterRedirect)
-                          }
+                          onClick={() => handleMenuItemClick(handleRegisterRedirect)}
                           isActive={isActive("/auth/register")}
                           variants={itemVariants}
                         />
@@ -267,9 +239,7 @@ export default function MobileMenu({
                             </svg>
                           }
                           label="Users"
-                          onClick={() =>
-                            handleMenuItemClick(handleUsersRedirect)
-                          }
+                          onClick={() => handleMenuItemClick(handleUsersRedirect)}
                           isActive={isActive("/admin/users")}
                           variants={itemVariants}
                         />
@@ -371,6 +341,29 @@ export default function MobileMenu({
                       variants={itemVariants}
                     />
                   </div>
+                ) : (
+                  <motion.button
+                    onClick={() => handleMenuItemClick(handleLoginRedirect)}
+                    className="w-full flex items-center p-4 mb-3 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 text-zinc-900 font-medium"
+                    variants={itemVariants}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    <svg
+                      className="size-5 mr-3"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"
+                      />
+                    </svg>
+                    Login to Account
+                  </motion.button>
                 )}
               </div>
 

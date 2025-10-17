@@ -8,12 +8,7 @@ import { useAppSelector } from "@/redux/hooks";
 import { UpdateUserRoleDto } from "@/types/auth";
 
 export const useUserManagement = () => {
-  const {
-    data: usersData,
-    isLoading,
-    isError,
-    refetch,
-  } = useGetAllUsersQuery();
+  const { data: usersData, isLoading, isError, refetch } = useGetAllUsersQuery();
 
   const [deleteUser] = useDeleteUserMutation();
   const [updateUserRole] = useUpdateUserRoleMutation();

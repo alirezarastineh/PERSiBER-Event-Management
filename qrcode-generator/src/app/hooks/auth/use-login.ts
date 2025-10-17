@@ -44,7 +44,7 @@ export default function useLogin() {
           user: loginResponse.user,
           accessToken: loginResponse.accessToken,
           refreshToken: loginResponse.refreshToken,
-        })
+        }),
       );
 
       toast.success("Successfully logged in!");

@@ -48,9 +48,7 @@ export default function GuestEditForm({
             id="name"
             type="text"
             value={editData.name}
-            onChange={(e) =>
-              onEditDataChange({ ...editData, name: e.target.value })
-            }
+            onChange={(e) => onEditDataChange({ ...editData, name: e.target.value })}
             className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-rich-gold dark:focus:ring-accent-amber focus:border-rich-gold dark:focus:border-accent-amber text-warm-charcoal dark:text-white transition-all duration-300"
             whileFocus={{ scale: 1.01 }}
           />
@@ -79,11 +77,7 @@ export default function GuestEditForm({
           {showDropdown && (
             <div className="absolute z-10 bg-white dark:bg-gray-800 w-full border border-gray-200 dark:border-gray-700 rounded-lg mt-1 max-h-40 overflow-y-auto shadow-lg">
               {filteredGuests
-                .filter((g) =>
-                  g.name
-                    .toLowerCase()
-                    .includes(invitedFromSearchTerm.toLowerCase())
-                )
+                .filter((g) => g.name.toLowerCase().includes(invitedFromSearchTerm.toLowerCase()))
                 .map((g) => (
                   <button
                     key={g._id}
@@ -158,9 +152,7 @@ export default function GuestEditForm({
                     const parsedDate = new Date(e.target.value);
                     onEditDataChange({
                       ...editData,
-                      untilWhen: isNaN(parsedDate.getTime())
-                        ? null
-                        : parsedDate,
+                      untilWhen: Number.isNaN(parsedDate.getTime()) ? null : parsedDate,
                     });
                   }}
                   className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-rich-gold dark:focus:ring-accent-amber focus:border-rich-gold dark:focus:border-accent-amber text-warm-charcoal dark:text-white transition-all duration-300"

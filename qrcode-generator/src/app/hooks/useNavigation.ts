@@ -45,10 +45,7 @@ export const useNavigation = () => {
   useEffect(() => {
     // Close menu when clicking outside
     const handleClickOutside = (event: MouseEvent) => {
-      if (
-        navbarRef.current &&
-        !navbarRef.current.contains(event.target as Node)
-      ) {
+      if (navbarRef.current && !navbarRef.current.contains(event.target as Node)) {
         closeMenu();
       }
     };

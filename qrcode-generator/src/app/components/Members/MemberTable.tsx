@@ -108,9 +108,7 @@ export default function MemberTable({
                         onToggle={() => onToggleHasLeftStatus(member._id)}
                         size="sm"
                         ariaLabel={
-                          toggleStatuses[member._id]?.hasLeft
-                            ? "Mark as not left"
-                            : "Mark as left"
+                          toggleStatuses[member._id]?.hasLeft ? "Mark as not left" : "Mark as left"
                         }
                       />
                     </td>

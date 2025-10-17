@@ -74,7 +74,7 @@ export default function Guests() {
       showCustomAlert(
         "Input Required",
         error?.data?.message ?? error?.message ?? "Error adding guest",
-        "warning"
+        "warning",
       );
     }
   };
@@ -86,8 +86,7 @@ export default function Guests() {
         closeDeleteModal();
         showCustomAlert("Success", "Guest deleted successfully!", "success");
       } catch (error: any) {
-        const errorMessage =
-          error?.data?.message ?? error?.message ?? "Failed to delete guest";
+        const errorMessage = error?.data?.message ?? error?.message ?? "Failed to delete guest";
         showCustomAlert("Error", errorMessage, "error");
       }
     }
@@ -103,11 +102,7 @@ export default function Guests() {
       if (error.message === "No changes to update.") {
         showCustomAlert("No Changes", "No changes to update.", "info");
       } else {
-        showCustomAlert(
-          "Update Failed",
-          "Could not update guest information.",
-          "error"
-        );
+        showCustomAlert("Update Failed", "Could not update guest information.", "error");
       }
     }
   };
@@ -117,9 +112,7 @@ export default function Guests() {
       await handleToggleAttendedStatus(guestId);
     } catch (error: any) {
       const errorMessage =
-        error?.data?.message ??
-        error?.message ??
-        "Failed to update attendance status";
+        error?.data?.message ?? error?.message ?? "Failed to update attendance status";
       showCustomAlert("Attendance Error", errorMessage, "error");
     }
   };
@@ -129,9 +122,7 @@ export default function Guests() {
       await handleToggleStudentDiscount();
     } catch (error: any) {
       const errorMessage =
-        error?.data?.message ??
-        error?.message ??
-        "Failed to toggle student discount";
+        error?.data?.message ?? error?.message ?? "Failed to toggle student discount";
       showCustomAlert("Error", errorMessage, "error");
     }
   };
@@ -141,9 +132,7 @@ export default function Guests() {
       await handleToggleLadyDiscount();
     } catch (error: any) {
       const errorMessage =
-        error?.data?.message ??
-        error?.message ??
-        "Failed to toggle lady discount";
+        error?.data?.message ?? error?.message ?? "Failed to toggle lady discount";
       showCustomAlert("Error", errorMessage, "error");
     }
   };
@@ -154,9 +143,7 @@ export default function Guests() {
       await handleAdjustDrinksCoupon(editingGuest._id, adjustment);
     } catch (error: any) {
       const errorMessage =
-        error?.data?.message ??
-        error?.message ??
-        "Failed to adjust drinks coupon";
+        error?.data?.message ?? error?.message ?? "Failed to adjust drinks coupon";
       showCustomAlert("Error", errorMessage, "error");
     }
   };
@@ -276,12 +263,7 @@ export default function Guests() {
         )}
 
         {/* Control Panel Section */}
-        <motion.section
-          className="mb-12"
-          variants={fadeIn}
-          initial="hidden"
-          animate="visible"
-        >
+        <motion.section className="mb-12" variants={fadeIn} initial="hidden" animate="visible">
           <GuestControlPanel
             searchTerm={searchTerm}
             onSearchChange={setSearchTerm}
@@ -502,8 +484,8 @@ export default function Guests() {
         <div className="max-w-3xl mx-auto px-4">
           <div className="h-px bg-gradient-to-r from-transparent via-rich-gold/20 to-transparent mb-6"></div>
           <p className="text-sm text-gray-600 dark:text-gray-400">
-            The guest management system allows you to track attendees, manage
-            discounts, and maintain comprehensive event statistics.
+            The guest management system allows you to track attendees, manage discounts, and
+            maintain comprehensive event statistics.
           </p>
           <div className="mt-4 flex justify-center space-x-4">
             <span className="inline-flex items-center text-xs text-gray-500 dark:text-gray-500">

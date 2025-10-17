@@ -24,12 +24,9 @@ export default function UserEmptyState() {
           />
         </svg>
       </div>
-      <h2 className="text-2xl font-bold text-warm-charcoal dark:text-white mb-2">
-        No Users Found
-      </h2>
+      <h2 className="text-2xl font-bold text-warm-charcoal dark:text-white mb-2">No Users Found</h2>
       <p className="text-gray-600 dark:text-gray-400 max-w-md mx-auto">
-        There are currently no users in the system. Users will appear here once
-        they are added.
+        There are currently no users in the system. Users will appear here once they are added.
       </p>
     </motion.div>
   );

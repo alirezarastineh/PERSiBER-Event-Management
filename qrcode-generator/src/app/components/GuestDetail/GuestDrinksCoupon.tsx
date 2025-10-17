@@ -10,19 +10,13 @@ export default function GuestDrinksCoupon({
 }: Readonly<GuestDrinksCouponProps>) {
   const handleUpdateDrinksCoupon = async () => {
     try {
-      const inputEl = document.querySelector(
-        'input[type="number"]'
-      ) as HTMLInputElement;
-      const newValue = parseInt(inputEl.value, 10) || 0;
+      const inputEl = document.querySelector('input[type="number"]') as HTMLInputElement;
+      const newValue = Number.parseInt(inputEl.value, 10) || 0;
       const originalValue = guest.drinksCoupon || 0;
 
       if (newValue !== originalValue) {
         await onAdjustDrinksCoupon(newValue);
-        onShowAlert(
-          "Success",
-          "Drink coupons updated successfully!",
-          "success"
-        );
+        onShowAlert("Success", "Drink coupons updated successfully!", "success");
       }
     } catch (error) {
       console.error("Failed to update drinks coupon:", error);

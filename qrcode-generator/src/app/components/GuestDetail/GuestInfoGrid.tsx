@@ -40,11 +40,7 @@ export default function GuestInfoGrid({
       <div className="space-y-2">
         <p className="text-sm text-gray-500 dark:text-gray-400">Free Entry</p>
         <p className="text-lg font-medium text-warm-charcoal dark:text-white">
-          {guest.freeEntry ? (
-            <span className="text-amber-600 dark:text-amber-400">Yes</span>
-          ) : (
-            "No"
-          )}
+          {guest.freeEntry ? <span className="text-amber-600 dark:text-amber-400">Yes</span> : "No"}
         </p>
       </div>
 
@@ -72,19 +68,13 @@ export default function GuestInfoGrid({
           <div className="space-y-2">
             <p className="text-sm text-gray-500 dark:text-gray-400">Lady</p>
             <p className="text-lg font-medium text-warm-charcoal dark:text-white">
-              {guest.isLady ? (
-                <span className="text-pink-600 dark:text-pink-400">Yes</span>
-              ) : (
-                "No"
-              )}
+              {guest.isLady ? <span className="text-pink-600 dark:text-pink-400">Yes</span> : "No"}
             </p>
           </div>
 
           {guest.isStudent && guest.untilWhen && (
             <div className="space-y-2">
-              <p className="text-sm text-gray-500 dark:text-gray-400">
-                Student Until
-              </p>
+              <p className="text-sm text-gray-500 dark:text-gray-400">Student Until</p>
               <p className="text-lg font-medium text-warm-charcoal dark:text-white">
                 {new Date(guest.untilWhen).toLocaleDateString()}
               </p>

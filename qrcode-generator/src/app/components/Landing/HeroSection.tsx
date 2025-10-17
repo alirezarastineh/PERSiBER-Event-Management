@@ -18,10 +18,7 @@ export default function HeroSection({
     >
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
         {/* Content Column */}
-        <motion.div
-          className="order-2 lg:order-1 space-y-8"
-          variants={itemVariants}
-        >
+        <motion.div className="order-2 lg:order-1 space-y-8" variants={itemVariants}>
           <motion.div
             className="h-1 w-20 bg-gradient-to-r from-amber-400 to-amber-600 rounded-full"
             initial={{ width: 0 }}
@@ -40,20 +37,13 @@ export default function HeroSection({
             className="text-lg md:text-xl text-gray-700 dark:text-gray-300 max-w-xl leading-relaxed"
             variants={itemVariants}
           >
-            Welcome to the PERSiBER Event Management System. A premium solution
-            for organizing and managing your events with elegance.
+            Welcome to the PERSiBER Event Management System. A premium solution for organizing and
+            managing your events with elegance.
           </motion.p>
 
-          <motion.div
-            className="flex flex-col sm:flex-row gap-6 pt-4"
-            variants={itemVariants}
-          >
+          <motion.div className="flex flex-col sm:flex-row gap-6 pt-4" variants={itemVariants}>
             {/* Modified Link to conditionally redirect based on auth state */}
-            <Link
-              href={
-                isAuthenticated ? "/guests" : "/auth/login?redirect=/guests"
-              }
-            >
+            <Link href={isAuthenticated ? "/guests" : "/auth/login?redirect=/guests"}>
               <motion.div
                 className="px-8 py-4 bg-gradient-to-r from-rich-gold to-accent-amber text-deep-navy dark:text-deep-navy rounded-md font-medium text-lg inline-flex items-center justify-center transition-all duration-300 shadow-lg hover:shadow-xl cursor-pointer"
                 whileHover={{

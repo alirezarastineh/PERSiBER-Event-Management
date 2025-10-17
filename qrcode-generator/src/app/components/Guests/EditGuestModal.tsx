@@ -26,11 +26,7 @@ export default function EditGuestModal({
       onSave();
     } catch (error) {
       console.error("Failed to save guest data:", error);
-      onShowAlert(
-        "Update Failed",
-        "Could not update guest information.",
-        "error"
-      );
+      onShowAlert("Update Failed", "Could not update guest information.", "error");
     }
   };
 
@@ -43,11 +39,7 @@ export default function EditGuestModal({
 
       if (adjustment !== 0) {
         onAdjustDrinksCoupon(adjustment);
-        onShowAlert(
-          "Success",
-          "Drink coupons updated successfully!",
-          "success"
-        );
+        onShowAlert("Success", "Drink coupons updated successfully!", "success");
       }
     } catch (error) {
       console.error("Failed to update drink coupons:", error);
@@ -72,9 +64,7 @@ export default function EditGuestModal({
                 type="text"
                 placeholder="Name"
                 value={editData.name ?? ""}
-                onChange={(e) =>
-                  onEditDataChange({ ...editData, name: e.target.value })
-                }
+                onChange={(e) => onEditDataChange({ ...editData, name: e.target.value })}
                 className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-rich-gold dark:focus:ring-accent-amber focus:border-rich-gold transition-all duration-300 text-warm-charcoal dark:text-white"
                 whileFocus={{ scale: 1.01 }}
               />
@@ -95,7 +85,7 @@ export default function EditGuestModal({
                   min="0"
                   value={guest.drinksCoupon || 0}
                   onChange={(e) => {
-                    const newValue = parseInt(e.target.value, 10) || 0;
+                    const newValue = Number.parseInt(e.target.value, 10) || 0;
                     // Update guest object for immediate visual feedback
                     guest.drinksCoupon = newValue;
                   }}
@@ -136,9 +126,7 @@ export default function EditGuestModal({
                 <div className="absolute z-10 bg-white dark:bg-gray-800 w-full border border-gray-200 dark:border-gray-700 rounded-lg mt-1 max-h-40 overflow-y-auto shadow-lg">
                   {filteredGuests
                     ?.filter((g) =>
-                      g.name
-                        .toLowerCase()
-                        .includes(invitedFromSearchTerm.toLowerCase())
+                      g.name.toLowerCase().includes(invitedFromSearchTerm.toLowerCase()),
                     )
                     .map((g) => (
                       <button
@@ -200,18 +188,14 @@ export default function EditGuestModal({
                       type="date"
                       value={
                         editData.untilWhen
-                          ? new Date(editData.untilWhen)
-                              .toISOString()
-                              .split("T")[0]
+                          ? new Date(editData.untilWhen).toISOString().split("T")[0]
                           : ""
                       }
                       onChange={(e) => {
                         const parsedDate = new Date(e.target.value);
                         onEditDataChange({
                           ...editData,
-                          untilWhen: isNaN(parsedDate.getTime())
-                            ? null
-                            : parsedDate,
+                          untilWhen: Number.isNaN(parsedDate.getTime()) ? null : parsedDate,
                         });
                       }}
                       className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-rich-gold dark:focus:ring-accent-amber focus:border-rich-gold transition-all duration-300 text-warm-charcoal dark:text-white"
@@ -230,9 +214,7 @@ export default function EditGuestModal({
                 </label>
                 <ToggleSwitch
                   isActive={editData.isLady ?? false}
-                  onToggle={() =>
-                    onEditDataChange({ ...editData, isLady: !editData.isLady })
-                  }
+                  onToggle={() => onEditDataChange({ ...editData, isLady: !editData.isLady })}
                   size="md"
                 />
               </div>

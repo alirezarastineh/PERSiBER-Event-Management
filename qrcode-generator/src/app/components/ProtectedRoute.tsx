@@ -8,9 +8,7 @@ import Spinner from "./Common/Spinner";
 import { ProtectedRouteProps } from "@/types/auth";
 
 const ProtectedRoute = ({ children, allowedRoles }: ProtectedRouteProps) => {
-  const isAuthenticated = useSelector(
-    (state: RootState) => state.auth.isAuthenticated
-  );
+  const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
   const isLoading = useSelector((state: RootState) => state.auth.isLoading);
   const userRole = useSelector((state: RootState) => state.auth.user?.role);
   const router = useRouter();

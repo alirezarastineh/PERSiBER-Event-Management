@@ -31,12 +31,12 @@ export class MemberInvitationService {
     // Calculate invitation counts
     const invitedMap: { [key: string]: number } = {};
 
-    members.forEach(member => {
+    for (const member of members) {
       if (member.invitedFrom) {
         invitedMap[member.invitedFrom] =
           (invitedMap[member.invitedFrom] || 0) + 1;
       }
-    });
+    }
 
     // Update invitation counts for each member
     for (const [name, count] of Object.entries(invitedMap)) {

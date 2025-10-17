@@ -2,9 +2,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import { Feature, FeaturesSectionProps } from "@/types/landing";
 
-export default function FeaturesSection({
-  featureVariants,
-}: Readonly<FeaturesSectionProps>) {
+export default function FeaturesSection({ featureVariants }: Readonly<FeaturesSectionProps>) {
   const features: Feature[] = [
     {
       id: "feature-planning",
@@ -47,8 +45,7 @@ export default function FeaturesSection({
             variants={featureVariants}
             whileHover={{
               y: -8,
-              boxShadow:
-                "0 15px 30px rgba(0,0,0,0.05), 0 5px 15px rgba(212, 175, 55, 0.1)",
+              boxShadow: "0 15px 30px rgba(0,0,0,0.05), 0 5px 15px rgba(212, 175, 55, 0.1)",
               borderColor: "rgba(212, 175, 55, 0.3)",
               transition: { duration: 0.3 },
             }}

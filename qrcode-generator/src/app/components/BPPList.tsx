@@ -68,11 +68,7 @@ export default function BPPList() {
       await handleCreateBpplistItem(itemData);
       showCustomAlert("Success", "BPP attendee added successfully!", "success");
     } catch (error: any) {
-      showCustomAlert(
-        "Input Required",
-        error.message ?? "Error adding BPP attendee.",
-        "warning"
-      );
+      showCustomAlert("Input Required", error.message ?? "Error adding BPP attendee.", "warning");
     }
   };
 
@@ -81,11 +77,7 @@ export default function BPPList() {
       try {
         await handleDeleteBpplistItem(itemIdToDelete);
         closeDeleteModal();
-        showCustomAlert(
-          "Success",
-          "BPP attendee deleted successfully!",
-          "success"
-        );
+        showCustomAlert("Success", "BPP attendee deleted successfully!", "success");
       } catch (error) {
         console.error("Failed to delete BPP attendee:", error);
         showCustomAlert("Error", "Failed to delete BPP attendee.", "error");
@@ -98,18 +90,10 @@ export default function BPPList() {
     try {
       await handleUpdateBpplistItem(editingItem._id, editData);
       closeEditModal();
-      showCustomAlert(
-        "Success",
-        "BPP attendee updated successfully!",
-        "success"
-      );
+      showCustomAlert("Success", "BPP attendee updated successfully!", "success");
     } catch (error: any) {
       console.error("Failed to update BPP attendee:", error);
-      showCustomAlert(
-        "Update Failed",
-        "Could not update BPP attendee information.",
-        "error"
-      );
+      showCustomAlert("Update Failed", "Could not update BPP attendee information.", "error");
     }
   };
 
@@ -118,9 +102,7 @@ export default function BPPList() {
       await handleToggleAttendedStatus(itemId);
     } catch (error: any) {
       const errorMessage =
-        error?.data?.message ??
-        error?.message ??
-        "Failed to update attendance status";
+        error?.data?.message ?? error?.message ?? "Failed to update attendance status";
       showCustomAlert("Attendance Error", errorMessage, "error");
     }
   };
@@ -130,9 +112,7 @@ export default function BPPList() {
       await handleToggleHasLeftStatus(itemId);
     } catch (error: any) {
       const errorMessage =
-        error?.data?.message ??
-        error?.message ??
-        "Failed to update has left status";
+        error?.data?.message ?? error?.message ?? "Failed to update has left status";
       showCustomAlert("Error", errorMessage, "error");
     }
   };
@@ -142,9 +122,7 @@ export default function BPPList() {
       await handleToggleStudentStatus(itemId);
     } catch (error: any) {
       const errorMessage =
-        error?.data?.message ??
-        error?.message ??
-        "Failed to update student status";
+        error?.data?.message ?? error?.message ?? "Failed to update student status";
       showCustomAlert("Error", errorMessage, "error");
     }
   };
@@ -237,11 +215,11 @@ export default function BPPList() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4, duration: 0.5 }}
         >
-          There was an error loading the BPP list. Please try refreshing the
-          page or contact support.
+          There was an error loading the BPP list. Please try refreshing the page or contact
+          support.
         </motion.p>
         <motion.button
-          onClick={() => window.location.reload()}
+          onClick={() => globalThis.location.reload()}
           className="px-6 py-3 rounded-lg bg-gradient-to-r from-rich-gold to-accent-amber text-deep-navy font-medium"
           whileHover={{
             scale: 1.03,
@@ -294,8 +272,7 @@ export default function BPPList() {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3, duration: 0.5 }}
           >
-            Track and manage all BPP attendees, status, and invitations in one
-            place
+            Track and manage all BPP attendees, status, and invitations in one place
           </motion.p>
         </motion.header>
 
@@ -309,12 +286,7 @@ export default function BPPList() {
         )}
 
         {/* Search & Control Panel Section */}
-        <motion.section
-          className="mb-12"
-          variants={fadeIn}
-          initial="hidden"
-          animate="visible"
-        >
+        <motion.section className="mb-12" variants={fadeIn} initial="hidden" animate="visible">
           <BpplistControlPanel
             searchTerm={searchTerm}
             onSearchChange={setSearchTerm}
@@ -402,8 +374,8 @@ export default function BPPList() {
           <div className="max-w-3xl mx-auto px-4">
             <div className="h-px bg-gradient-to-r from-transparent via-rich-gold/20 to-transparent mb-6"></div>
             <p className="text-sm text-gray-600 dark:text-gray-400">
-              The BPP list management system tracks attendance, status, and
-              membership details for Black Persian Party events.
+              The BPP list management system tracks attendance, status, and membership details for
+              Black Persian Party events.
             </p>
             <div className="mt-4 flex flex-wrap justify-center gap-4">
               <span className="inline-flex items-center text-xs text-gray-500 dark:text-gray-500">

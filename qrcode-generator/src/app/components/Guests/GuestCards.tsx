@@ -51,9 +51,7 @@ export default function GuestCards({
                 onToggle={() => onToggleAttendedStatus(guest._id)}
                 size="sm"
                 ariaLabel={
-                  attendedStatuses[guest._id]
-                    ? "Mark as not attended"
-                    : "Mark as attended"
+                  attendedStatuses[guest._id] ? "Mark as not attended" : "Mark as attended"
                 }
               />
             </div>
@@ -61,18 +59,14 @@ export default function GuestCards({
 
           <div className="grid grid-cols-2 gap-x-4 gap-y-2 mt-4">
             <div className="flex flex-col">
-              <span className="text-xs text-gray-500 dark:text-gray-400">
-                Drinks Coupon
-              </span>
+              <span className="text-xs text-gray-500 dark:text-gray-400">Drinks Coupon</span>
               <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
                 {guest.drinksCoupon || 0}
               </span>
             </div>
 
             <div className="flex flex-col">
-              <span className="text-xs text-gray-500 dark:text-gray-400">
-                Free Entry
-              </span>
+              <span className="text-xs text-gray-500 dark:text-gray-400">Free Entry</span>
               <span
                 className={`text-sm font-medium ${
                   guest.freeEntry
@@ -85,9 +79,7 @@ export default function GuestCards({
             </div>
 
             <div className="flex flex-col">
-              <span className="text-xs text-gray-500 dark:text-gray-400">
-                Attended At
-              </span>
+              <span className="text-xs text-gray-500 dark:text-gray-400">Attended At</span>
               <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
                 {guest.attendedAt && guest.attended === "Yes"
                   ? new Date(guest.attendedAt).toLocaleString()
@@ -98,18 +90,14 @@ export default function GuestCards({
             {isAdminOrMaster && (
               <>
                 <div className="flex flex-col">
-                  <span className="text-xs text-gray-500 dark:text-gray-400">
-                    Inviter
-                  </span>
+                  <span className="text-xs text-gray-500 dark:text-gray-400">Inviter</span>
                   <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
                     {guest.invitedFrom || "N/A"}
                   </span>
                 </div>
 
                 <div className="flex flex-col">
-                  <span className="text-xs text-gray-500 dark:text-gray-400">
-                    Student
-                  </span>
+                  <span className="text-xs text-gray-500 dark:text-gray-400">Student</span>
                   <span
                     className={`text-sm font-medium ${
                       guest.isStudent
@@ -122,9 +110,7 @@ export default function GuestCards({
                 </div>
 
                 <div className="flex flex-col">
-                  <span className="text-xs text-gray-500 dark:text-gray-400">
-                    Lady
-                  </span>
+                  <span className="text-xs text-gray-500 dark:text-gray-400">Lady</span>
                   <span
                     className={`text-sm font-medium ${
                       guest.isLady
@@ -148,12 +134,7 @@ export default function GuestCards({
                 whileTap={{ scale: 0.98 }}
                 disabled={guest.name === "Master"}
               >
-                <svg
-                  className="w-4 h-4 mr-2"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
+                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -170,12 +151,7 @@ export default function GuestCards({
                 whileTap={{ scale: 0.98 }}
                 disabled={guest.name === "Master"}
               >
-                <svg
-                  className="w-4 h-4 mr-2"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
+                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"

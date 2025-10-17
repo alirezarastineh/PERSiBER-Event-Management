@@ -38,9 +38,7 @@ export default function BpplistCards({
                 {item.name.charAt(0).toUpperCase()}
               </div>
               <div className="ml-3">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                  {item.name}
-                </h3>
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{item.name}</h3>
                 {item.isStudent && (
                   <span className="text-xs px-2 py-0.5 rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300">
                     Student
@@ -54,9 +52,7 @@ export default function BpplistCards({
                 onToggle={() => onToggleAttendedStatus(item._id)}
                 size="sm"
                 ariaLabel={
-                  toggleStatuses[item._id]?.attended
-                    ? "Mark as not attended"
-                    : "Mark as attended"
+                  toggleStatuses[item._id]?.attended ? "Mark as not attended" : "Mark as attended"
                 }
               />
             </div>
@@ -66,51 +62,39 @@ export default function BpplistCards({
           {isAdminOrMaster && (
             <div className="grid grid-cols-2 gap-x-4 gap-y-2 mt-4">
               <div className="flex flex-col">
-                <span className="text-xs text-gray-500 dark:text-gray-400">
-                  Organizer
-                </span>
+                <span className="text-xs text-gray-500 dark:text-gray-400">Organizer</span>
                 <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
                   {item.organizer || "N/A"}
                 </span>
               </div>
 
               <div className="flex flex-col">
-                <span className="text-xs text-gray-500 dark:text-gray-400">
-                  Inviter
-                </span>
+                <span className="text-xs text-gray-500 dark:text-gray-400">Inviter</span>
                 <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
                   {item.invitedFrom || "N/A"}
                 </span>
               </div>
 
               <div className="flex items-center justify-between mt-2">
-                <span className="text-sm text-gray-500 dark:text-gray-400">
-                  Left
-                </span>
+                <span className="text-sm text-gray-500 dark:text-gray-400">Left</span>
                 <ToggleSwitch
                   isActive={toggleStatuses[item._id]?.hasLeft}
                   onToggle={() => onToggleHasLeftStatus(item._id)}
                   size="sm"
                   ariaLabel={
-                    toggleStatuses[item._id]?.hasLeft
-                      ? "Mark as not left"
-                      : "Mark as left"
+                    toggleStatuses[item._id]?.hasLeft ? "Mark as not left" : "Mark as left"
                   }
                 />
               </div>
 
               <div className="flex items-center justify-between mt-2">
-                <span className="text-sm text-gray-500 dark:text-gray-400">
-                  Student
-                </span>
+                <span className="text-sm text-gray-500 dark:text-gray-400">Student</span>
                 <ToggleSwitch
                   isActive={toggleStatuses[item._id]?.isStudent}
                   onToggle={() => onToggleStudentStatus(item._id)}
                   size="sm"
                   ariaLabel={
-                    toggleStatuses[item._id]?.isStudent
-                      ? "Mark as not student"
-                      : "Mark as student"
+                    toggleStatuses[item._id]?.isStudent ? "Mark as not student" : "Mark as student"
                   }
                 />
               </div>
@@ -126,12 +110,7 @@ export default function BpplistCards({
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
-                <svg
-                  className="w-4 h-4 mr-2"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
+                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -147,12 +126,7 @@ export default function BpplistCards({
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
-                <svg
-                  className="w-4 h-4 mr-2"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
+                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"

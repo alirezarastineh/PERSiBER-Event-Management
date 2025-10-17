@@ -110,11 +110,7 @@ export interface EditGuestModalProps {
   readonly onShowDropdownChange: (show: boolean) => void;
   readonly filteredGuests: Guest[];
   readonly onAdjustDrinksCoupon: (adjustment: number) => void;
-  readonly onShowAlert: (
-    title: string,
-    message: string,
-    type: "success" | "error"
-  ) => void;
+  readonly onShowAlert: (title: string, message: string, type: "success" | "error") => void;
 }
 
 export interface GuestDetailsCardProps {
@@ -139,11 +135,7 @@ export interface GuestDetailContentProps {
   readonly onUpdateLadyStatus: (isLady: boolean) => Promise<void>;
   readonly onUpdateFreeEntry: (freeEntry: boolean) => Promise<void>;
   readonly onAdjustDrinksCoupon: (newValue: number) => Promise<void>;
-  readonly onShowAlert: (
-    title: string,
-    message: string,
-    type: "success" | "error"
-  ) => void;
+  readonly onShowAlert: (title: string, message: string, type: "success" | "error") => void;
   readonly goBack: () => void;
 }
 
@@ -155,11 +147,7 @@ export interface GuestDrinksCouponProps {
   readonly guest: Guest;
   readonly userRole: string | undefined;
   readonly onAdjustDrinksCoupon: (newValue: number) => Promise<void>;
-  readonly onShowAlert: (
-    title: string,
-    message: string,
-    type: "success" | "error"
-  ) => void;
+  readonly onShowAlert: (title: string, message: string, type: "success" | "error") => void;
 }
 
 export interface GuestEditFormProps {
@@ -182,9 +170,5 @@ export interface GuestInfoGridProps {
   readonly guest: Guest;
   readonly userRole: string | undefined;
   readonly onAdjustDrinksCoupon: (newValue: number) => Promise<void>;
-  readonly onShowAlert: (
-    title: string,
-    message: string,
-    type: "success" | "error"
-  ) => void;
+  readonly onShowAlert: (title: string, message: string, type: "success" | "error") => void;
 }

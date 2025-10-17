@@ -19,8 +19,7 @@ export const useBpplistModals = () => {
   const [itemIdToDelete, setItemIdToDelete] = useState<string | null>(null);
 
   // Inviter search for edit modal
-  const [invitedFromSearchTerm, setInvitedFromSearchTerm] =
-    useState<string>("");
+  const [invitedFromSearchTerm, setInvitedFromSearchTerm] = useState<string>("");
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
 
   // Edit modal functions

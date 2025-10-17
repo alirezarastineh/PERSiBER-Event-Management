@@ -89,9 +89,7 @@ export default function GuestTable({
                     onToggle={() => onToggleAttendedStatus(guest._id)}
                     size="sm"
                     ariaLabel={
-                      attendedStatuses[guest._id]
-                        ? "Mark as not attended"
-                        : "Mark as attended"
+                      attendedStatuses[guest._id] ? "Mark as not attended" : "Mark as attended"
                     }
                   />
                 </td>

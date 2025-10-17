@@ -54,12 +54,7 @@ export default function BpplistStatistics({
   const isAdminOrMaster = userRole === "admin" || userRole === "master";
 
   return (
-    <motion.section
-      className="mb-12"
-      variants={variants}
-      initial="hidden"
-      animate="visible"
-    >
+    <motion.section className="mb-12" variants={variants} initial="hidden" animate="visible">
       <motion.div
         className={`grid ${
           isAdminOrMaster ? "grid-cols-2 md:grid-cols-4" : "grid-cols-1"

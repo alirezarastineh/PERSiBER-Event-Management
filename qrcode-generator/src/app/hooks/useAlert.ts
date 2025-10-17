@@ -7,11 +7,7 @@ export const useAlert = () => {
   const [alertTitle, setAlertTitle] = useState("");
   const [alertMessage, setAlertMessage] = useState("");
 
-  const showCustomAlert = (
-    title: string,
-    message: string,
-    type: AlertType = "info"
-  ) => {
+  const showCustomAlert = (title: string, message: string, type: AlertType = "info") => {
     setAlertTitle(title);
     setAlertMessage(message);
     setAlertType(type);

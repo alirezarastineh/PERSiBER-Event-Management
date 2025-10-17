@@ -11,12 +11,7 @@ import {
 import { CreateMemberDto, UpdateMemberDto } from "@/types/members";
 
 export const useMemberManagement = () => {
-  const {
-    data: membersData,
-    isLoading,
-    isError,
-    refetch,
-  } = useGetAllMembersQuery();
+  const { data: membersData, isLoading, isError, refetch } = useGetAllMembersQuery();
 
   const [createMember] = useCreateMemberMutation();
   const [updateMember] = useUpdateMemberMutation();
@@ -41,13 +36,13 @@ export const useMemberManagement = () => {
           isStudent: boolean;
         };
       } = {};
-      membersData.members.forEach((member) => {
+      for (const member of membersData.members) {
         initialToggleStatuses[member._id] = {
           attended: member.attended === "Yes",
           hasLeft: member.hasLeft,
           isStudent: member.isStudent,
         };
-      });
+      }
       setToggleStatuses(initialToggleStatuses);
     }
   }, [membersData]);
@@ -66,10 +61,7 @@ export const useMemberManagement = () => {
     refetch();
   };
 
-  const handleUpdateMember = async (
-    memberId: string,
-    data: UpdateMemberDto
-  ) => {
+  const handleUpdateMember = async (memberId: string, data: UpdateMemberDto) => {
     await updateMember({ id: memberId, data }).unwrap();
     refetch();
   };
@@ -158,7 +150,7 @@ export const useMemberManagement = () => {
 
   // Filtered members based on search term
   const filteredMembers = membersData?.members.filter((member) =>
-    member.name.toLowerCase().includes(searchTerm.toLowerCase())
+    member.name.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
   return {

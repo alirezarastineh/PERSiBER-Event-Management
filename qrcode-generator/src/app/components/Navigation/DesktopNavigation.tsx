@@ -50,12 +50,7 @@ export default function DesktopNavigation({
               <>
                 <DesktopNavItem
                   icon={
-                    <svg
-                      className="size-4.5"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
+                    <svg className="size-4.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -72,12 +67,7 @@ export default function DesktopNavigation({
 
                 <DesktopNavItem
                   icon={
-                    <svg
-                      className="size-4.5"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
+                    <svg className="size-4.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -94,12 +84,7 @@ export default function DesktopNavigation({
 
                 <DesktopNavItem
                   icon={
-                    <svg
-                      className="size-4.5"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
+                    <svg className="size-4.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -121,12 +106,7 @@ export default function DesktopNavigation({
             {/* Common navigation items */}
             <DesktopNavItem
               icon={
-                <svg
-                  className="size-4.5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
+                <svg className="size-4.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -149,12 +129,7 @@ export default function DesktopNavigation({
 
             <DesktopNavItem
               icon={
-                <svg
-                  className="size-4.5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
+                <svg className="size-4.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -171,12 +146,7 @@ export default function DesktopNavigation({
 
             <DesktopNavItem
               icon={
-                <svg
-                  className="size-4.5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
+                <svg className="size-4.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -193,12 +163,7 @@ export default function DesktopNavigation({
 
             <DesktopNavItem
               icon={
-                <svg
-                  className="size-4.5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
+                <svg className="size-4.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"

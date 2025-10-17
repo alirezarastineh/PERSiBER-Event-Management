@@ -17,19 +17,10 @@ const QRScanner = () => {
   const [alertMessage, setAlertMessage] = useState("");
 
   // Custom hooks
-  const {
-    isLoading,
-    isScannerSupported,
-    scannedGuest,
-    setScanSuccessCallback,
-  } = useQRScanner();
+  const { isLoading, isScannerSupported, scannedGuest, setScanSuccessCallback } = useQRScanner();
 
   // Show custom alert - like in working version
-  const showCustomAlert = (
-    title: string,
-    message: string,
-    type: AlertType = "info"
-  ) => {
+  const showCustomAlert = (title: string, message: string, type: AlertType = "info") => {
     setAlertTitle(title);
     setAlertMessage(message);
     setAlertType(type);

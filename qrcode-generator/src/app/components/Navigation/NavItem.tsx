@@ -31,9 +31,7 @@ export function DesktopNavItem({
       {/* Hover indicator */}
       <span
         className={`absolute inset-0 rounded-lg ${
-          isActive
-            ? "bg-amber-500/10"
-            : "bg-zinc-700/0 group-hover:bg-zinc-700/30"
+          isActive ? "bg-amber-500/10" : "bg-zinc-700/0 group-hover:bg-zinc-700/30"
         } transition-all duration-300`}
       />
 
@@ -84,12 +82,7 @@ export function MobileNavItem({
           stroke="currentColor"
           viewBox="0 0 24 24"
         >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="M9 12l2 2 4-4"
-          />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4" />
         </svg>
       )}
     </motion.button>

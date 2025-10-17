@@ -70,12 +70,12 @@ export class DrinksCouponService {
     await this.guestModel.updateMany({}, { drinksCoupon: 0 });
 
     // Count invitations for each guest
-    guests.forEach(guest => {
+    for (const guest of guests) {
       if (guest.invitedFrom) {
         invitedMap[guest.invitedFrom] =
           (invitedMap[guest.invitedFrom] || 0) + 1;
       }
-    });
+    }
 
     // Update drink coupons based on invitations
     for (const [name, count] of Object.entries(invitedMap)) {
@@ -86,7 +86,7 @@ export class DrinksCouponService {
     }
 
     // Apply discount coupons
-    guests.forEach(async guest => {
+    for (const guest of guests) {
       let discountCoupons = 0;
 
       if (studentDiscountActive && guest.isStudent) {
@@ -102,6 +102,6 @@ export class DrinksCouponService {
         { _id: guest._id },
         { drinksCoupon: totalDrinksCoupon },
       );
-    });
+    }
   }
 }

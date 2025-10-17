@@ -57,13 +57,8 @@ export default function GuestDetail() {
       await handleUpdateGuest();
       showCustomAlert("Success", "Guest updated successfully!", "success");
     } catch (error: any) {
-      const errorMessage =
-        error?.data?.message ?? error?.message ?? "Update Failed";
-      showCustomAlert(
-        errorMessage,
-        "Could not update guest information.",
-        "error"
-      );
+      const errorMessage = error?.data?.message ?? error?.message ?? "Update Failed";
+      showCustomAlert(errorMessage, "Could not update guest information.", "error");
     }
   };
 
@@ -77,8 +72,7 @@ export default function GuestDetail() {
         await handleDeleteGuest(guest._id);
         setShowDeleteModal(false);
       } catch (error: any) {
-        const errorMessage =
-          error?.data?.message ?? error?.message ?? "Failed to delete guest";
+        const errorMessage = error?.data?.message ?? error?.message ?? "Failed to delete guest";
         showCustomAlert("Error", errorMessage, "error");
       }
     }

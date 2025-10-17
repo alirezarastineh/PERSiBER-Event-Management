@@ -37,11 +37,7 @@ const QRCodeComponent = () => {
     try {
       await generateQRCode();
     } catch (error: any) {
-      showCustomAlert(
-        "Input Required",
-        error.message ?? "Please enter a guest's name.",
-        "warning"
-      );
+      showCustomAlert("Input Required", error.message ?? "Please enter a guest's name.", "warning");
     }
   };
 

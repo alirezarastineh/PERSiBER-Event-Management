@@ -91,21 +91,25 @@ export class GuestsService {
       `Guest ${guest.name} (${id}) updated by ${userName} (${userRole})`,
     );
 
-    await this.validationService.validateInviter(
-      updateGuestDto.invitedFrom,
-      guest.name,
-    );
-    await this.drinksCouponService.handleInviterChange(
-      updateGuestDto.invitedFrom,
-      previousInvitedFrom,
-    );
+    if (updateGuestDto.invitedFrom !== undefined) {
+      await this.validationService.validateInviter(
+        updateGuestDto.invitedFrom,
+        guest.name,
+      );
+      await this.drinksCouponService.handleInviterChange(
+        updateGuestDto.invitedFrom,
+        previousInvitedFrom,
+      );
+    }
 
     Object.assign(guest, updateGuestDto);
 
-    this.validationService.handleAttendanceTimestamp(
-      guest,
-      updateGuestDto.attended,
-    );
+    if (updateGuestDto.attended !== undefined) {
+      this.validationService.handleAttendanceTimestamp(
+        guest,
+        updateGuestDto.attended,
+      );
+    }
 
     await this.crudService.save(guest);
 

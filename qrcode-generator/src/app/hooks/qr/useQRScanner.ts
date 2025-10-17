@@ -22,7 +22,7 @@ type Html5QrcodeScannerConfig = {
 type Html5QrcodeScannerType = {
   render: (
     onScanSuccess: (decodedText: string, decodedResult: any) => void,
-    onScanFailure?: (error: string) => void
+    onScanFailure?: (error: string) => void,
   ) => void;
   clear: () => Promise<void>;
 };
@@ -39,9 +39,7 @@ export const useQRScanner = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isScannerSupported, setIsScannerSupported] = useState(true);
   const [scriptLoaded, setScriptLoaded] = useState(false);
-  const [lastScannedGuestId, setLastScannedGuestId] = useState<string | null>(
-    null
-  );
+  const [lastScannedGuestId, setLastScannedGuestId] = useState<string | null>(null);
 
   const scannerRef = useRef<Html5QrcodeScannerType | null>(null);
   const lastScanTime = useRef<number>(0);
@@ -53,12 +51,9 @@ export const useQRScanner = () => {
   const [updateAttendedStatus] = useUpdateAttendedStatusMutation();
 
   // Get guest details if we have a lastScannedGuestId
-  const { data: scannedGuest } = useGetGuestByIdQuery(
-    lastScannedGuestId ?? "",
-    {
-      skip: !lastScannedGuestId,
-    }
-  );
+  const { data: scannedGuest } = useGetGuestByIdQuery(lastScannedGuestId ?? "", {
+    skip: !lastScannedGuestId,
+  });
 
   // Function to check camera permissions
   const checkCameraPermission = async () => {
@@ -68,7 +63,9 @@ export const useQRScanner = () => {
       console.log("Camera permission granted");
 
       // Stop all tracks to release the camera
-      stream.getTracks().forEach((track) => track.stop());
+      for (const track of stream.getTracks()) {
+        track.stop();
+      }
       return true;
     } catch (error) {
       console.error("Camera permission denied:", error);
@@ -81,7 +78,7 @@ export const useQRScanner = () => {
     const loadScript = async () => {
       try {
         // Check if library is already available globally
-        if ((window as any).Html5QrcodeScanner) {
+        if ((globalThis as any).Html5QrcodeScanner) {
           console.log("Html5QrcodeScanner already loaded");
           setScriptLoaded(true);
           setIsLoading(false);
@@ -89,11 +86,15 @@ export const useQRScanner = () => {
         }
 
         // Check if script tag already exists
-        if (!document.querySelector('script[src*="html5-qrcode.min.js"]')) {
+        const scriptTag = document.querySelector('script[src*="html5-qrcode.min.js"]');
+        if (scriptTag) {
+          console.log("Html5QrcodeScanner script tag already exists");
+          setScriptLoaded(true);
+          setIsLoading(false);
+        } else {
           console.log("Loading Html5QrcodeScanner script");
           const script = document.createElement("script");
-          script.src =
-            "https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js";
+          script.src = "https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js";
           script.async = true;
           script.onload = () => {
             console.log("Html5QrcodeScanner script loaded successfully");
@@ -106,10 +107,6 @@ export const useQRScanner = () => {
             setIsLoading(false);
           };
           document.body.appendChild(script);
-        } else {
-          console.log("Html5QrcodeScanner script tag already exists");
-          setScriptLoaded(true);
-          setIsLoading(false);
         }
       } catch (error) {
         console.error("Error loading script:", error);
@@ -137,8 +134,8 @@ export const useQRScanner = () => {
     const initializeScanner = async () => {
       try {
         // Check if Html5QrcodeScanner is available in the window object
-        if (!(window as any).Html5QrcodeScanner) {
-          console.error("Html5QrcodeScanner not found in window object");
+        if (!(globalThis as any).Html5QrcodeScanner) {
+          console.error("Html5QrcodeScanner not found in globalThis object");
           setIsScannerSupported(false);
           return;
         }
@@ -162,11 +159,7 @@ export const useQRScanner = () => {
         };
 
         console.log("Creating HTML5QrcodeScanner instance");
-        scannerRef.current = new (window as any).Html5QrcodeScanner(
-          "qr-reader",
-          config,
-          false
-        );
+        scannerRef.current = new (globalThis as any).Html5QrcodeScanner("qr-reader", config, false);
         console.log("HTML5QrcodeScanner instance created successfully");
 
         setIsScanning(true);
@@ -182,37 +175,30 @@ export const useQRScanner = () => {
   // Start scanning when scanner is initialized - using the same pattern as the working version
   useEffect(() => {
     if (!isScanning || !scannerRef.current || isRenderingRef.current) {
-      console.log(
-        "Not scanning, scanner ref not initialized, or already rendering",
-        {
-          isScanning,
-          hasRef: !!scannerRef.current,
-          isRendering: isRenderingRef.current,
-        }
-      );
+      console.log("Not scanning, scanner ref not initialized, or already rendering", {
+        isScanning,
+        hasRef: !!scannerRef.current,
+        isRendering: isRenderingRef.current,
+      });
       return;
     }
 
     console.log("Setting up scan handlers for QR scanner");
     isRenderingRef.current = true; // Mark as rendering to prevent multiple calls
 
-    const handleScanSuccess = async (
-      decodedText: string,
-      decodedResult: any
-    ) => {
+    const handleScanSuccess = async (decodedText: string, decodedResult: any) => {
       console.log(`Scan result: ${decodedText}`, decodedResult);
 
       // Enhanced debounce mechanism - prevent duplicate scans
       const currentTime = Date.now();
       const isSameCode = lastScannedCode.current === decodedText;
-      const isWithinCooldown =
-        currentTime - lastScanTime.current < SCAN_COOLDOWN_MS;
+      const isWithinCooldown = currentTime - lastScanTime.current < SCAN_COOLDOWN_MS;
 
       if (isSameCode && isWithinCooldown) {
         console.log(
           `Duplicate scan detected for "${decodedText}", ignoring... (cooldown: ${Math.round(
-            (SCAN_COOLDOWN_MS - (currentTime - lastScanTime.current)) / 1000
-          )}s remaining)`
+            (SCAN_COOLDOWN_MS - (currentTime - lastScanTime.current)) / 1000,
+          )}s remaining)`,
         );
         return;
       }
@@ -271,8 +257,7 @@ export const useQRScanner = () => {
           : {
               success: false,
               error: "error",
-              message:
-                "QR code scanned, but there was an error updating attendance status.",
+              message: "QR code scanned, but there was an error updating attendance status.",
             };
 
         // Call the callback if it exists
@@ -327,8 +312,7 @@ export const useQRScanner = () => {
 
     const styleTorchButton = (button: HTMLButtonElement) => {
       button.classList.add("torch-btn");
-      button.style.backgroundImage =
-        "linear-gradient(to right, #d4af37, #f0c64b)";
+      button.style.backgroundImage = "linear-gradient(to right, #d4af37, #f0c64b)";
       button.style.color = "#1a1b26";
       button.style.border = "none";
       button.style.padding = "10px 18px";
@@ -372,8 +356,7 @@ export const useQRScanner = () => {
       const scannerSection = scannerContainer.querySelector("#reader");
       if (scannerSection) {
         (scannerSection as HTMLElement).style.boxShadow = "none";
-        (scannerSection as HTMLElement).style.border =
-          "2px solid rgba(212, 175, 55, 0.2)";
+        (scannerSection as HTMLElement).style.border = "2px solid rgba(212, 175, 55, 0.2)";
         (scannerSection as HTMLElement).style.borderRadius = "12px";
         (scannerSection as HTMLElement).style.overflow = "hidden";
         (scannerSection as HTMLElement).style.backgroundColor = "#ffffff";
@@ -385,10 +368,14 @@ export const useQRScanner = () => {
       if (!scannerContainer) return;
 
       const buttons = scannerContainer.querySelectorAll("button");
-      buttons.forEach(styleButton);
+      for (const button of buttons) {
+        styleButton(button);
+      }
 
       const selectElements = scannerContainer.querySelectorAll("select");
-      selectElements.forEach(styleSelectElement);
+      for (const select of selectElements) {
+        styleSelectElement(select);
+      }
 
       styleScannerSection(scannerContainer);
     };
@@ -402,20 +389,17 @@ export const useQRScanner = () => {
     };
 
     applyCustomStyles();
-    window.addEventListener("resize", applyCustomStyles);
+    globalThis.addEventListener("resize", applyCustomStyles);
 
     return () => {
-      window.removeEventListener("resize", applyCustomStyles);
+      globalThis.removeEventListener("resize", applyCustomStyles);
     };
   }, [scriptLoaded, isScannerSupported]);
 
   // Function to set the scan success callback - using ref to avoid re-renders
-  const setScanSuccessCallback = useCallback(
-    (callback: (result: ScanResult) => void) => {
-      onScanSuccessRef.current = callback;
-    },
-    []
-  );
+  const setScanSuccessCallback = useCallback((callback: (result: ScanResult) => void) => {
+    onScanSuccessRef.current = callback;
+  }, []);
 
   return {
     // State

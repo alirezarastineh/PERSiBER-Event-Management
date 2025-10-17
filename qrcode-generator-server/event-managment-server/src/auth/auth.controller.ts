@@ -10,12 +10,13 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { CookieOptions, Response } from 'express';
-import { Roles } from 'src/common/decorators/roles.decorator';
-import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard/jwt-auth.guard';
-import { RolesGuard } from 'src/common/guards/roles/roles.guard';
-import { RequestWithUser } from 'src/common/interfaces/request-with-user.interface';
-import { User } from 'src/users/schemas/users.schema/users.schema';
+import type { CookieOptions, Response } from 'express';
+
+import { Roles } from '../common/decorators/roles.decorator';
+import { JwtAuthGuard } from '../common/guards/jwt-auth.guard/jwt-auth.guard';
+import { RolesGuard } from '../common/guards/roles/roles.guard';
+import type { RequestWithUser } from '../common/interfaces/request-with-user.interface';
+import { User } from '../users/schemas/users.schema/users.schema';
 
 import { AuthService } from './auth.service';
 import { JwtPayload } from './services/auth-token.service';
@@ -35,7 +36,6 @@ export class AuthController {
   async register(
     @Body('username') username: string,
     @Body('password') password: string,
-    @Req() request: RequestWithUser,
     @Res({ passthrough: true }) reply: Response,
   ): Promise<{ message: string }> {
     const tokens = await this.authService.register(username, password);
@@ -57,7 +57,6 @@ export class AuthController {
   async login(
     @Body('username') username: string,
     @Body('password') password: string,
-    @Req() request: RequestWithUser,
     @Res({ passthrough: true }) reply: Response,
   ): Promise<{
     message: string;
@@ -93,7 +92,6 @@ export class AuthController {
 
   @Post('logout')
   async logout(
-    @Req() request: RequestWithUser,
     @Res({ passthrough: true }) reply: Response,
   ): Promise<{ message: string }> {
     reply.clearCookie('auth-cookie', { path: '/' } as CookieOptions);

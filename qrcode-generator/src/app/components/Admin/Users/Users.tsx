@@ -43,9 +43,7 @@ export default function Users() {
 
   // State for delete confirmation
   const [showDeleteModal, setShowDeleteModal] = React.useState(false);
-  const [userIdToDelete, setUserIdToDelete] = React.useState<string | null>(
-    null
-  );
+  const [userIdToDelete, setUserIdToDelete] = React.useState<string | null>(null);
 
   // Delete handlers
   const openDeleteModal = (userId: string) => {
@@ -66,11 +64,7 @@ export default function Users() {
       showCustomAlert("Success", "User deleted successfully.", "success");
       closeDeleteModal();
     } catch (error: any) {
-      showCustomAlert(
-        "Error",
-        error.message ?? "Failed to delete user.",
-        "error"
-      );
+      showCustomAlert("Error", error.message ?? "Failed to delete user.", "error");
     }
   };
 
@@ -80,11 +74,7 @@ export default function Users() {
       await handleUpdateRole();
       showCustomAlert("Success", "User role updated successfully.", "success");
     } catch (error: any) {
-      showCustomAlert(
-        "Error",
-        error.message ?? "Failed to update user role.",
-        "error"
-      );
+      showCustomAlert("Error", error.message ?? "Failed to update user role.", "error");
     }
   };
 

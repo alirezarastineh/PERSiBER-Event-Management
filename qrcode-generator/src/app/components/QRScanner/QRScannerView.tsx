@@ -20,13 +20,21 @@ export default function QRScannerView({
         {isLoading ? (
           <div className="flex flex-col items-center justify-center h-48 md:h-64">
             <Spinner lg />
-            <p className="mt-4 text-gray-600 dark:text-gray-400">
-              Loading QR code scanner...
-            </p>
+            <p className="mt-4 text-gray-600 dark:text-gray-400">Loading QR code scanner...</p>
           </div>
         ) : (
           <>
-            {!isScannerSupported ? (
+            {isScannerSupported ? (
+              <div className="flex flex-col items-center">
+                <div
+                  id="qr-reader"
+                  className="w-full max-w-md mx-auto overflow-hidden rounded-lg"
+                ></div>
+                <p className="mt-4 md:mt-6 text-sm text-center text-gray-500 dark:text-gray-400">
+                  Position the QR code within the frame to scan
+                </p>
+              </div>
+            ) : (
               <motion.div
                 className="flex flex-col items-center justify-center h-48 md:h-64 text-center"
                 variants={itemVariants}
@@ -51,21 +59,11 @@ export default function QRScannerView({
                   Scanner Not Available
                 </h3>
                 <p className="text-sm md:text-base text-gray-600 dark:text-gray-400 max-w-md">
-                  Your browser doesn&apos;t support the QR code scanner or
-                  camera access is blocked. Please ensure you&apos;re using a
-                  modern browser and have granted camera permissions.
+                  Your browser doesn&apos;t support the QR code scanner or camera access is blocked.
+                  Please ensure you&apos;re using a modern browser and have granted camera
+                  permissions.
                 </p>
               </motion.div>
-            ) : (
-              <div className="flex flex-col items-center">
-                <div
-                  id="qr-reader"
-                  className="w-full max-w-md mx-auto overflow-hidden rounded-lg"
-                ></div>
-                <p className="mt-4 md:mt-6 text-sm text-center text-gray-500 dark:text-gray-400">
-                  Position the QR code within the frame to scan
-                </p>
-              </div>
             )}
           </>
         )}

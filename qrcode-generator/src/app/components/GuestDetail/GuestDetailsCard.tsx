@@ -1,9 +1,7 @@
 import React from "react";
 import { GuestDetailsCardProps } from "@/types/guests";
 
-export default function GuestDetailsCard({
-  guest,
-}: Readonly<GuestDetailsCardProps>) {
+export default function GuestDetailsCard({ guest }: Readonly<GuestDetailsCardProps>) {
   const getAttendedStatusBadgeColor = (status: string) => {
     return status === "Yes"
       ? "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400"
@@ -18,15 +16,13 @@ export default function GuestDetailsCard({
       <div className="space-y-2 text-sm">
         <div className="flex justify-between">
           <span className="text-gray-600 dark:text-gray-400">Name:</span>
-          <span className="font-medium text-warm-charcoal dark:text-white">
-            {guest.name}
-          </span>
+          <span className="font-medium text-warm-charcoal dark:text-white">{guest.name}</span>
         </div>
         <div className="flex justify-between">
           <span className="text-gray-600 dark:text-gray-400">Status:</span>
           <span
             className={`px-2 py-0.5 rounded-full text-xs font-medium ${getAttendedStatusBadgeColor(
-              guest.attended
+              guest.attended,
             )}`}
           >
             {guest.attended}
@@ -34,18 +30,14 @@ export default function GuestDetailsCard({
         </div>
         {guest.invitedFrom && (
           <div className="flex justify-between">
-            <span className="text-gray-600 dark:text-gray-400">
-              Invited By:
-            </span>
+            <span className="text-gray-600 dark:text-gray-400">Invited By:</span>
             <span className="font-medium text-warm-charcoal dark:text-white">
               {guest.invitedFrom}
             </span>
           </div>
         )}
         <div className="flex justify-between">
-          <span className="text-gray-600 dark:text-gray-400">
-            Drinks Coupon:
-          </span>
+          <span className="text-gray-600 dark:text-gray-400">Drinks Coupon:</span>
           <span className="font-medium text-warm-charcoal dark:text-white">
             {guest.drinksCoupon || 0}
           </span>

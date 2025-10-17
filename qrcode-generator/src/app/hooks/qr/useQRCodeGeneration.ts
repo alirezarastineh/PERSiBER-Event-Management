@@ -19,16 +19,13 @@ export const useQRCodeGeneration = () => {
     setLoading(true);
     try {
       const guestResponse = await findOrCreateGuest(text.trim()).unwrap();
-      const guestUrl = `${window.location.origin}/guests/${guestResponse._id}`;
+      const guestUrl = `${globalThis.location.origin}/guests/${guestResponse._id}`;
       const url = await QRCode.toDataURL(guestUrl, { width: 800, margin: 2 });
       setQrCodeUrl(url);
       setCurrentGuest(text.trim());
       return { success: true, guestResponse };
     } catch (error) {
-      console.error(
-        "Error generating QR code or finding/creating guest:",
-        error
-      );
+      console.error("Error generating QR code or finding/creating guest:", error);
       throw new Error("Failed to generate QR code or find/create guest.");
     } finally {
       setLoading(false);
@@ -45,7 +42,7 @@ export const useQRCodeGeneration = () => {
 
     // Format the guest name with proper casing
     const formattedText = currentGuest
-      .replace(/\s+/g, " ")
+      .replaceAll(/\s+/g, " ")
       .trim()
       .split(" ")
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
@@ -96,27 +93,11 @@ export const useQRCodeGeneration = () => {
     // ===== QR CODE WITH MODERN DOUBLE FRAME =====
     doc.setDrawColor(gold.r, gold.g, gold.b);
     doc.setLineWidth(2.4);
-    doc.roundedRect(
-      qrCodeX - 8,
-      qrCodeY - 8,
-      qrCodeSize + 16,
-      qrCodeSize + 16,
-      6,
-      6,
-      "S"
-    );
+    doc.roundedRect(qrCodeX - 8, qrCodeY - 8, qrCodeSize + 16, qrCodeSize + 16, 6, 6, "S");
 
     doc.setDrawColor(white.r, white.g, white.b);
     doc.setLineWidth(0.8);
-    doc.roundedRect(
-      qrCodeX - 3,
-      qrCodeY - 3,
-      qrCodeSize + 6,
-      qrCodeSize + 6,
-      4,
-      4,
-      "S"
-    );
+    doc.roundedRect(qrCodeX - 3, qrCodeY - 3, qrCodeSize + 6, qrCodeSize + 6, 4, 4, "S");
 
     doc.setFillColor(white.r, white.g, white.b);
     doc.roundedRect(qrCodeX, qrCodeY, qrCodeSize, qrCodeSize, 3, 3, "F");

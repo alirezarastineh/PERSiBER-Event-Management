@@ -1,8 +1,5 @@
 import { useVerifyTokenMutation } from "@/redux/features/auth/authApiSlice";
-import {
-  finishInitialLoad,
-  rehydrateAuth,
-} from "@/redux/features/auth/authSlice";
+import { finishInitialLoad, rehydrateAuth } from "@/redux/features/auth/authSlice";
 import { useAppDispatch } from "@/redux/hooks";
 import { useEffect } from "react";
 

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import fs from "fs";
-import path from "path";
+import fs from "node:fs";
+import path from "node:path";
 import sharp from "sharp";
 import mime from "mime";
 
@@ -8,13 +8,10 @@ import mime from "mime";
 async function handleFaviconRequest(
   fileBuffer: Buffer,
   targetSize: { width: number; height: number },
-  acceptHeader: string
+  acceptHeader: string,
 ) {
   let outputContentType = "image/x-icon";
-  const sharpInstance = sharp(fileBuffer).resize(
-    targetSize.width,
-    targetSize.height
-  );
+  const sharpInstance = sharp(fileBuffer).resize(targetSize.width, targetSize.height);
 
   // Some browsers handle PNG favicons better than ICO
   if (acceptHeader.includes("image/png")) {
@@ -42,8 +39,7 @@ export async function GET(request: Request) {
   const url = new URL(request.url);
   const acceptHeader = request.headers.get("accept") ?? "";
   const isAppleTouchIcon =
-    url.pathname.includes("apple-touch-icon") ||
-    acceptHeader.includes("image/png");
+    url.pathname.includes("apple-touch-icon") || acceptHeader.includes("image/png");
 
   // Determine target size based on the request
   let targetSize = { width: 32, height: 32 };
@@ -66,11 +62,7 @@ export async function GET(request: Request) {
 
   let filePath;
   for (const format of acceptedFormats) {
-    const potentialPath = path.join(
-      process.cwd(),
-      "public",
-      `Logo_TP.${format}`
-    );
+    const potentialPath = path.join(process.cwd(), "public", `Logo_TP.${format}`);
     if (fs.existsSync(potentialPath)) {
       filePath = potentialPath;
       break;
@@ -102,8 +94,7 @@ export async function GET(request: Request) {
 
   // Special handling for favicon.ico requests
   const isFaviconRequest =
-    url.pathname.includes("favicon.ico") ||
-    acceptHeader.includes("image/x-icon");
+    url.pathname.includes("favicon.ico") || acceptHeader.includes("image/x-icon");
 
   if (isFaviconRequest) {
     return handleFaviconRequest(fileBuffer, targetSize, acceptHeader);
@@ -117,10 +108,7 @@ export async function GET(request: Request) {
   }
 
   // Create a Sharp instance with the appropriate format
-  let sharpInstance = sharp(fileBuffer).resize(
-    targetSize.width,
-    targetSize.height
-  );
+  let sharpInstance = sharp(fileBuffer).resize(targetSize.width, targetSize.height);
 
   // Apply the appropriate output format
   switch (outputFormat) {

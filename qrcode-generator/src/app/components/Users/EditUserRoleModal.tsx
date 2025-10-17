@@ -43,9 +43,7 @@ export default function EditUserRoleModal({
             whileHover={{
               scale: isLoading || !selectedRole ? 1 : 1.02,
               boxShadow:
-                isLoading || !selectedRole
-                  ? undefined
-                  : "0 5px 15px rgba(212, 175, 55, 0.25)",
+                isLoading || !selectedRole ? undefined : "0 5px 15px rgba(212, 175, 55, 0.25)",
             }}
             whileTap={{
               scale: isLoading || !selectedRole ? 1 : 0.98,

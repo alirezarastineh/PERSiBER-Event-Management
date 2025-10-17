@@ -40,7 +40,7 @@ export default function UserCards({
               </div>
               <span
                 className={`px-3 py-1 rounded-full text-xs font-medium ${getRoleBadgeClass(
-                  user.role
+                  user.role,
                 )}`}
               >
                 {user.role}

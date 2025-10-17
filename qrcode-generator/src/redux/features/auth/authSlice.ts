@@ -18,7 +18,7 @@ const authSlice = createSlice({
         user?: User;
         accessToken: string;
         refreshToken: string;
-      }>
+      }>,
     ) => {
       state.isAuthenticated = true;
       state.user = {
@@ -56,8 +56,7 @@ const authSlice = createSlice({
       state.isLoading = false;
     },
     rehydrateAuth: (state) => {
-      const isAuthenticated =
-        localStorage.getItem("isAuthenticated") === "true";
+      const isAuthenticated = localStorage.getItem("isAuthenticated") === "true";
       if (isAuthenticated) {
         state.isAuthenticated = true;
         state.user = {
@@ -72,6 +71,5 @@ const authSlice = createSlice({
   },
 });
 
-export const { setAuth, logout, finishInitialLoad, rehydrateAuth } =
-  authSlice.actions;
+export const { setAuth, logout, finishInitialLoad, rehydrateAuth } = authSlice.actions;
 export default authSlice.reducer;

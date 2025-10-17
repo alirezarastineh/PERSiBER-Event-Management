@@ -1,18 +1,10 @@
 import apiSlice from "@/redux/api/apiSlice";
-import {
-  Bpplist,
-  BpplistStatistics,
-  CreateBpplistDto,
-  UpdateBpplistDto,
-} from "@/types/bpplist";
+import { Bpplist, BpplistStatistics, CreateBpplistDto, UpdateBpplistDto } from "@/types/bpplist";
 
 const bpplistApiSlice = apiSlice.injectEndpoints({
   overrideExisting: true,
   endpoints: (builder) => ({
-    getAllBpplist: builder.query<
-      { bpplist: Bpplist[]; statistics: BpplistStatistics },
-      void
-    >({
+    getAllBpplist: builder.query<{ bpplist: Bpplist[]; statistics: BpplistStatistics }, void>({
       query: () => ({
         url: "/bpplist",
         method: "GET",
@@ -27,47 +19,32 @@ const bpplistApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["Bpplist"],
     }),
-    updateBpplistItem: builder.mutation<
-      Bpplist,
-      { id: string; data: UpdateBpplistDto }
-    >({
+    updateBpplistItem: builder.mutation<Bpplist, { id: string; data: UpdateBpplistDto }>({
       query: ({ id, data }) => ({
         url: `/bpplist/${id}`,
         method: "PATCH",
         body: data,
       }),
-      invalidatesTags: (result, error, { id }) => [
-        { type: "Bpplist" as const, id },
-        "Bpplist",
-      ],
+      invalidatesTags: (result, error, { id }) =>
+        result && !error ? [{ type: "Bpplist" as const, id }, "Bpplist"] : [],
     }),
-    updateAttendedStatus: builder.mutation<
-      Bpplist,
-      { id: string; attended: string }
-    >({
+    updateAttendedStatus: builder.mutation<Bpplist, { id: string; attended: string }>({
       query: ({ id, attended }) => ({
         url: `/bpplist/${id}/attended`,
         method: "PATCH",
         body: { attended },
       }),
-      invalidatesTags: (result, error, { id }) => [
-        { type: "Bpplist" as const, id },
-        "Bpplist",
-      ],
+      invalidatesTags: (result, error, { id }) =>
+        result && !error ? [{ type: "Bpplist" as const, id }, "Bpplist"] : [],
     }),
-    updateHasLeftStatus: builder.mutation<
-      Bpplist,
-      { id: string; hasLeft: boolean }
-    >({
+    updateHasLeftStatus: builder.mutation<Bpplist, { id: string; hasLeft: boolean }>({
       query: ({ id, hasLeft }) => ({
         url: `/bpplist/${id}/hasLeft`,
         method: "PATCH",
         body: { hasLeft },
       }),
-      invalidatesTags: (result, error, { id }) => [
-        { type: "Bpplist" as const, id },
-        "Bpplist",
-      ],
+      invalidatesTags: (result, error, { id }) =>
+        result && !error ? [{ type: "Bpplist" as const, id }, "Bpplist"] : [],
     }),
     updateStudentStatus: builder.mutation<
       Bpplist,
@@ -78,20 +55,16 @@ const bpplistApiSlice = apiSlice.injectEndpoints({
         method: "PATCH",
         body: { isStudent, untilWhen },
       }),
-      invalidatesTags: (result, error, { id }) => [
-        { type: "Bpplist" as const, id },
-        "Bpplist",
-      ],
+      invalidatesTags: (result, error, { id }) =>
+        result && !error ? [{ type: "Bpplist" as const, id }, "Bpplist"] : [],
     }),
     deleteBpplistItem: builder.mutation<void, string>({
       query: (id) => ({
         url: `/bpplist/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: (result, error, id) => [
-        { type: "Bpplist" as const, id },
-        "Bpplist",
-      ],
+      invalidatesTags: (result, error, id) =>
+        result !== undefined && !error ? [{ type: "Bpplist" as const, id }, "Bpplist"] : [],
     }),
   }),
 });

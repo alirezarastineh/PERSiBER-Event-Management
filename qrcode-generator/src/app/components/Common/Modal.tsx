@@ -19,30 +19,27 @@ export default function Modal({
       }
     };
 
-    window.addEventListener("keydown", handleKeyDown);
+    globalThis.addEventListener("keydown", handleKeyDown);
     return () => {
-      window.removeEventListener("keydown", handleKeyDown);
+      globalThis.removeEventListener("keydown", handleKeyDown);
     };
   }, [onClose, isOpen]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (
-        contentRef.current &&
-        !contentRef.current.contains(event.target as Node)
-      ) {
+      if (contentRef.current && !contentRef.current.contains(event.target as Node)) {
         onClose();
       }
     };
 
     if (isOpen) {
-      window.addEventListener("mousedown", handleClickOutside);
+      globalThis.addEventListener("mousedown", handleClickOutside);
     } else {
-      window.removeEventListener("mousedown", handleClickOutside);
+      globalThis.removeEventListener("mousedown", handleClickOutside);
     }
 
     return () => {
-      window.removeEventListener("mousedown", handleClickOutside);
+      globalThis.removeEventListener("mousedown", handleClickOutside);
     };
   }, [isOpen, onClose]);
 

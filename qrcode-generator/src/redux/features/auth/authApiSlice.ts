@@ -21,7 +21,7 @@ const authApiSlice = apiSlice.injectEndpoints({
           const { data } = await queryFulfilled;
           dispatch(setAuth(data));
         } catch (error) {
-          console.error("Registration error:", error);
+          console.error("Registration error for user:", arg.username, error);
         }
       },
     }),
@@ -36,7 +36,7 @@ const authApiSlice = apiSlice.injectEndpoints({
           const { data } = await queryFulfilled;
           dispatch(setAuth(data));
         } catch (error) {
-          console.error("Login error:", error);
+          console.error("Login error for user:", arg.username, error);
         }
       },
     }),
@@ -63,7 +63,7 @@ const authApiSlice = apiSlice.injectEndpoints({
           const { data } = await queryFulfilled;
           dispatch(setAuth(data));
         } catch (error) {
-          console.error("Refresh token error:", error);
+          console.error("Refresh token error:", arg, error);
         }
       },
     }),

@@ -21,16 +21,13 @@ export default function Spinner({
   });
 
   const spinnerElement = (
-    <output
-      aria-busy="true"
-      className="inline-flex justify-center items-center"
-    >
+    <output aria-busy="true" className="inline-flex justify-center items-center">
       <div className={cn("relative", sizeClass)}>
         {/* Background ring */}
         <div
           className={cn(
             "absolute inset-0 rounded-full border-2 border-gray-200 dark:border-gray-700",
-            sizeClass
+            sizeClass,
           )}
         ></div>
 
@@ -38,7 +35,7 @@ export default function Spinner({
         <motion.div
           className={cn(
             "absolute inset-0 rounded-full border-2 border-t-transparent border-rich-gold dark:border-rich-gold",
-            sizeClass
+            sizeClass,
           )}
           animate={{ rotate: 360 }}
           transition={{
@@ -50,10 +47,7 @@ export default function Spinner({
 
         {/* Inner pulse effect */}
         <motion.div
-          className={cn(
-            "absolute inset-0 flex items-center justify-center",
-            sizeClass
-          )}
+          className={cn("absolute inset-0 flex items-center justify-center", sizeClass)}
           animate={{ scale: [0.8, 1, 0.8], opacity: [0.6, 0.8, 0.6] }}
           transition={{
             duration: 2,
@@ -69,7 +63,7 @@ export default function Spinner({
           <motion.div
             className={cn(
               "absolute inset-0 rounded-full bg-rich-gold/20 dark:bg-rich-gold/20 blur-sm",
-              sizeClass
+              sizeClass,
             )}
             animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.6, 0.3] }}
             transition={{
@@ -91,7 +85,7 @@ export default function Spinner({
       <motion.div
         className={cn(
           "flex justify-center items-center min-h-[70vh] bg-gradient-to-b from-soft-cream to-gray-100 dark:from-deep-navy dark:to-gray-900",
-          className
+          className,
         )}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}

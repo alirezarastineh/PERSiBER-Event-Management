@@ -18,6 +18,6 @@ export class AuthPasswordService {
 
   validatePasswordStrength(password: string): boolean {
     // Add more sophisticated password validation rules here if needed
-    return password && password.length >= 4;
+    return Boolean(password && password.length >= 4);
   }
 }

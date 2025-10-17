@@ -25,10 +25,7 @@ const usersApiSlice = apiSlice.injectEndpoints({
   }),
 });
 
-export const {
-  useGetAllUsersQuery,
-  useDeleteUserMutation,
-  useUpdateUserRoleMutation,
-} = usersApiSlice;
+export const { useGetAllUsersQuery, useDeleteUserMutation, useUpdateUserRoleMutation } =
+  usersApiSlice;
 
 export default usersApiSlice;

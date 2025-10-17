@@ -108,9 +108,7 @@ export default function BpplistTable({
                         onToggle={() => onToggleHasLeftStatus(item._id)}
                         size="sm"
                         ariaLabel={
-                          toggleStatuses[item._id]?.hasLeft
-                            ? "Mark as not left"
-                            : "Mark as left"
+                          toggleStatuses[item._id]?.hasLeft ? "Mark as not left" : "Mark as left"
                         }
                       />
                     </td>

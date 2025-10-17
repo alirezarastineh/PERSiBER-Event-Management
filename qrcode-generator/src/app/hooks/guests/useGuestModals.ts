@@ -18,8 +18,7 @@ export const useGuestModals = () => {
   const [guestIdToDelete, setGuestIdToDelete] = useState<string | null>(null);
 
   // Inviter search for edit modal
-  const [invitedFromSearchTerm, setInvitedFromSearchTerm] =
-    useState<string>("");
+  const [invitedFromSearchTerm, setInvitedFromSearchTerm] = useState<string>("");
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
 
   // Edit modal functions

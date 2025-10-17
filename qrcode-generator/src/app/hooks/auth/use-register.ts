@@ -34,9 +34,7 @@ export default function useRegister() {
 
       if (error?.data) {
         const errorMessage =
-          error.data.username?.[0] ??
-          error.data.detail ??
-          "Registration failed.";
+          error.data.username?.[0] ?? error.data.detail ?? "Registration failed.";
         toast.error(errorMessage);
       } else {
         toast.error("Registration failed.");

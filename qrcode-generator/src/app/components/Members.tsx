@@ -71,7 +71,7 @@ export default function Members() {
       showCustomAlert(
         "Input Required",
         error?.data?.message ?? error?.message ?? "Error adding member.",
-        "warning"
+        "warning",
       );
     }
   };
@@ -86,7 +86,7 @@ export default function Members() {
         showCustomAlert(
           "Error",
           error?.data?.message ?? error?.message ?? "Failed to delete member.",
-          "error"
+          "error",
         );
       }
     }
@@ -100,9 +100,7 @@ export default function Members() {
       showCustomAlert("Success", "Member updated successfully!", "success");
     } catch (error: any) {
       const errorMessage =
-        error?.data?.message ??
-        error?.message ??
-        "Could not update member information";
+        error?.data?.message ?? error?.message ?? "Could not update member information";
       showCustomAlert("Update Failed", errorMessage, "error");
     }
   };
@@ -112,9 +110,7 @@ export default function Members() {
       await handleToggleAttendedStatus(memberId);
     } catch (error: any) {
       const errorMessage =
-        error?.data?.message ??
-        error?.message ??
-        "Failed to update attendance status";
+        error?.data?.message ?? error?.message ?? "Failed to update attendance status";
       showCustomAlert("Attendance Error", errorMessage, "error");
     }
   };
@@ -124,9 +120,7 @@ export default function Members() {
       await handleToggleHasLeftStatus(memberId);
     } catch (error: any) {
       const errorMessage =
-        error?.data?.message ??
-        error?.message ??
-        "Failed to update has left status";
+        error?.data?.message ?? error?.message ?? "Failed to update has left status";
       showCustomAlert("Error", errorMessage, "error");
     }
   };
@@ -136,9 +130,7 @@ export default function Members() {
       await handleToggleStudentStatus(memberId);
     } catch (error: any) {
       const errorMessage =
-        error?.data?.message ??
-        error?.message ??
-        "Failed to update student status";
+        error?.data?.message ?? error?.message ?? "Failed to update student status";
       showCustomAlert("Error", errorMessage, "error");
     }
   };
@@ -254,12 +246,7 @@ export default function Members() {
         )}
 
         {/* Control Panel Section */}
-        <motion.section
-          className="mb-12"
-          variants={fadeIn}
-          initial="hidden"
-          animate="visible"
-        >
+        <motion.section className="mb-12" variants={fadeIn} initial="hidden" animate="visible">
           <MemberControlPanel
             searchTerm={searchTerm}
             onSearchChange={setSearchTerm}
@@ -365,9 +352,7 @@ export default function Members() {
           membersData?.members.filter(
             (member) =>
               invitedFromSearchTerm.trim() === "" ||
-              member.name
-                .toLowerCase()
-                .includes(invitedFromSearchTerm.toLowerCase())
+              member.name.toLowerCase().includes(invitedFromSearchTerm.toLowerCase()),
           ) || []
         }
       />
@@ -391,8 +376,8 @@ export default function Members() {
         <div className="max-w-3xl mx-auto px-4">
           <div className="h-px bg-gradient-to-r from-transparent via-rich-gold/20 to-transparent mb-6"></div>
           <p className="text-sm text-gray-600 dark:text-gray-400">
-            The member management system tracks attendance, status, and
-            membership details to ensure a premium experience for all members.
+            The member management system tracks attendance, status, and membership details to ensure
+            a premium experience for all members.
           </p>
           <div className="mt-4 flex flex-wrap justify-center gap-4">
             <span className="inline-flex items-center text-xs text-gray-500 dark:text-gray-500">

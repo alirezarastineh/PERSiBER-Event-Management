@@ -58,8 +58,7 @@ export default function ToggleSwitch({
     };
   };
 
-  const sizeClasses =
-    title && layout === "between" ? getAttendanceClasses() : getSizeClasses();
+  const sizeClasses = title && layout === "between" ? getAttendanceClasses() : getSizeClasses();
   const colorClasses = getColorClasses();
 
   const toggleButton = (
@@ -103,9 +102,7 @@ export default function ToggleSwitch({
   if (label && layout === "stacked") {
     return (
       <div className="flex flex-col items-center space-y-2">
-        <span className="text-sm font-medium text-gray-600 dark:text-gray-400">
-          {label}
-        </span>
+        <span className="text-sm font-medium text-gray-600 dark:text-gray-400">{label}</span>
         {toggleButton}
       </div>
     );

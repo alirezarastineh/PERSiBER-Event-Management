@@ -11,12 +11,7 @@ import {
 import { CreateBpplistDto, UpdateBpplistDto } from "@/types/bpplist";
 
 export const useBpplistManagement = () => {
-  const {
-    data: bpplistData,
-    isLoading,
-    isError,
-    refetch,
-  } = useGetAllBpplistQuery();
+  const { data: bpplistData, isLoading, isError, refetch } = useGetAllBpplistQuery();
 
   const [createBpplistItem] = useCreateBpplistItemMutation();
   const [updateBpplistItem] = useUpdateBpplistItemMutation();
@@ -41,13 +36,13 @@ export const useBpplistManagement = () => {
           isStudent: boolean;
         };
       } = {};
-      bpplistData.bpplist.forEach((item) => {
+      for (const item of bpplistData.bpplist) {
         initialToggleStatuses[item._id] = {
           attended: item.attended === "Yes",
           hasLeft: item.hasLeft,
           isStudent: item.isStudent,
         };
-      });
+      }
       setToggleStatuses(initialToggleStatuses);
     }
   }, [bpplistData]);
@@ -66,10 +61,7 @@ export const useBpplistManagement = () => {
     refetch();
   };
 
-  const handleUpdateBpplistItem = async (
-    itemId: string,
-    data: UpdateBpplistDto
-  ) => {
+  const handleUpdateBpplistItem = async (itemId: string, data: UpdateBpplistDto) => {
     await updateBpplistItem({ id: itemId, data }).unwrap();
     refetch();
   };
@@ -158,7 +150,7 @@ export const useBpplistManagement = () => {
 
   // Filtered items based on search term
   const filteredItems = bpplistData?.bpplist.filter((item) =>
-    item.name.toLowerCase().includes(searchTerm.toLowerCase())
+    item.name.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
   return {
