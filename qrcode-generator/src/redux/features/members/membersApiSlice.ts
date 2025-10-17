@@ -63,8 +63,26 @@ const membersApiSlice = apiSlice.injectEndpoints({
         url: `/members/${id}`,
         method: "DELETE",
       }),
+      // Optimistic update: remove member from cache immediately
+      async onQueryStarted(id, { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          membersApiSlice.util.updateQueryData("getAllMembers", undefined, (draft) => {
+            const index = draft.members.findIndex((member) => member._id === id);
+            if (index !== -1) {
+              draft.members.splice(index, 1);
+              draft.statistics.totalCount -= 1;
+            }
+          })
+        );
+        
+        try {
+          await queryFulfilled;
+        } catch {
+          patchResult.undo();
+        }
+      },
       invalidatesTags: (result, error, id) =>
-        result !== undefined && !error ? [{ type: "Member" as const, id }, "Member"] : [],
+        result !== undefined && !error ? [{ type: "Member" as const, id }] : [],
     }),
   }),
 });

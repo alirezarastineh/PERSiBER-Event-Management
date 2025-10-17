@@ -65,12 +65,10 @@ export class DrinksCouponService {
     studentDiscountActive: boolean,
     ladyDiscountActive: boolean,
   ): Promise<void> {
-    const guests = await this.guestModel.find().exec();
+    // Use lean() to get plain objects - much faster
+    const guests = await this.guestModel.find().lean().exec();
 
     const invitedMap: { [key: string]: number } = {};
-
-    // Reset all drink coupons to 0
-    await this.guestModel.updateMany({}, { drinksCoupon: 0 });
 
     // Count invitations for each guest
     for (const guest of guests) {
@@ -80,31 +78,43 @@ export class DrinksCouponService {
       }
     }
 
-    // Update drink coupons based on invitations
-    for (const [name, count] of Object.entries(invitedMap)) {
-      await this.guestModel.updateOne(
-        { name },
-        { $inc: { drinksCoupon: count } },
-      );
-    }
+    // Build bulk operations array
+    const bulkOps = [];
 
-    // Apply discount coupons
+    // Reset all drink coupons to 0
+    bulkOps.push({
+      updateMany: {
+        filter: {},
+        update: { $set: { drinksCoupon: 0 } },
+      },
+    });
+
+    // Update drink coupons based on invitations and discounts in one pass
     for (const guest of guests) {
-      let discountCoupons = 0;
+      let totalCoupons = invitedMap[guest.name] || 0;
 
+      // Add discount coupons
       if (studentDiscountActive && guest.isStudent) {
-        discountCoupons += 1;
+        totalCoupons += 1;
       }
 
       if (ladyDiscountActive && guest.isLady) {
-        discountCoupons += 1;
+        totalCoupons += 1;
       }
 
-      const totalDrinksCoupon = guest.drinksCoupon + discountCoupons;
-      await this.guestModel.updateOne(
-        { _id: guest._id },
-        { drinksCoupon: totalDrinksCoupon },
-      );
+      if (totalCoupons > 0) {
+        bulkOps.push({
+          updateOne: {
+            filter: { _id: guest._id },
+            update: { $set: { drinksCoupon: totalCoupons } },
+          },
+        });
+      }
+    }
+
+    // Execute all updates in one batch operation - MUCH faster!
+    if (bulkOps.length > 0) {
+      await this.guestModel.bulkWrite(bulkOps);
     }
   }
 }

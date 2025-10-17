@@ -104,8 +104,30 @@ const guestsApiSlice = apiSlice.injectEndpoints({
         url: `/guests/${id}`,
         method: "DELETE",
       }),
+      // Optimistic update: remove guest from cache immediately
+      async onQueryStarted(id, { dispatch, queryFulfilled }) {
+        // Optimistically update the cache
+        const patchResult = dispatch(
+          guestsApiSlice.util.updateQueryData("getAllGuests", undefined, (draft) => {
+            // Remove the deleted guest from the list
+            const index = draft.guests.findIndex((guest) => guest._id === id);
+            if (index !== -1) {
+              draft.guests.splice(index, 1);
+              // Update statistics
+              draft.statistics.totalCount -= 1;
+            }
+          })
+        );
+        
+        try {
+          await queryFulfilled;
+        } catch {
+          // If the delete fails, undo the optimistic update
+          patchResult.undo();
+        }
+      },
       invalidatesTags: (result, error, id) =>
-        result !== undefined && !error ? [{ type: "Guest" as const, id }, "Guest"] : [],
+        result !== undefined && !error ? [{ type: "Guest" as const, id }] : [],
     }),
     findOrCreateGuest: builder.mutation<Guest, string>({
       query: (name) => ({

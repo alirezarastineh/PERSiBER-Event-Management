@@ -23,3 +23,6 @@ export class User {
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
+
+// Add index for frequently queried username field
+UserSchema.index({ username: 1 });

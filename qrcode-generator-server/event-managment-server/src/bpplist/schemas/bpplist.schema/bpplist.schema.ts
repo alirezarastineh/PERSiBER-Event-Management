@@ -49,3 +49,12 @@ export class Bpplist {
 }
 
 export const BpplistSchema = SchemaFactory.createForClass(Bpplist);
+
+// Add indexes for frequently queried fields to improve performance
+BpplistSchema.index({ name: 1 });
+BpplistSchema.index({ attended: 1 });
+BpplistSchema.index({ organizer: 1 });
+BpplistSchema.index({ invitedFrom: 1 });
+BpplistSchema.index({ hasLeft: 1 });
+BpplistSchema.index({ isStudent: 1 });
+BpplistSchema.index({ attendedAt: 1 });

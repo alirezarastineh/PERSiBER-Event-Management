@@ -63,8 +63,26 @@ const bpplistApiSlice = apiSlice.injectEndpoints({
         url: `/bpplist/${id}`,
         method: "DELETE",
       }),
+      // Optimistic update: remove item from cache immediately
+      async onQueryStarted(id, { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          bpplistApiSlice.util.updateQueryData("getAllBpplist", undefined, (draft) => {
+            const index = draft.bpplist.findIndex((item) => item._id === id);
+            if (index !== -1) {
+              draft.bpplist.splice(index, 1);
+              draft.statistics.totalCount -= 1;
+            }
+          })
+        );
+        
+        try {
+          await queryFulfilled;
+        } catch {
+          patchResult.undo();
+        }
+      },
       invalidatesTags: (result, error, id) =>
-        result !== undefined && !error ? [{ type: "Bpplist" as const, id }, "Bpplist"] : [],
+        result !== undefined && !error ? [{ type: "Bpplist" as const, id }] : [],
     }),
   }),
 });

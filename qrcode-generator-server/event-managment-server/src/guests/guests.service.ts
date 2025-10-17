@@ -67,15 +67,14 @@ export class GuestsService {
       `Guest ${guest.name} (${id}) deleted by ${userName} (${userRole})`,
     );
 
+    // Only decrement drinks coupon if guest was invited by someone
     if (guest.invitedFrom) {
       await this.drinksCouponService.decrementDrinksCoupon(guest.invitedFrom);
     }
 
     await this.crudService.delete(guest);
-    await this.drinksCouponService.recalculateDrinksCoupons(
-      this.discountsService.getStudentDiscountStatus(),
-      this.discountsService.getLadyDiscountStatus(),
-    );
+    // Removed full recalculation - it's too slow and unnecessary for delete
+    // The decrement above already handles the drinks coupon adjustment
   }
 
   async update(

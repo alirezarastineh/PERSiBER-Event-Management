@@ -29,12 +29,13 @@ export default function NavLogo({ onLogoClick }: Readonly<NavLogoProps>) {
   const glowVariants = {
     initial: { opacity: 0 },
     animate: {
-      opacity: [0, 0.6, 0],
-      scale: [0.8, 1.2, 0.8],
+      opacity: [0, 0.4, 0],
+      scale: [0.9, 1.1, 0.9],
       transition: {
-        duration: 3,
+        duration: 4,
         repeat: Infinity,
         repeatType: "loop" as const,
+        ease: "easeInOut" as const,
       },
     },
   };

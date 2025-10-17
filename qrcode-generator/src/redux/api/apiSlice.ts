@@ -96,6 +96,12 @@ export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: baseQueryWithReauth,
   tagTypes: ["Guest", "Member", "Bpplist", "Event", "User"],
+  // Performance optimization: keep unused data in cache for 60 seconds
+  keepUnusedDataFor: 60,
+  // Reduce unnecessary refetch on focus
+  refetchOnFocus: false,
+  // Reduce unnecessary refetch on reconnect
+  refetchOnReconnect: false,
   endpoints: (builder) => ({
     ping: builder.query<{ ok: boolean }, void>({
       query: () => "/ping",

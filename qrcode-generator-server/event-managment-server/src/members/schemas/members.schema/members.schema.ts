@@ -49,3 +49,12 @@ export class Member {
 }
 
 export const MemberSchema = SchemaFactory.createForClass(Member);
+
+// Add indexes for frequently queried fields to improve performance
+MemberSchema.index({ name: 1 });
+MemberSchema.index({ attended: 1 });
+MemberSchema.index({ organizer: 1 });
+MemberSchema.index({ invitedFrom: 1 });
+MemberSchema.index({ hasLeft: 1 });
+MemberSchema.index({ isStudent: 1 });
+MemberSchema.index({ attendedAt: 1 });

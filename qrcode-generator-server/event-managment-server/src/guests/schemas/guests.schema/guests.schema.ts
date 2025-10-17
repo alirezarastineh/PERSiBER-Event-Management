@@ -53,3 +53,11 @@ export class Guest {
 }
 
 export const GuestSchema = SchemaFactory.createForClass(Guest);
+
+// Add indexes for frequently queried fields to improve performance
+GuestSchema.index({ name: 1 });
+GuestSchema.index({ attended: 1 });
+GuestSchema.index({ invitedFrom: 1 });
+GuestSchema.index({ addedBy: 1 });
+GuestSchema.index({ attendedAt: 1 });
+GuestSchema.index({ isStudent: 1, isLady: 1 });

@@ -16,6 +16,14 @@ import { UsersModule } from './users/users.module.js';
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
         uri: configService.get<string>('MONGO_URI'),
+        // Connection pooling and performance optimizations
+        maxPoolSize: 50, // Maximum number of connections in the pool
+        minPoolSize: 10, // Minimum number of connections in the pool
+        serverSelectionTimeoutMS: 5000, // Timeout for server selection
+        socketTimeoutMS: 45000, // Socket timeout
+        family: 4, // Use IPv4, skip trying IPv6
+        // Compression for better network performance
+        compressors: ['zlib'],
       }),
       inject: [ConfigService],
     }),
