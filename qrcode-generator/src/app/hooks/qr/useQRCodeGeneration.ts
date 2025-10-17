@@ -131,7 +131,7 @@ export const useQRCodeGeneration = () => {
     doc.setFont("times", "bold");
     doc.setFontSize(20);
     doc.setTextColor(black.r, black.g, black.b);
-    doc.text("COCKTAIL CASUAL", pageWidth / 2, detailsStartY + 12, {
+    doc.text("BLACK COCKTAIL", pageWidth / 2, detailsStartY + 12, {
       align: "center",
     });
 
