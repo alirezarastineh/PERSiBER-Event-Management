@@ -1,4 +1,4 @@
-import { CreateMemberDto } from './create-member.dto';
+import { CreateMemberDto } from './create-member.dto.js';
 
 describe('CreateMemberDto', () => {
   it('should be defined', () => {

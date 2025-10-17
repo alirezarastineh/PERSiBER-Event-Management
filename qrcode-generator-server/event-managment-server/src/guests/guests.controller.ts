@@ -10,15 +10,15 @@ import {
   UseGuards,
 } from '@nestjs/common';
 
-import { Roles } from '../common/decorators/roles.decorator';
-import { JwtAuthGuard } from '../common/guards/jwt-auth.guard/jwt-auth.guard';
-import { RolesGuard } from '../common/guards/roles/roles.guard';
-import type { RequestWithUser } from '../common/interfaces/request-with-user.interface';
+import { Roles } from '../common/decorators/roles.decorator.js';
+import { JwtAuthGuard } from '../common/guards/jwt-auth.guard/jwt-auth.guard.js';
+import { RolesGuard } from '../common/guards/roles/roles.guard.js';
+import type { RequestWithUser } from '../common/interfaces/request-with-user.interface.js';
 
-import { CreateGuestDto } from './dto/create-guest.dto/create-guest.dto';
-import { UpdateGuestDto } from './dto/update-guest.dto/update-guest.dto';
-import { GuestsService } from './guests.service';
-import { GuestDocument } from './schemas/guests.schema/guests.schema';
+import { CreateGuestDto } from './dto/create-guest.dto/create-guest.dto.js';
+import { UpdateGuestDto } from './dto/update-guest.dto/update-guest.dto.js';
+import { GuestsService } from './guests.service.js';
+import { GuestDocument } from './schemas/guests.schema/guests.schema.js';
 
 @Controller('guests')
 @UseGuards(JwtAuthGuard)

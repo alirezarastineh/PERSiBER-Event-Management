@@ -1,8 +1,8 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
 
-import { CreateMemberDto } from '../dto/create-member.dto/create-member.dto';
-import { UpdateMemberDto } from '../dto/update-member.dto/update-member.dto';
-import { MemberDocument } from '../schemas/members.schema/members.schema';
+import { CreateMemberDto } from '../dto/create-member.dto/create-member.dto.js';
+import { UpdateMemberDto } from '../dto/update-member.dto/update-member.dto.js';
+import { MemberDocument } from '../schemas/members.schema/members.schema.js';
 
 @Injectable()
 export class MemberValidationService {

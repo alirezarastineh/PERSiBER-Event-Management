@@ -1,14 +1,14 @@
 import { Injectable } from '@nestjs/common';
 
-import { CreateBpplistDto } from './dto/create-bpplist.dto/create-bpplist.dto';
-import { UpdateBpplistDto } from './dto/update-bpplist.dto/update-bpplist.dto';
-import { Bpplist } from './schemas/bpplist.schema/bpplist.schema';
-import { BpplistAttendanceService } from './services/bpplist-attendance.service';
-import { BpplistCrudService } from './services/bpplist-crud.service';
-import { BpplistInvitationService } from './services/bpplist-invitation.service';
-import { BpplistStatisticsService } from './services/bpplist-statistics.service';
-import { BpplistStatusService } from './services/bpplist-status.service';
-import { BpplistValidationService } from './services/bpplist-validation.service';
+import { CreateBpplistDto } from './dto/create-bpplist.dto/create-bpplist.dto.js';
+import { UpdateBpplistDto } from './dto/update-bpplist.dto/update-bpplist.dto.js';
+import { Bpplist } from './schemas/bpplist.schema/bpplist.schema.js';
+import { BpplistAttendanceService } from './services/bpplist-attendance.service.js';
+import { BpplistCrudService } from './services/bpplist-crud.service.js';
+import { BpplistInvitationService } from './services/bpplist-invitation.service.js';
+import { BpplistStatisticsService } from './services/bpplist-statistics.service.js';
+import { BpplistStatusService } from './services/bpplist-status.service.js';
+import { BpplistValidationService } from './services/bpplist-validation.service.js';
 
 @Injectable()
 export class BpplistService {

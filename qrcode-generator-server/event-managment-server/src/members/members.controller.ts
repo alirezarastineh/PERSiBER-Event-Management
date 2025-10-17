@@ -9,14 +9,14 @@ import {
   UseGuards,
 } from '@nestjs/common';
 
-import { Roles } from '../common/decorators/roles.decorator';
-import { JwtAuthGuard } from '../common/guards/jwt-auth.guard/jwt-auth.guard';
-import { RolesGuard } from '../common/guards/roles/roles.guard';
+import { Roles } from '../common/decorators/roles.decorator.js';
+import { JwtAuthGuard } from '../common/guards/jwt-auth.guard/jwt-auth.guard.js';
+import { RolesGuard } from '../common/guards/roles/roles.guard.js';
 
-import { CreateMemberDto } from './dto/create-member.dto/create-member.dto';
-import { UpdateMemberDto } from './dto/update-member.dto/update-member.dto';
-import { MembersService } from './members.service';
-import { Member } from './schemas/members.schema/members.schema';
+import { CreateMemberDto } from './dto/create-member.dto/create-member.dto.js';
+import { UpdateMemberDto } from './dto/update-member.dto/update-member.dto.js';
+import { MembersService } from './members.service.js';
+import { Member } from './schemas/members.schema/members.schema.js';
 
 @Controller('members')
 @UseGuards(JwtAuthGuard)

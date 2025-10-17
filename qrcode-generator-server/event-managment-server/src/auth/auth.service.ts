@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
 
-import { User } from '../users/schemas/users.schema/users.schema';
-import { UsersService } from '../users/users.service';
+import { User } from '../users/schemas/users.schema/users.schema.js';
+import { UsersService } from '../users/users.service.js';
 
-import { AuthPasswordService } from './services/auth-password.service';
-import { AuthRoleService } from './services/auth-role.service';
-import { AuthTokenService, TokenPair } from './services/auth-token.service';
-import { AuthValidationService } from './services/auth-validation.service';
+import { AuthPasswordService } from './services/auth-password.service.js';
+import { AuthRoleService } from './services/auth-role.service.js';
+import { AuthTokenService, TokenPair } from './services/auth-token.service.js';
+import { AuthValidationService } from './services/auth-validation.service.js';
 
 @Injectable()
 export class AuthService {

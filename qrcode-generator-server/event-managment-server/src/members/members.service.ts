@@ -1,14 +1,14 @@
 import { Injectable } from '@nestjs/common';
 
-import { CreateMemberDto } from './dto/create-member.dto/create-member.dto';
-import { UpdateMemberDto } from './dto/update-member.dto/update-member.dto';
-import { Member } from './schemas/members.schema/members.schema';
-import { MemberAttendanceService } from './services/member-attendance.service';
-import { MemberCrudService } from './services/member-crud.service';
-import { MemberInvitationService } from './services/member-invitation.service';
-import { MemberStatisticsService } from './services/member-statistics.service';
-import { MemberStatusService } from './services/member-status.service';
-import { MemberValidationService } from './services/member-validation.service';
+import { CreateMemberDto } from './dto/create-member.dto/create-member.dto.js';
+import { UpdateMemberDto } from './dto/update-member.dto/update-member.dto.js';
+import { Member } from './schemas/members.schema/members.schema.js';
+import { MemberAttendanceService } from './services/member-attendance.service.js';
+import { MemberCrudService } from './services/member-crud.service.js';
+import { MemberInvitationService } from './services/member-invitation.service.js';
+import { MemberStatisticsService } from './services/member-statistics.service.js';
+import { MemberStatusService } from './services/member-status.service.js';
+import { MemberValidationService } from './services/member-validation.service.js';
 
 @Injectable()
 export class MembersService {

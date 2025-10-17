@@ -3,18 +3,18 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { MongooseModule } from '@nestjs/mongoose';
 
-import { BpplistController } from './bpplist.controller';
-import { BpplistService } from './bpplist.service';
+import { BpplistController } from './bpplist.controller.js';
+import { BpplistService } from './bpplist.service.js';
 import {
   Bpplist,
   BpplistSchema,
-} from './schemas/bpplist.schema/bpplist.schema';
-import { BpplistAttendanceService } from './services/bpplist-attendance.service';
-import { BpplistCrudService } from './services/bpplist-crud.service';
-import { BpplistInvitationService } from './services/bpplist-invitation.service';
-import { BpplistStatisticsService } from './services/bpplist-statistics.service';
-import { BpplistStatusService } from './services/bpplist-status.service';
-import { BpplistValidationService } from './services/bpplist-validation.service';
+} from './schemas/bpplist.schema/bpplist.schema.js';
+import { BpplistAttendanceService } from './services/bpplist-attendance.service.js';
+import { BpplistCrudService } from './services/bpplist-crud.service.js';
+import { BpplistInvitationService } from './services/bpplist-invitation.service.js';
+import { BpplistStatisticsService } from './services/bpplist-statistics.service.js';
+import { BpplistStatusService } from './services/bpplist-status.service.js';
+import { BpplistValidationService } from './services/bpplist-validation.service.js';
 
 @Module({
   imports: [

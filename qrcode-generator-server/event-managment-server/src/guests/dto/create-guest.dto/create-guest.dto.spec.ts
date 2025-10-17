@@ -1,4 +1,4 @@
-import { CreateGuestDto } from './create-guest.dto';
+import { CreateGuestDto } from './create-guest.dto.js';
 
 describe('CreateGuestDto', () => {
   it('should be defined', () => {

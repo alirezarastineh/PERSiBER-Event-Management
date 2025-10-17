@@ -2,8 +2,11 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Document, Model } from 'mongoose';
 
-import { CreateGuestDto } from '../dto/create-guest.dto/create-guest.dto';
-import { Guest, GuestDocument } from '../schemas/guests.schema/guests.schema';
+import { CreateGuestDto } from '../dto/create-guest.dto/create-guest.dto.js';
+import {
+  Guest,
+  GuestDocument,
+} from '../schemas/guests.schema/guests.schema.js';
 
 @Injectable()
 export class GuestCrudService {

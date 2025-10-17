@@ -4,10 +4,10 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 
-import { User } from '../../users/schemas/users.schema/users.schema';
-import { UsersService } from '../../users/users.service';
+import { User } from '../../users/schemas/users.schema/users.schema.js';
+import { UsersService } from '../../users/users.service.js';
 
-import { AuthPasswordService } from './auth-password.service';
+import { AuthPasswordService } from './auth-password.service.js';
 
 @Injectable()
 export class AuthValidationService {

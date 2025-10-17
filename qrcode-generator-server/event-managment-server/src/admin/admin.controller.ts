@@ -11,13 +11,13 @@ import {
   UseGuards,
 } from '@nestjs/common';
 
-import { AuthService } from '../auth/auth.service';
-import { Roles } from '../common/decorators/roles.decorator';
-import { JwtAuthGuard } from '../common/guards/jwt-auth.guard/jwt-auth.guard';
-import { RolesGuard } from '../common/guards/roles/roles.guard';
-import type { RequestWithUser } from '../common/interfaces/request-with-user.interface';
-import { User } from '../users/schemas/users.schema/users.schema';
-import { UsersService } from '../users/users.service';
+import { AuthService } from '../auth/auth.service.js';
+import { Roles } from '../common/decorators/roles.decorator.js';
+import { JwtAuthGuard } from '../common/guards/jwt-auth.guard/jwt-auth.guard.js';
+import { RolesGuard } from '../common/guards/roles/roles.guard.js';
+import type { RequestWithUser } from '../common/interfaces/request-with-user.interface.js';
+import { User } from '../users/schemas/users.schema/users.schema.js';
+import { UsersService } from '../users/users.service.js';
 
 @Controller('admin')
 @UseGuards(JwtAuthGuard, RolesGuard)

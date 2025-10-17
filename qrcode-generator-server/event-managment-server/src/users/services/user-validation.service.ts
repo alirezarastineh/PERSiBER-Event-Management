@@ -1,6 +1,6 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
 
-import { CreateUserDto, UserCrudService } from './user-crud.service';
+import { CreateUserDto, UserCrudService } from './user-crud.service.js';
 
 @Injectable()
 export class UserValidationService {

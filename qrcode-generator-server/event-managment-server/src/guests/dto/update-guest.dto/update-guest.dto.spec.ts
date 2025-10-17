@@ -1,4 +1,4 @@
-import { UpdateGuestDto } from './update-guest.dto';
+import { UpdateGuestDto } from './update-guest.dto.js';
 
 describe('UpdateGuestDto', () => {
   it('should be defined', () => {

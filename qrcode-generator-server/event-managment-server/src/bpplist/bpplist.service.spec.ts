@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 
-import { BpplistService } from './bpplist.service';
+import { BpplistService } from './bpplist.service.js';
 
 describe('BpplistService', () => {
   let service: BpplistService;

@@ -2,7 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 
-import { Guest, GuestDocument } from '../schemas/guests.schema/guests.schema';
+import {
+  Guest,
+  GuestDocument,
+} from '../schemas/guests.schema/guests.schema.js';
 
 @Injectable()
 export class GuestValidationService {

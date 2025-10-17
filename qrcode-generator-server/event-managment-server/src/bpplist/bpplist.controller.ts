@@ -9,14 +9,14 @@ import {
   UseGuards,
 } from '@nestjs/common';
 
-import { Roles } from '../common/decorators/roles.decorator';
-import { JwtAuthGuard } from '../common/guards/jwt-auth.guard/jwt-auth.guard';
-import { RolesGuard } from '../common/guards/roles/roles.guard';
+import { Roles } from '../common/decorators/roles.decorator.js';
+import { JwtAuthGuard } from '../common/guards/jwt-auth.guard/jwt-auth.guard.js';
+import { RolesGuard } from '../common/guards/roles/roles.guard.js';
 
-import { BpplistService } from './bpplist.service';
-import { CreateBpplistDto } from './dto/create-bpplist.dto/create-bpplist.dto';
-import { UpdateBpplistDto } from './dto/update-bpplist.dto/update-bpplist.dto';
-import { Bpplist } from './schemas/bpplist.schema/bpplist.schema';
+import { BpplistService } from './bpplist.service.js';
+import { CreateBpplistDto } from './dto/create-bpplist.dto/create-bpplist.dto.js';
+import { UpdateBpplistDto } from './dto/update-bpplist.dto/update-bpplist.dto.js';
+import { Bpplist } from './schemas/bpplist.schema/bpplist.schema.js';
 
 @Controller('bpplist')
 @UseGuards(JwtAuthGuard)

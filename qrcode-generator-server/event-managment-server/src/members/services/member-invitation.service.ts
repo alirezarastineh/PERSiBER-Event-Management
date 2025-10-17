@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
-import { MemberCrudService } from './member-crud.service';
+import { MemberCrudService } from './member-crud.service.js';
 
 @Injectable()
 export class MemberInvitationService {

@@ -1,9 +1,9 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
 
-import { MemberDocument } from '../schemas/members.schema/members.schema';
+import { MemberDocument } from '../schemas/members.schema/members.schema.js';
 
-import { MemberCrudService } from './member-crud.service';
-import { MemberStatisticsService } from './member-statistics.service';
+import { MemberCrudService } from './member-crud.service.js';
+import { MemberStatisticsService } from './member-statistics.service.js';
 
 @Injectable()
 export class MemberAttendanceService {

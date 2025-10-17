@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 
-import { MemberDocument } from '../schemas/members.schema/members.schema';
+import { MemberDocument } from '../schemas/members.schema/members.schema.js';
 
-import { MemberCrudService } from './member-crud.service';
+import { MemberCrudService } from './member-crud.service.js';
 
 @Injectable()
 export class MemberStatusService {

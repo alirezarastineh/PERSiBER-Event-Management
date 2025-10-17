@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 
-import { GuestDocument } from '../schemas/guests.schema/guests.schema';
+import { GuestDocument } from '../schemas/guests.schema/guests.schema.js';
 
-import { GuestCrudService } from './guest-crud.service';
-import { GuestDiscountsService } from './guest-discounts.service';
+import { GuestCrudService } from './guest-crud.service.js';
+import { GuestDiscountsService } from './guest-discounts.service.js';
 
 @Injectable()
 export class GuestStatusService {

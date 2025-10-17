@@ -2,11 +2,11 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { FilterQuery, Model, UpdateQuery } from 'mongoose';
 
-import { CreateBpplistDto } from '../dto/create-bpplist.dto/create-bpplist.dto';
+import { CreateBpplistDto } from '../dto/create-bpplist.dto/create-bpplist.dto.js';
 import {
   Bpplist,
   BpplistDocument,
-} from '../schemas/bpplist.schema/bpplist.schema';
+} from '../schemas/bpplist.schema/bpplist.schema.js';
 
 @Injectable()
 export class BpplistCrudService {

@@ -12,14 +12,14 @@ import {
 import { JwtService } from '@nestjs/jwt';
 import type { CookieOptions, Response } from 'express';
 
-import { Roles } from '../common/decorators/roles.decorator';
-import { JwtAuthGuard } from '../common/guards/jwt-auth.guard/jwt-auth.guard';
-import { RolesGuard } from '../common/guards/roles/roles.guard';
-import type { RequestWithUser } from '../common/interfaces/request-with-user.interface';
-import { User } from '../users/schemas/users.schema/users.schema';
+import { Roles } from '../common/decorators/roles.decorator.js';
+import { JwtAuthGuard } from '../common/guards/jwt-auth.guard/jwt-auth.guard.js';
+import { RolesGuard } from '../common/guards/roles/roles.guard.js';
+import type { RequestWithUser } from '../common/interfaces/request-with-user.interface.js';
+import { User } from '../users/schemas/users.schema/users.schema.js';
 
-import { AuthService } from './auth.service';
-import { JwtPayload } from './services/auth-token.service';
+import { AuthService } from './auth.service.js';
+import { JwtPayload } from './services/auth-token.service.js';
 
 @Controller('auth')
 export class AuthController {

@@ -1,15 +1,15 @@
 import { Injectable, Logger } from '@nestjs/common';
 
-import { CreateGuestDto } from './dto/create-guest.dto/create-guest.dto';
-import { UpdateGuestDto } from './dto/update-guest.dto/update-guest.dto';
-import { GuestDocument } from './schemas/guests.schema/guests.schema';
-import { DrinksCouponService } from './services/drinks-coupon.service';
-import { GuestAttendanceService } from './services/guest-attendance.service';
-import { GuestCrudService } from './services/guest-crud.service';
-import { GuestDiscountsService } from './services/guest-discounts.service';
-import { GuestStatisticsService } from './services/guest-statistics.service';
-import { GuestStatusService } from './services/guest-status.service';
-import { GuestValidationService } from './services/guest-validation.service';
+import { CreateGuestDto } from './dto/create-guest.dto/create-guest.dto.js';
+import { UpdateGuestDto } from './dto/update-guest.dto/update-guest.dto.js';
+import { GuestDocument } from './schemas/guests.schema/guests.schema.js';
+import { DrinksCouponService } from './services/drinks-coupon.service.js';
+import { GuestAttendanceService } from './services/guest-attendance.service.js';
+import { GuestCrudService } from './services/guest-crud.service.js';
+import { GuestDiscountsService } from './services/guest-discounts.service.js';
+import { GuestStatisticsService } from './services/guest-statistics.service.js';
+import { GuestStatusService } from './services/guest-status.service.js';
+import { GuestValidationService } from './services/guest-validation.service.js';
 
 @Injectable()
 export class GuestsService {

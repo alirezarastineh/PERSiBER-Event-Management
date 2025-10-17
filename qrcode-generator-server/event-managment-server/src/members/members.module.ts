@@ -3,15 +3,18 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { MongooseModule } from '@nestjs/mongoose';
 
-import { MembersController } from './members.controller';
-import { MembersService } from './members.service';
-import { Member, MemberSchema } from './schemas/members.schema/members.schema';
-import { MemberAttendanceService } from './services/member-attendance.service';
-import { MemberCrudService } from './services/member-crud.service';
-import { MemberInvitationService } from './services/member-invitation.service';
-import { MemberStatisticsService } from './services/member-statistics.service';
-import { MemberStatusService } from './services/member-status.service';
-import { MemberValidationService } from './services/member-validation.service';
+import { MembersController } from './members.controller.js';
+import { MembersService } from './members.service.js';
+import {
+  Member,
+  MemberSchema,
+} from './schemas/members.schema/members.schema.js';
+import { MemberAttendanceService } from './services/member-attendance.service.js';
+import { MemberCrudService } from './services/member-crud.service.js';
+import { MemberInvitationService } from './services/member-invitation.service.js';
+import { MemberStatisticsService } from './services/member-statistics.service.js';
+import { MemberStatusService } from './services/member-status.service.js';
+import { MemberValidationService } from './services/member-validation.service.js';
 
 @Module({
   imports: [

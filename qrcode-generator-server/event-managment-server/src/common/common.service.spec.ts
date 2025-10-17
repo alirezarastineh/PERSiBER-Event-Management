@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 
-import { CommonService } from './common.service';
+import { CommonService } from './common.service.js';
 
 describe('CommonService', () => {
   let service: CommonService;

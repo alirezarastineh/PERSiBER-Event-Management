@@ -2,11 +2,11 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { FilterQuery, Model, UpdateQuery } from 'mongoose';
 
-import { CreateMemberDto } from '../dto/create-member.dto/create-member.dto';
+import { CreateMemberDto } from '../dto/create-member.dto/create-member.dto.js';
 import {
   Member,
   MemberDocument,
-} from '../schemas/members.schema/members.schema';
+} from '../schemas/members.schema/members.schema.js';
 
 @Injectable()
 export class MemberCrudService {

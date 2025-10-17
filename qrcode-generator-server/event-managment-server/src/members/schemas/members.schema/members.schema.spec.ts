@@ -1,4 +1,4 @@
-import { MemberSchema } from './members.schema';
+import { MemberSchema } from './members.schema.js';
 
 describe('MembersSchema', () => {
   it('should be defined', () => {

@@ -1,4 +1,4 @@
-import { UpdateBpplistDto } from './update-bpplist.dto';
+import { UpdateBpplistDto } from './update-bpplist.dto.js';
 
 describe('UpdateBpplistDto', () => {
   it('should be defined', () => {

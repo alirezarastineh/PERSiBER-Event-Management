@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 
-import { BpplistController } from './bpplist.controller';
+import { BpplistController } from './bpplist.controller.js';
 
 describe('BpplistController', () => {
   let controller: BpplistController;

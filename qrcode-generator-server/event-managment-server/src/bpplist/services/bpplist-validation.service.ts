@@ -1,8 +1,8 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
 
-import { CreateBpplistDto } from '../dto/create-bpplist.dto/create-bpplist.dto';
-import { UpdateBpplistDto } from '../dto/update-bpplist.dto/update-bpplist.dto';
-import { BpplistDocument } from '../schemas/bpplist.schema/bpplist.schema';
+import { CreateBpplistDto } from '../dto/create-bpplist.dto/create-bpplist.dto.js';
+import { UpdateBpplistDto } from '../dto/update-bpplist.dto/update-bpplist.dto.js';
+import { BpplistDocument } from '../schemas/bpplist.schema/bpplist.schema.js';
 
 @Injectable()
 export class BpplistValidationService {

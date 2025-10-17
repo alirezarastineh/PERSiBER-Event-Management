@@ -1,9 +1,9 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
 
-import { BpplistDocument } from '../schemas/bpplist.schema/bpplist.schema';
+import { BpplistDocument } from '../schemas/bpplist.schema/bpplist.schema.js';
 
-import { BpplistCrudService } from './bpplist-crud.service';
-import { BpplistStatisticsService } from './bpplist-statistics.service';
+import { BpplistCrudService } from './bpplist-crud.service.js';
+import { BpplistStatisticsService } from './bpplist-statistics.service.js';
 
 @Injectable()
 export class BpplistAttendanceService {

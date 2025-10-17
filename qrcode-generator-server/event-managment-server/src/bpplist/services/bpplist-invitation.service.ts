@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
-import { BpplistCrudService } from './bpplist-crud.service';
+import { BpplistCrudService } from './bpplist-crud.service.js';
 
 @Injectable()
 export class BpplistInvitationService {
