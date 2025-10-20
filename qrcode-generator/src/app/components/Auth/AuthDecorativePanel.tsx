@@ -39,7 +39,7 @@ export default function AuthDecorativePanel({
               width={160}
               height={160}
               className="object-contain"
-              priority
+              loading="lazy"
               style={{ width: "auto", height: "auto" }}
             />
           </div>

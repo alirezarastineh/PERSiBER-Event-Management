@@ -7,7 +7,10 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "favicon": "npx ts-node --esm scripts/generate-favicon.ts"
+    "favicon": "npx ts-node --esm scripts/generate-favicon.ts",
+    "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
+    "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
+    "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.9.1",
@@ -24,7 +27,8 @@
     "react-dom": "^19.2.0",
     "react-icons": "^5.5.0",
     "react-redux": "^9.2.0",
-    "react-toastify": "^11.0.5"
+    "react-toastify": "^11.0.5",
+    "sharp": "^0.34.4"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.14",
@@ -35,7 +39,7 @@
     "@types/react-dom": "^19.2.2",
     "@typescript-eslint/eslint-plugin": "^8.46.1",
     "@typescript-eslint/parser": "^8.46.1",
-    "eslint": "^9.37.0",
+    "eslint": "^9.38.0",
     "eslint-config-next": "^15.5.6",
     "eslint-config-prettier": "^10.1.8",
     "eslint-import-resolver-typescript": "^4.4.4",

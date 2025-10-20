@@ -18,7 +18,7 @@ export default function RootLayout({
   children: ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning data-scroll-behavior="smooth">
       <head>
         <title>{metadataConfig.title}</title>
         <meta name="description" content={metadataConfig.description} />

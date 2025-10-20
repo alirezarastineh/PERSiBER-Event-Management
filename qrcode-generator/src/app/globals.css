@@ -49,7 +49,6 @@
 
   html {
     font-family: var(--font-primary);
-    scroll-behavior: smooth;
   }
 
   h1,
