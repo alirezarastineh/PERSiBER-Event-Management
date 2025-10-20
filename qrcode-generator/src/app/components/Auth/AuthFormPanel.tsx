@@ -43,7 +43,7 @@ export default function AuthFormPanel({
               alt="PERSiBER Logo"
               width={100}
               height={100}
-              priority
+              loading="lazy"
               style={{ width: "auto", height: "auto" }}
             />
           </motion.div>

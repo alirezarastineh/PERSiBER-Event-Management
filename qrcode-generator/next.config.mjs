@@ -18,8 +18,6 @@ const nextConfig = {
   poweredByHeader: false,
   // Production optimizations
   productionBrowserSourceMaps: false,
-  // Reduce bundle size
-  swcMinify: true,
 };
 
 export default nextConfig;

@@ -31,8 +31,14 @@ async function bootstrap(): Promise<void> {
     const envOrigins = [
       configService.get<string>('FRONTEND_URL'),
       configService.get<string>('BACKEND_URL'),
+      'https://persiber.vercel.app', // Production frontend URL
     ].filter((url): url is string => Boolean(url));
     allowedOrigins.push(...envOrigins);
+  }
+
+  // Always include production URL in allowed origins for safety
+  if (!allowedOrigins.includes('https://persiber.vercel.app')) {
+    allowedOrigins.push('https://persiber.vercel.app');
   }
 
   const allAllowedOrigins = allowedOrigins;
@@ -40,7 +46,23 @@ async function bootstrap(): Promise<void> {
   // Register Fastify CORS plugin
   const fastifyCors = await import('@fastify/cors');
   await app.register(fastifyCors.default, {
-    origin: allAllowedOrigins.length > 0 ? allAllowedOrigins : true,
+    origin: (origin, cb) => {
+      // Allow requests with no origin (mobile apps, curl, etc)
+      if (!origin) {
+        cb(null, true);
+        return;
+      }
+
+      // Check if origin is allowed
+      if (
+        allAllowedOrigins.length === 0 ||
+        allAllowedOrigins.includes(origin)
+      ) {
+        cb(null, true);
+      } else {
+        cb(new Error('Not allowed by CORS'), false);
+      }
+    },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: [
@@ -51,6 +73,8 @@ async function bootstrap(): Promise<void> {
       'Origin',
     ],
     exposedHeaders: ['Set-Cookie'],
+    preflightContinue: false,
+    optionsSuccessStatus: 204,
   });
 
   // Register Fastify cookie plugin

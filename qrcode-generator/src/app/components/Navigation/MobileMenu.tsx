@@ -100,7 +100,7 @@ export default function MobileMenu({
                       width={30}
                       height={30}
                       className="object-contain"
-                      priority
+                      loading="lazy"
                       style={{ width: "auto", height: "auto" }}
                     />
                   </div>
