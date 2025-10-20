@@ -116,9 +116,9 @@ const guestsApiSlice = apiSlice.injectEndpoints({
               // Update statistics
               draft.statistics.totalCount -= 1;
             }
-          })
+          }),
         );
-        
+
         try {
           await queryFulfilled;
         } catch {

@@ -72,9 +72,9 @@ const membersApiSlice = apiSlice.injectEndpoints({
               draft.members.splice(index, 1);
               draft.statistics.totalCount -= 1;
             }
-          })
+          }),
         );
-        
+
         try {
           await queryFulfilled;
         } catch {
