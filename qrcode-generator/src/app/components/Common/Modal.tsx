@@ -66,7 +66,7 @@ export default function Modal({
           {/* Modal Content */}
           <motion.div
             ref={contentRef}
-            className="relative bg-soft-cream dark:bg-deep-navy rounded-xl shadow-xl max-w-[95vw] sm:max-w-2xl lg:max-w-3xl max-h-[90vh] w-full overflow-hidden mx-2 sm:mx-4"
+            className="relative bg-deep-navy rounded-xl shadow-xl max-w-[95vw] sm:max-w-2xl lg:max-w-3xl max-h-[90vh] w-full overflow-hidden mx-2 sm:mx-4"
             initial={{ y: 20, opacity: 0, scale: 0.98 }}
             animate={{ y: 0, opacity: 1, scale: 1 }}
             exit={{ y: 20, opacity: 0, scale: 0.98 }}
@@ -80,9 +80,9 @@ export default function Modal({
             <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-rich-gold to-accent-amber" />
 
             {/* Header */}
-            <div className="relative flex justify-between items-center p-4 sm:p-6 border-b border-gray-200/20 dark:border-gray-700/20">
+            <div className="relative flex justify-between items-center p-4 sm:p-6 border-b border-gray-700/20">
               <motion.h3
-                className="text-lg sm:text-xl font-bold text-warm-charcoal dark:text-white tracking-wide pr-2"
+                className="text-lg sm:text-xl font-bold text-white tracking-wide pr-2"
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.1 }}
@@ -92,7 +92,7 @@ export default function Modal({
 
               <motion.button
                 onClick={onClose}
-                className="w-8 h-8 flex items-center justify-center rounded-full text-gray-500 hover:text-warm-charcoal dark:hover:text-white bg-gray-100/50 dark:bg-gray-800/50 hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-200 flex-shrink-0"
+                className="w-8 h-8 flex items-center justify-center rounded-full text-gray-500 hover:text-white bg-gray-800/50 hover:bg-gray-700 transition-all duration-200 flex-shrink-0"
                 aria-label="Close modal"
                 whileHover={{ scale: 1.1, rotate: 90 }}
                 whileTap={{ scale: 0.9 }}
@@ -124,7 +124,7 @@ export default function Modal({
 
             {/* Content */}
             <motion.div
-              className="p-4 sm:p-6 break-words whitespace-pre-line hyphens-auto text-warm-charcoal dark:text-gray-200 overflow-y-auto max-h-[calc(90vh-120px)]"
+              className="p-4 sm:p-6 break-words whitespace-pre-line hyphens-auto text-gray-200 overflow-y-auto max-h-[calc(90vh-120px)]"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.2 }}
@@ -133,7 +133,7 @@ export default function Modal({
             </motion.div>
 
             {/* Shadow effect at bottom when scrolling */}
-            <div className="absolute bottom-0 left-0 right-0 h-6 bg-gradient-to-t from-soft-cream dark:from-deep-navy to-transparent pointer-events-none"></div>
+            <div className="absolute bottom-0 left-0 right-0 h-6 bg-gradient-to-t from-deep-navy to-transparent pointer-events-none"></div>
           </motion.div>
         </motion.div>
       )}

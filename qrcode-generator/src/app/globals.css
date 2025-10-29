@@ -76,25 +76,13 @@
 
 @layer utilities {
   :root {
-    --foreground-rgb: 45, 45, 45;
-    --background-start-rgb: 245, 245, 240;
-    --background-end-rgb: 255, 255, 255;
-  }
-
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --foreground-rgb: 240, 240, 235;
-      --background-start-rgb: 26, 26, 46;
-      --background-end-rgb: 21, 21, 35;
-    }
+    /* Fixed dark theme - constant dark blue background, no gradient */
+    --foreground-rgb: 240, 240, 235;
+    --background-rgb: 26, 26, 46;
   }
 
   body {
-    background-color: rgb(var(--background-start-rgb));
-    background-image: linear-gradient(to bottom, transparent, rgb(var(--background-end-rgb)));
-    background-repeat: no-repeat;
-    background-position: top;
-    background-size: cover;
+    background-color: rgb(var(--background-rgb));
     color: rgb(var(--foreground-rgb));
     font-feature-settings:
       "salt" 1,
@@ -123,7 +111,7 @@
 
   /* Luxury UI elements */
   .card {
-    @apply bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden;
+    @apply bg-gray-800 rounded-xl shadow-md overflow-hidden;
     transition:
       transform 0.3s ease,
       box-shadow 0.3s ease;
@@ -147,13 +135,13 @@
   input,
   select,
   textarea {
-    @apply bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md px-4 py-2 focus:ring-2 focus:ring-custom-button focus:border-custom-button;
+    @apply bg-gray-700 border border-gray-600 rounded-md px-4 py-2 focus:ring-2 focus:ring-custom-button focus:border-custom-button;
     transition: all 0.2s ease;
   }
 
   /* Rich dividers */
   .divider {
-    @apply h-px w-full bg-gradient-to-r from-transparent via-gray-300 dark:via-gray-600 to-transparent my-6;
+    @apply h-px w-full bg-gradient-to-r from-transparent via-gray-600 to-transparent my-6;
   }
 
   /* Animations */

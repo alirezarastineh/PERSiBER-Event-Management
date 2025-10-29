@@ -17,7 +17,7 @@ export default function EditUserRoleModal({
         <div className="space-y-2">
           <label
             htmlFor="roleSelect"
-            className="block text-sm font-medium text-warm-charcoal dark:text-gray-300"
+            className="block text-sm font-medium text-gray-300"
           >
             Select Role
           </label>
@@ -25,7 +25,7 @@ export default function EditUserRoleModal({
             id="roleSelect"
             value={selectedRole}
             onChange={(e) => setSelectedRole(e.target.value)}
-            className="w-full px-4 py-3 rounded-lg bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 text-warm-charcoal dark:text-white focus:ring-2 focus:ring-rich-gold dark:focus:ring-accent-amber focus:border-rich-gold transition-all duration-300"
+            className="w-full px-4 py-3 rounded-lg bg-gray-700 border border-gray-600 text-white focus:ring-2 focus:ring-accent-amber focus:border-rich-gold transition-all duration-300"
             disabled={isLoading}
           >
             <option value="" disabled>
@@ -54,7 +54,7 @@ export default function EditUserRoleModal({
           <motion.button
             onClick={onClose}
             disabled={isLoading}
-            className="flex-1 px-4 py-3 rounded-lg bg-gray-200 dark:bg-gray-700 text-warm-charcoal dark:text-white font-medium disabled:opacity-50"
+            className="flex-1 px-4 py-3 rounded-lg bg-gray-700 text-white font-medium disabled:opacity-50"
             whileHover={{ scale: isLoading ? 1 : 1.02 }}
             whileTap={{ scale: isLoading ? 1 : 0.98 }}
           >

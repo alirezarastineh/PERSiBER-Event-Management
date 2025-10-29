@@ -22,6 +22,9 @@ export default function RootLayout({
       <head>
         <title>{metadataConfig.title}</title>
         <meta name="description" content={metadataConfig.description} />
+        {/* Force dark color scheme - prevent system theme from affecting the app */}
+        <meta name="color-scheme" content="dark only" />
+        <meta name="theme-color" content="#1a1a2e" />
         <link rel="icon" href="/icon" type="image/x-icon" />
         <link rel="shortcut icon" href="/icon" type="image/x-icon" />
         <link rel="apple-touch-icon" href="/icon" />

@@ -26,14 +26,14 @@ export default function GuestDrinksCoupon({
 
   return (
     <div className="space-y-2">
-      <p className="text-sm text-gray-500 dark:text-gray-400">Drinks Coupon</p>
+      <p className="text-sm text-gray-400">Drinks Coupon</p>
       {userRole === "admin" || userRole === "master" ? (
         <div className="flex items-center mt-1 space-x-2">
           <motion.input
             type="number"
             min="0"
             defaultValue={guest.drinksCoupon || 0}
-            className="w-full max-w-[120px] px-3 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-rich-gold dark:focus:ring-accent-amber focus:border-rich-gold dark:focus:border-accent-amber text-warm-charcoal dark:text-white transition-all duration-300 text-center"
+            className="w-full max-w-[120px] px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-accent-amber focus:border-accent-amber text-white transition-all duration-300 text-center"
             whileFocus={{ scale: 1.01 }}
           />
           <motion.button
@@ -46,7 +46,7 @@ export default function GuestDrinksCoupon({
           </motion.button>
         </div>
       ) : (
-        <p className="text-lg font-medium text-warm-charcoal dark:text-white">
+        <p className="text-lg font-medium text-white">
           {guest.drinksCoupon || 0}
         </p>
       )}

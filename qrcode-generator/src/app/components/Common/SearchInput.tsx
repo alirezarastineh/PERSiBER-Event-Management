@@ -14,7 +14,7 @@ export default function SearchInput({
     <div className={className}>
       <label
         htmlFor={id}
-        className="block text-sm font-medium text-gray-600 dark:text-gray-400 mb-2"
+        className="block text-sm font-medium text-gray-400 mb-2"
       >
         {label}
       </label>
@@ -40,7 +40,7 @@ export default function SearchInput({
           placeholder={placeholder}
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className="w-full pl-10 pr-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-rich-gold dark:focus:ring-accent-amber focus:border-rich-gold dark:focus:border-accent-amber text-warm-charcoal dark:text-white transition-all duration-300"
+          className="w-full pl-10 pr-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-accent-amber focus:border-accent-amber text-white transition-all duration-300"
           whileFocus={{ scale: 1.01 }}
         />
       </div>

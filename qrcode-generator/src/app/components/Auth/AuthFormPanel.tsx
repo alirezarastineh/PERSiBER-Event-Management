@@ -14,15 +14,15 @@ export default function AuthFormPanel({
 }: Readonly<AuthFormPanelProps>) {
   return (
     <motion.div
-      className="w-full lg:w-1/2 flex items-center justify-center px-6 sm:px-12 py-16 bg-soft-cream dark:bg-deep-navy relative"
+      className="w-full lg:w-1/2 flex items-center justify-center px-6 sm:px-12 py-16 bg-deep-navy relative"
       initial={{ opacity: 0, x: 20 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ delay: 0.3, duration: 0.8 }}
     >
       {/* Background Elements */}
       <div className="absolute inset-0 overflow-hidden z-0">
-        <div className="absolute -top-20 -right-20 w-64 h-64 rounded-full bg-accent-amber/5 dark:bg-accent-amber/10 blur-3xl"></div>
-        <div className="absolute -bottom-20 -left-20 w-64 h-64 rounded-full bg-rich-gold/5 dark:bg-rich-gold/10 blur-3xl"></div>
+        <div className="absolute -top-20 -right-20 w-64 h-64 rounded-full bg-accent-amber/10 blur-3xl"></div>
+        <div className="absolute -bottom-20 -left-20 w-64 h-64 rounded-full bg-rich-gold/10 blur-3xl"></div>
       </div>
 
       <motion.div
@@ -49,7 +49,7 @@ export default function AuthFormPanel({
           </motion.div>
 
           <motion.h2
-            className="text-3xl font-bold mb-2 text-warm-charcoal dark:text-white"
+            className="text-3xl font-bold mb-2 text-white"
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.7, duration: 0.5 }}
@@ -58,7 +58,7 @@ export default function AuthFormPanel({
           </motion.h2>
 
           <motion.p
-            className="text-gray-600 dark:text-gray-400"
+            className="text-gray-400"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.8, duration: 0.5 }}
@@ -69,7 +69,7 @@ export default function AuthFormPanel({
 
         {/* Form Card */}
         <motion.div
-          className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-xl"
+          className="bg-gray-800 rounded-2xl p-8 shadow-xl"
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.9, duration: 0.5 }}

@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 export default function UserErrorState() {
   return (
     <motion.div
-      className="text-red-500 text-center p-8 rounded-xl bg-red-50 dark:bg-red-900/20 max-w-md mx-auto my-12 border border-red-200 dark:border-red-900/40"
+      className="text-red-500 text-center p-8 rounded-xl bg-red-900/20 max-w-md mx-auto my-12 border border-red-900/40"
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
@@ -23,7 +23,7 @@ export default function UserErrorState() {
         />
       </svg>
       <h2 className="text-xl font-bold mb-2">Error Loading Users</h2>
-      <p className="text-red-600 dark:text-red-400">
+      <p className="text-red-400">
         We couldn&apos;t retrieve the user data. Please try again later.
       </p>
     </motion.div>

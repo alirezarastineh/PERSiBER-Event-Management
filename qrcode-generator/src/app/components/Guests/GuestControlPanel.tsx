@@ -24,7 +24,7 @@ export default function GuestControlPanel({
   const canAddGuests = isAdminOrMaster || userRole === "user";
 
   return (
-    <div className="bg-white dark:bg-gray-800/60 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-gray-100 dark:border-gray-700/50">
+    <div className="bg-gray-800/60 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-gray-700/50">
       <div className="grid md:grid-cols-[1fr,auto] gap-6">
         {/* Search Input */}
         <SearchInput
@@ -57,12 +57,12 @@ export default function GuestControlPanel({
 
       {/* Add Guest Section */}
       {canAddGuests && (
-        <div className="mt-6 pt-6 border-t border-gray-100 dark:border-gray-700/30">
+        <div className="mt-6 pt-6 border-t border-gray-700/30">
           <div className="flex flex-col sm:flex-row gap-3">
             <div className="flex-grow">
               <label
                 htmlFor="new-guest"
-                className="block text-sm font-medium text-gray-600 dark:text-gray-400 mb-2"
+                className="block text-sm font-medium text-gray-400 mb-2"
               >
                 Add New Guest
               </label>
@@ -72,7 +72,7 @@ export default function GuestControlPanel({
                 placeholder="Enter guest's name"
                 value={newGuestName}
                 onChange={(e) => setNewGuestName(e.target.value)}
-                className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-rich-gold dark:focus:ring-accent-amber focus:border-rich-gold dark:focus:border-accent-amber text-warm-charcoal dark:text-white transition-all duration-300"
+                className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-accent-amber focus:border-accent-amber text-white transition-all duration-300"
                 whileFocus={{ scale: 1.01 }}
                 onKeyPress={(e) => {
                   if (e.key === "Enter") {

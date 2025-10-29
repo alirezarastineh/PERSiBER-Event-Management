@@ -114,7 +114,7 @@ export default function Users() {
 
   return (
     <motion.section
-      className="py-12 px-4 sm:px-6 lg:px-8 min-h-screen bg-soft-cream dark:bg-deep-navy transition-colors duration-500"
+      className="py-12 px-4 sm:px-6 lg:px-8 min-h-screen bg-deep-navy transition-colors duration-500"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.8 }}

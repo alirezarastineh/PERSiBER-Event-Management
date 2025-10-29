@@ -42,7 +42,7 @@ export default function GuestDetailContent({
 
   return (
     <motion.section className="mb-12" variants={fadeIn} initial="hidden" animate="visible">
-      <div className="bg-white dark:bg-gray-800/60 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-gray-100 dark:border-gray-700/50">
+      <div className="bg-gray-800/60 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-gray-700/50">
         <div className="space-y-6">
           {/* Guest Status Section */}
           <ToggleSwitch
@@ -82,7 +82,7 @@ export default function GuestDetailContent({
           )}
 
           {/* Back Button */}
-          <div className="flex justify-center mt-6 pt-6 border-t border-gray-100 dark:border-gray-700/30">
+          <div className="flex justify-center mt-6 pt-6 border-t border-gray-700/30">
             <motion.button
               onClick={goBack}
               className="px-6 py-3 rounded-lg bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-500 hover:to-gray-600 text-white font-medium shadow-md"

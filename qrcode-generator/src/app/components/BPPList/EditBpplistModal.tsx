@@ -27,7 +27,7 @@ export default function EditBpplistModal({
             <div className="space-y-2">
               <label
                 htmlFor="attendeeName"
-                className="block text-sm font-medium text-warm-charcoal dark:text-gray-300"
+                className="block text-sm font-medium text-gray-300"
               >
                 Attendee Name
               </label>
@@ -37,7 +37,7 @@ export default function EditBpplistModal({
                 placeholder="Name"
                 value={editData.name ?? ""}
                 onChange={(e) => onEditDataChange({ ...editData, name: e.target.value })}
-                className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-rich-gold dark:focus:ring-accent-amber focus:border-rich-gold dark:focus:border-accent-amber transition-all duration-300 text-warm-charcoal dark:text-white"
+                className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-accent-amber focus:border-accent-amber transition-all duration-300 text-white"
                 whileFocus={{ scale: 1.01 }}
               />
             </div>
@@ -45,7 +45,7 @@ export default function EditBpplistModal({
             <div className="space-y-2">
               <label
                 htmlFor="organizer"
-                className="block text-sm font-medium text-warm-charcoal dark:text-gray-300"
+                className="block text-sm font-medium text-gray-300"
               >
                 Organizer
               </label>
@@ -53,7 +53,7 @@ export default function EditBpplistModal({
                 id="organizer"
                 value={editData.organizer ?? ""}
                 onChange={(e) => onEditDataChange({ ...editData, organizer: e.target.value })}
-                className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-rich-gold dark:focus:ring-accent-amber focus:border-rich-gold dark:focus:border-accent-amber transition-all duration-300 text-warm-charcoal dark:text-white"
+                className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-accent-amber focus:border-accent-amber transition-all duration-300 text-white"
                 whileFocus={{ scale: 1.01 }}
               >
                 <option value="">Select Organizer</option>
@@ -66,7 +66,7 @@ export default function EditBpplistModal({
             <div className="space-y-2 relative">
               <label
                 htmlFor="invitedFromSearch"
-                className="block text-sm font-medium text-warm-charcoal dark:text-gray-300"
+                className="block text-sm font-medium text-gray-300"
               >
                 Invited From
               </label>
@@ -79,14 +79,14 @@ export default function EditBpplistModal({
                   onInvitedFromSearchChange(e.target.value);
                   onShowDropdownChange(e.target.value !== "");
                 }}
-                className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-rich-gold dark:focus:ring-accent-amber focus:border-rich-gold dark:focus:border-accent-amber transition-all duration-300 text-warm-charcoal dark:text-white"
+                className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-accent-amber focus:border-accent-amber transition-all duration-300 text-white"
                 whileFocus={{ scale: 1.01 }}
               />
 
               {/* Dropdown suggestions using filteredItems */}
               {showDropdown && filteredItems && filteredItems.length > 0 && (
                 <motion.div
-                  className="absolute z-10 w-full mt-1 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 max-h-48 overflow-y-auto"
+                  className="absolute z-10 w-full mt-1 bg-gray-800 rounded-lg shadow-lg border border-gray-700 max-h-48 overflow-y-auto"
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
@@ -96,7 +96,7 @@ export default function EditBpplistModal({
                     <button
                       key={attendeeItem._id}
                       type="button"
-                      className="w-full px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-200 text-sm transition-colors duration-150"
+                      className="w-full px-4 py-2 text-left hover:bg-gray-700 text-gray-200 text-sm transition-colors duration-150"
                       onClick={() => {
                         onEditDataChange({
                           ...editData,
@@ -118,7 +118,7 @@ export default function EditBpplistModal({
               <div className="space-y-2">
                 <label
                   htmlFor="attendedStatus"
-                  className="block text-sm font-medium text-warm-charcoal dark:text-gray-300"
+                  className="block text-sm font-medium text-gray-300"
                 >
                   Attended Status
                 </label>
@@ -126,7 +126,7 @@ export default function EditBpplistModal({
                   id="attendedStatus"
                   value={editData.attended ?? "No"}
                   onChange={(e) => onEditDataChange({ ...editData, attended: e.target.value })}
-                  className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-rich-gold dark:focus:ring-accent-amber focus:border-rich-gold transition-all duration-300 text-warm-charcoal dark:text-white"
+                  className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-accent-amber focus:border-rich-gold transition-all duration-300 text-white"
                 >
                   <option value="No">No</option>
                   <option value="Yes">Yes</option>
@@ -139,7 +139,7 @@ export default function EditBpplistModal({
                 <div className="flex items-center justify-between">
                   <label
                     htmlFor="hasLeft"
-                    className="text-sm font-medium text-warm-charcoal dark:text-gray-300"
+                    className="text-sm font-medium text-gray-300"
                   >
                     Has Left
                   </label>
@@ -164,7 +164,7 @@ export default function EditBpplistModal({
                 <div className="flex items-center justify-between">
                   <label
                     htmlFor="isStudent"
-                    className="text-sm font-medium text-warm-charcoal dark:text-gray-300"
+                    className="text-sm font-medium text-gray-300"
                   >
                     Student
                   </label>
@@ -192,7 +192,7 @@ export default function EditBpplistModal({
                 >
                   <label
                     htmlFor="validUntil"
-                    className="block text-sm font-medium text-warm-charcoal dark:text-gray-300"
+                    className="block text-sm font-medium text-gray-300"
                   >
                     Valid Until
                   </label>
@@ -211,7 +211,7 @@ export default function EditBpplistModal({
                         untilWhen: Number.isNaN(parsedDate.getTime()) ? null : parsedDate,
                       });
                     }}
-                    className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-rich-gold dark:focus:ring-accent-amber focus:border-rich-gold transition-all duration-300 text-warm-charcoal dark:text-white"
+                    className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-accent-amber focus:border-rich-gold transition-all duration-300 text-white"
                   />
                 </motion.div>
               )}
@@ -231,7 +231,7 @@ export default function EditBpplistModal({
               </motion.button>
               <motion.button
                 onClick={onClose}
-                className="flex-1 px-4 py-3 rounded-lg bg-gray-200 dark:bg-gray-700 text-warm-charcoal dark:text-white font-medium"
+                className="flex-1 px-4 py-3 rounded-lg bg-gray-700 text-white font-medium"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >

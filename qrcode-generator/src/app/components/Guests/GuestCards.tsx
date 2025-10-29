@@ -27,21 +27,21 @@ export default function GuestCards({
         <motion.div
           key={guest._id}
           variants={itemVariants}
-          className="bg-white dark:bg-gray-800/60 backdrop-blur-sm rounded-xl p-5 shadow-md border border-gray-100 dark:border-gray-700/50"
+          className="bg-gray-800/60 backdrop-blur-sm rounded-xl p-5 shadow-md border border-gray-700/50"
           exit={{ opacity: 0, height: 0 }}
           layout
         >
           <div className="flex justify-between items-center">
             <div className="flex-1">
               <motion.h3
-                className="text-lg font-semibold text-gray-900 dark:text-white cursor-pointer hover:text-rich-gold dark:hover:text-accent-amber transition-colors duration-200"
+                className="text-lg font-semibold text-white cursor-pointer hover:text-accent-amber transition-colors duration-200"
                 onClick={() => onNavigateToDetail(guest._id)}
                 whileHover={{ scale: 1.01 }}
                 whileTap={{ scale: 0.99 }}
               >
                 {guest.name}
               </motion.h3>
-              <p className="text-sm text-gray-500 dark:text-gray-400">
+              <p className="text-sm text-gray-400">
                 Added by: {guest.addedBy ?? "N/A"}
               </p>
             </div>
@@ -59,19 +59,19 @@ export default function GuestCards({
 
           <div className="grid grid-cols-2 gap-x-4 gap-y-2 mt-4">
             <div className="flex flex-col">
-              <span className="text-xs text-gray-500 dark:text-gray-400">Drinks Coupon</span>
-              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+              <span className="text-xs text-gray-400">Drinks Coupon</span>
+              <span className="text-sm font-medium text-gray-300">
                 {guest.drinksCoupon || 0}
               </span>
             </div>
 
             <div className="flex flex-col">
-              <span className="text-xs text-gray-500 dark:text-gray-400">Free Entry</span>
+              <span className="text-xs text-gray-400">Free Entry</span>
               <span
                 className={`text-sm font-medium ${
                   guest.freeEntry
-                    ? "text-amber-600 dark:text-amber-400"
-                    : "text-gray-700 dark:text-gray-300"
+                    ? "text-amber-400"
+                    : "text-gray-300"
                 }`}
               >
                 {guest.freeEntry ? "Yes" : "No"}
@@ -79,8 +79,8 @@ export default function GuestCards({
             </div>
 
             <div className="flex flex-col">
-              <span className="text-xs text-gray-500 dark:text-gray-400">Attended At</span>
-              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+              <span className="text-xs text-gray-400">Attended At</span>
+              <span className="text-sm font-medium text-gray-300">
                 {guest.attendedAt && guest.attended === "Yes"
                   ? new Date(guest.attendedAt).toLocaleString()
                   : "Not attended"}
@@ -90,19 +90,19 @@ export default function GuestCards({
             {isAdminOrMaster && (
               <>
                 <div className="flex flex-col">
-                  <span className="text-xs text-gray-500 dark:text-gray-400">Inviter</span>
-                  <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                  <span className="text-xs text-gray-400">Inviter</span>
+                  <span className="text-sm font-medium text-gray-300">
                     {guest.invitedFrom || "N/A"}
                   </span>
                 </div>
 
                 <div className="flex flex-col">
-                  <span className="text-xs text-gray-500 dark:text-gray-400">Student</span>
+                  <span className="text-xs text-gray-400">Student</span>
                   <span
                     className={`text-sm font-medium ${
                       guest.isStudent
-                        ? "text-blue-600 dark:text-blue-400"
-                        : "text-gray-700 dark:text-gray-300"
+                        ? "text-blue-400"
+                        : "text-gray-300"
                     }`}
                   >
                     {guest.isStudent ? "Yes" : "No"}
@@ -110,12 +110,12 @@ export default function GuestCards({
                 </div>
 
                 <div className="flex flex-col">
-                  <span className="text-xs text-gray-500 dark:text-gray-400">Lady</span>
+                  <span className="text-xs text-gray-400">Lady</span>
                   <span
                     className={`text-sm font-medium ${
                       guest.isLady
-                        ? "text-pink-600 dark:text-pink-400"
-                        : "text-gray-700 dark:text-gray-300"
+                        ? "text-pink-400"
+                        : "text-gray-300"
                     }`}
                   >
                     {guest.isLady ? "Yes" : "No"}
@@ -126,7 +126,7 @@ export default function GuestCards({
           </div>
 
           {isAdminOrMaster && (
-            <div className="flex space-x-2 mt-4 pt-4 border-t border-gray-100 dark:border-gray-700/30">
+            <div className="flex space-x-2 mt-4 pt-4 border-t border-gray-700/30">
               <motion.button
                 onClick={() => onEditGuest(guest)}
                 className="flex-1 px-4 py-2 rounded-lg bg-gradient-to-r from-rich-gold/90 to-accent-amber text-deep-navy font-medium text-sm shadow-sm flex items-center justify-center"

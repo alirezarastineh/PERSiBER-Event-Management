@@ -26,7 +26,7 @@ export default function Spinner({
         {/* Background ring */}
         <div
           className={cn(
-            "absolute inset-0 rounded-full border-2 border-gray-200 dark:border-gray-700",
+            "absolute inset-0 rounded-full border-2 border-gray-700",
             sizeClass,
           )}
         ></div>
@@ -34,7 +34,7 @@ export default function Spinner({
         {/* Primary spinning ring */}
         <motion.div
           className={cn(
-            "absolute inset-0 rounded-full border-2 border-t-transparent border-rich-gold dark:border-rich-gold",
+            "absolute inset-0 rounded-full border-2 border-t-transparent border-rich-gold",
             sizeClass,
           )}
           animate={{ rotate: 360 }}
@@ -55,14 +55,14 @@ export default function Spinner({
             repeatType: "reverse",
           }}
         >
-          <div className="w-1/3 h-1/3 rounded-full bg-rich-gold/80 dark:bg-rich-gold/80 blur-[1px]"></div>
+          <div className="w-1/3 h-1/3 rounded-full bg-rich-gold/80 blur-[1px]"></div>
         </motion.div>
 
         {/* Enhanced glow effect for larger sizes */}
         {(size.lg || size.xl) && (
           <motion.div
             className={cn(
-              "absolute inset-0 rounded-full bg-rich-gold/20 dark:bg-rich-gold/20 blur-sm",
+              "absolute inset-0 rounded-full bg-rich-gold/20 blur-sm",
               sizeClass,
             )}
             animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.6, 0.3] }}
@@ -84,7 +84,7 @@ export default function Spinner({
     return (
       <motion.div
         className={cn(
-          "flex justify-center items-center min-h-[70vh] bg-gradient-to-b from-soft-cream to-gray-100 dark:from-deep-navy dark:to-gray-900",
+          "flex justify-center items-center min-h-[70vh] bg-gradient-to-b from-deep-navy to-gray-900",
           className,
         )}
         initial={{ opacity: 0 }}

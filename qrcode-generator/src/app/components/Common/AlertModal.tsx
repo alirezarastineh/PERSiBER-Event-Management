@@ -17,7 +17,7 @@ export default function AlertModal({
       case "success":
         return (
           <svg
-            className="w-8 h-8 text-green-600 dark:text-green-400"
+            className="w-8 h-8 text-green-400"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -28,7 +28,7 @@ export default function AlertModal({
       case "error":
         return (
           <svg
-            className="w-8 h-8 text-red-600 dark:text-red-400"
+            className="w-8 h-8 text-red-400"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -44,7 +44,7 @@ export default function AlertModal({
       case "warning":
         return (
           <svg
-            className="w-8 h-8 text-amber-600 dark:text-amber-400"
+            className="w-8 h-8 text-amber-400"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -61,7 +61,7 @@ export default function AlertModal({
       default:
         return (
           <svg
-            className="w-8 h-8 text-blue-600 dark:text-blue-400"
+            className="w-8 h-8 text-blue-400"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -92,10 +92,10 @@ export default function AlertModal({
             </div>
 
             <div className="text-center">
-              <h3 className="text-lg font-medium text-warm-charcoal dark:text-white mb-2">
+              <h3 className="text-lg font-medium text-white mb-2">
                 {title}
               </h3>
-              <p className="text-gray-600 dark:text-gray-400">{message}</p>
+              <p className="text-gray-400">{message}</p>
             </div>
 
             {/* Custom content area */}

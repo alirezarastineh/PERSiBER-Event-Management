@@ -82,8 +82,8 @@ export default function QRScannerInstructions({
       animate="visible"
       transition={{ delay: 0.7 }}
     >
-      <div className="bg-white dark:bg-gray-800/60 backdrop-blur-sm rounded-2xl p-4 md:p-6 shadow-lg border border-gray-100 dark:border-gray-700/50">
-        <h3 className="text-lg md:text-xl font-semibold mb-4 md:mb-6 text-center text-warm-charcoal dark:text-white">
+      <div className="bg-gray-800/60 backdrop-blur-sm rounded-2xl p-4 md:p-6 shadow-lg border border-gray-700/50">
+        <h3 className="text-lg md:text-xl font-semibold mb-4 md:mb-6 text-center text-white">
           How to Use the Scanner
         </h3>
 
@@ -97,15 +97,15 @@ export default function QRScannerInstructions({
             <motion.div
               key={instruction.step}
               variants={itemVariants}
-              className="bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-800/70 dark:to-gray-800/50 rounded-xl p-4 md:p-5 shadow-sm border border-gray-100 dark:border-gray-700/30"
+              className="bg-gradient-to-r from-gray-800/70 to-gray-800/50 rounded-xl p-4 md:p-5 shadow-sm border border-gray-700/30"
             >
               <div className="bg-rich-gold/20 p-2 md:p-3 rounded-full w-10 h-10 md:w-12 md:h-12 flex items-center justify-center mx-auto mb-2 md:mb-3">
                 {instruction.icon}
               </div>
-              <h4 className="font-medium mb-1 text-center text-warm-charcoal dark:text-white text-sm md:text-base">
+              <h4 className="font-medium mb-1 text-center text-white text-sm md:text-base">
                 {instruction.step}. {instruction.title}
               </h4>
-              <p className="text-xs md:text-sm text-center text-gray-600 dark:text-gray-400">
+              <p className="text-xs md:text-sm text-center text-gray-400">
                 {instruction.description}
               </p>
             </motion.div>

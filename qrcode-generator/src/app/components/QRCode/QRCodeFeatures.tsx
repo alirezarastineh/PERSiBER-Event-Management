@@ -87,13 +87,13 @@ export default function QRCodeFeatures() {
           }}
           whileHover={{ y: -8, transition: { duration: 0.3 } }}
         >
-          <div className="w-14 h-14 flex items-center justify-center rounded-full bg-gradient-to-r from-rich-gold/20 to-accent-amber/20 text-rich-gold dark:text-accent-amber mb-4">
+          <div className="w-14 h-14 flex items-center justify-center rounded-full bg-gradient-to-r from-rich-gold/20 to-accent-amber/20 text-accent-amber mb-4">
             {feature.icon}
           </div>
-          <h3 className="text-xl font-bold mb-2 text-warm-charcoal dark:text-white">
+          <h3 className="text-xl font-bold mb-2 text-white">
             {feature.title}
           </h3>
-          <p className="text-gray-600 dark:text-gray-400">{feature.desc}</p>
+          <p className="text-gray-400">{feature.desc}</p>
         </motion.div>
       ))}
     </motion.div>

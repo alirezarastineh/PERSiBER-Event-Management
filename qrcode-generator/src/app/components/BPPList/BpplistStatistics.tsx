@@ -69,8 +69,8 @@ export default function BpplistStatistics({
             title="Total BPP Attendees"
             value={statistics.totalCount}
             icon={iconComponents.users}
-            iconBgColor="bg-amber-100 dark:bg-amber-900/30"
-            iconColor="text-amber-600 dark:text-amber-400"
+            iconBgColor="bg-amber-900/30"
+            iconColor="text-amber-400"
             variants={variants}
           />
         )}
@@ -80,8 +80,8 @@ export default function BpplistStatistics({
           title="Attended BPP Members"
           value={statistics.attendedCount}
           icon={iconComponents.check}
-          iconBgColor="bg-green-100 dark:bg-green-900/30"
-          iconColor="text-green-600 dark:text-green-400"
+          iconBgColor="bg-green-900/30"
+          iconColor="text-green-400"
           variants={variants}
         />
 
@@ -92,8 +92,8 @@ export default function BpplistStatistics({
               title="Students Count"
               value={statistics.studentsCount ?? 0}
               icon={iconComponents.book}
-              iconBgColor="bg-blue-100 dark:bg-blue-900/30"
-              iconColor="text-blue-600 dark:text-blue-400"
+              iconBgColor="bg-blue-900/30"
+              iconColor="text-blue-400"
               variants={variants}
             />
 
@@ -101,8 +101,8 @@ export default function BpplistStatistics({
               title="Left BPP Count"
               value={statistics.hasLeftCount ?? 0}
               icon={iconComponents.exit}
-              iconBgColor="bg-orange-100 dark:bg-orange-900/30"
-              iconColor="text-orange-600 dark:text-orange-400"
+              iconBgColor="bg-orange-900/30"
+              iconColor="text-orange-400"
               variants={variants}
             />
           </>

@@ -87,7 +87,7 @@ const QRScanner = () => {
 
   return (
     <motion.div
-      className="min-h-screen bg-gradient-to-b from-soft-cream to-gray-100 dark:from-deep-navy dark:to-gray-900 transition-colors duration-500"
+      className="min-h-screen bg-gradient-to-b from-deep-navy to-gray-900 transition-colors duration-500"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.6 }}
@@ -117,7 +117,7 @@ const QRScanner = () => {
           />
 
           <motion.p
-            className="mt-4 text-base md:text-lg text-warm-charcoal dark:text-gray-300 max-w-xl mx-auto"
+            className="mt-4 text-base md:text-lg text-gray-300 max-w-xl mx-auto"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.5, duration: 0.7 }}

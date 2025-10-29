@@ -24,16 +24,16 @@ export default function UserCards({
           <motion.div
             key={user._id}
             variants={itemVariants}
-            className="bg-white dark:bg-gray-800/60 backdrop-blur-sm rounded-xl p-5 shadow-md border border-gray-100 dark:border-gray-700/50"
+            className="bg-gray-800/60 backdrop-blur-sm rounded-xl p-5 shadow-md border border-gray-700/50"
             exit={{ opacity: 0, height: 0 }}
           >
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center">
-                <div className="h-12 w-12 rounded-full bg-gradient-to-r from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-600 flex items-center justify-center text-lg font-bold text-warm-charcoal dark:text-white">
+                <div className="h-12 w-12 rounded-full bg-gradient-to-r from-gray-700 to-gray-600 flex items-center justify-center text-lg font-bold text-white">
                   {user.username.charAt(0).toUpperCase()}
                 </div>
                 <div className="ml-3">
-                  <h3 className="text-lg font-semibold text-warm-charcoal dark:text-white">
+                  <h3 className="text-lg font-semibold text-white">
                     {user.username}
                   </h3>
                 </div>
@@ -47,7 +47,7 @@ export default function UserCards({
               </span>
             </div>
 
-            <div className="pt-4 border-t border-gray-100 dark:border-gray-700/30 flex gap-2">
+            <div className="pt-4 border-t border-gray-700/30 flex gap-2">
               {canEditUser(user.role) && (
                 <motion.button
                   onClick={() => onEditUser(user._id, user.role)}

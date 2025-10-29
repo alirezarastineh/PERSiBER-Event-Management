@@ -35,7 +35,7 @@ export default function MemberControlPanel({
   const isAdminOrMaster = userRole === "admin" || userRole === "master";
 
   return (
-    <div className="bg-white dark:bg-gray-800/60 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-gray-100 dark:border-gray-700/50">
+    <div className="bg-gray-800/60 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-gray-700/50">
       {/* Search Input */}
       <SearchInput
         value={searchTerm}
@@ -48,19 +48,19 @@ export default function MemberControlPanel({
       {/* Add Member Form - Admin/Master only */}
       {isAdminOrMaster && (
         <motion.div
-          className="mt-8 pt-6 border-t border-gray-100 dark:border-gray-700/30"
+          className="mt-8 pt-6 border-t border-gray-700/30"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2, duration: 0.5 }}
         >
-          <h2 className="text-xl font-bold mb-4 text-warm-charcoal dark:text-white">
+          <h2 className="text-xl font-bold mb-4 text-white">
             Add New Member
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             <div className="space-y-3">
               <label
                 htmlFor="member-name"
-                className="block text-sm font-medium text-gray-600 dark:text-gray-400"
+                className="block text-sm font-medium text-gray-400"
               >
                 Member Name
               </label>
@@ -75,7 +75,7 @@ export default function MemberControlPanel({
                     name: e.target.value,
                   })
                 }
-                className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-rich-gold dark:focus:ring-accent-amber focus:border-rich-gold dark:focus:border-accent-amber text-warm-charcoal dark:text-white transition-all duration-300"
+                className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-accent-amber focus:border-accent-amber text-white transition-all duration-300"
                 whileFocus={{ scale: 1.01 }}
               />
             </div>
@@ -83,7 +83,7 @@ export default function MemberControlPanel({
             <div className="space-y-3">
               <label
                 htmlFor="member-organizer"
-                className="block text-sm font-medium text-gray-600 dark:text-gray-400"
+                className="block text-sm font-medium text-gray-400"
               >
                 Organizer
               </label>
@@ -96,7 +96,7 @@ export default function MemberControlPanel({
                     organizer: e.target.value,
                   })
                 }
-                className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-rich-gold dark:focus:ring-accent-amber focus:border-rich-gold dark:focus:border-accent-amber text-warm-charcoal dark:text-white transition-all duration-300"
+                className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-accent-amber focus:border-accent-amber text-white transition-all duration-300"
                 whileFocus={{ scale: 1.01 }}
               >
                 <option value="">Select Organizer</option>

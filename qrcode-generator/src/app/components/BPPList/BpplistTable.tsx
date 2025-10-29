@@ -18,64 +18,64 @@ export default function BpplistTable({
   const isAdminOrMaster = userRole === "admin" || userRole === "master";
 
   return (
-    <div className="hidden md:block overflow-hidden bg-white dark:bg-gray-800/60 backdrop-blur-sm rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700/50">
+    <div className="hidden md:block overflow-hidden bg-gray-800/60 backdrop-blur-sm rounded-2xl shadow-lg border border-gray-700/50">
       <motion.table
-        className="min-w-full divide-y divide-gray-200 dark:divide-gray-700"
+        className="min-w-full divide-y divide-gray-700"
         variants={variants}
         initial="hidden"
         animate="visible"
       >
-        <thead className="bg-gray-50 dark:bg-gray-800/80">
+        <thead className="bg-gray-800/80">
           <tr>
-            <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+            <th className="px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
               Name
             </th>
-            <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+            <th className="px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
               Attended
             </th>
             {isAdminOrMaster && (
               <>
-                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                <th className="px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
                   Organizer
                 </th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                <th className="px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
                   Inviter
                 </th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                <th className="px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
                   Left
                 </th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                <th className="px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
                   Student
                 </th>
               </>
             )}
             {isAdminOrMaster && (
-              <th className="px-6 py-4 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+              <th className="px-6 py-4 text-right text-xs font-medium text-gray-400 uppercase tracking-wider">
                 Actions
               </th>
             )}
           </tr>
         </thead>
-        <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+        <tbody className="divide-y divide-gray-700">
           <AnimatePresence>
             {items.map((item) => (
               <motion.tr
                 key={item._id}
                 variants={itemVariants}
-                className="hover:bg-gray-50 dark:hover:bg-gray-700/30 transition-colors duration-150"
+                className="hover:bg-gray-700/30 transition-colors duration-150"
                 exit={{ opacity: 0, height: 0 }}
               >
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="flex items-center">
-                    <div className="flex-shrink-0 h-10 w-10 rounded-full bg-gradient-to-r from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-600 flex items-center justify-center overflow-hidden text-gray-700 dark:text-gray-300 font-medium">
+                    <div className="flex-shrink-0 h-10 w-10 rounded-full bg-gradient-to-r from-gray-700 to-gray-600 flex items-center justify-center overflow-hidden text-gray-300 font-medium">
                       {item.name.charAt(0).toUpperCase()}
                     </div>
                     <div className="ml-4">
-                      <div className="text-base font-medium text-gray-800 dark:text-gray-200">
+                      <div className="text-base font-medium text-gray-200">
                         {item.name}
                       </div>
                       {item.isStudent && (
-                        <span className="text-xs px-2 py-0.5 rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300">
+                        <span className="text-blue-300 px-2 py-0.5 rounded-full bg-blue-900/30 text-blue-800">
                           Student
                         </span>
                       )}
@@ -96,10 +96,10 @@ export default function BpplistTable({
                 </td>
                 {isAdminOrMaster && (
                   <>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
                       {item.organizer || "N/A"}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
                       {item.invitedFrom || "N/A"}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm">

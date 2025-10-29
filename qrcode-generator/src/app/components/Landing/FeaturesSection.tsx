@@ -38,7 +38,7 @@ export default function FeaturesSection({ featureVariants }: Readonly<FeaturesSe
         {features.map((feature, i) => (
           <motion.div
             key={feature.id}
-            className="bg-white/50 dark:bg-gray-800/30 backdrop-blur-sm p-8 rounded-xl border border-gray-100 dark:border-gray-700/20 shadow-sm flex flex-col items-center text-center"
+            className="bg-gray-800/30 backdrop-blur-sm p-8 rounded-xl border border-gray-700/20 shadow-sm flex flex-col items-center text-center"
             custom={i}
             initial="hidden"
             animate="visible"
@@ -51,10 +51,10 @@ export default function FeaturesSection({ featureVariants }: Readonly<FeaturesSe
             }}
           >
             <div className="text-4xl mb-4">{feature.icon}</div>
-            <h3 className="text-xl font-bold mb-2 text-gray-800 dark:text-white">
+            <h3 className="text-xl font-bold mb-2 text-white">
               {feature.title}
             </h3>
-            <p className="text-gray-600 dark:text-gray-400">{feature.desc}</p>
+            <p className="text-gray-400">{feature.desc}</p>
           </motion.div>
         ))}
       </div>

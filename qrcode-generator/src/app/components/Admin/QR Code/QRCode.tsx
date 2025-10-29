@@ -43,7 +43,7 @@ const QRCodeComponent = () => {
 
   return (
     <motion.div
-      className="min-h-screen bg-gradient-to-b from-soft-cream to-gray-100 dark:from-deep-navy dark:to-gray-900 px-4 py-16"
+      className="min-h-screen bg-gradient-to-b from-deep-navy to-gray-900 px-4 py-16"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.8 }}
@@ -73,7 +73,7 @@ const QRCodeComponent = () => {
           />
 
           <motion.p
-            className="mt-4 text-lg text-warm-charcoal dark:text-gray-300 max-w-xl mx-auto"
+            className="mt-4 text-lg text-gray-300 max-w-xl mx-auto"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.5, duration: 0.7 }}

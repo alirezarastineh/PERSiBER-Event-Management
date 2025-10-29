@@ -20,7 +20,7 @@ export default function GuestInfoGrid({
 
   return (
     <motion.div
-      className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-gray-100 dark:border-gray-700/30"
+      className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-gray-700/30"
       variants={slideUp}
     >
       <GuestDrinksCoupon
@@ -31,16 +31,16 @@ export default function GuestInfoGrid({
       />
 
       <div className="space-y-2">
-        <p className="text-sm text-gray-500 dark:text-gray-400">Already Paid</p>
-        <p className="text-lg font-medium text-warm-charcoal dark:text-white">
+        <p className="text-sm text-gray-400">Already Paid</p>
+        <p className="text-lg font-medium text-white">
           {guest.alreadyPaid ? "Yes" : "No"}
         </p>
       </div>
 
       <div className="space-y-2">
-        <p className="text-sm text-gray-500 dark:text-gray-400">Free Entry</p>
-        <p className="text-lg font-medium text-warm-charcoal dark:text-white">
-          {guest.freeEntry ? <span className="text-amber-600 dark:text-amber-400">Yes</span> : "No"}
+        <p className="text-sm text-gray-400">Free Entry</p>
+        <p className="text-lg font-medium text-white">
+          {guest.freeEntry ? <span className="text-amber-400">Yes</span> : "No"}
         </p>
       </div>
 
@@ -48,17 +48,17 @@ export default function GuestInfoGrid({
       {(userRole === "admin" || userRole === "master") && (
         <>
           <div className="space-y-2">
-            <p className="text-sm text-gray-500 dark:text-gray-400">Inviter</p>
-            <p className="text-lg font-medium text-warm-charcoal dark:text-white">
+            <p className="text-sm text-gray-400">Inviter</p>
+            <p className="text-lg font-medium text-white">
               {guest.invitedFrom || "N/A"}
             </p>
           </div>
 
           <div className="space-y-2">
-            <p className="text-sm text-gray-500 dark:text-gray-400">Student</p>
-            <p className="text-lg font-medium text-warm-charcoal dark:text-white">
+            <p className="text-sm text-gray-400">Student</p>
+            <p className="text-lg font-medium text-white">
               {guest.isStudent ? (
-                <span className="text-blue-600 dark:text-blue-400">Yes</span>
+                <span className="text-blue-400">Yes</span>
               ) : (
                 "No"
               )}
@@ -66,16 +66,16 @@ export default function GuestInfoGrid({
           </div>
 
           <div className="space-y-2">
-            <p className="text-sm text-gray-500 dark:text-gray-400">Lady</p>
-            <p className="text-lg font-medium text-warm-charcoal dark:text-white">
-              {guest.isLady ? <span className="text-pink-600 dark:text-pink-400">Yes</span> : "No"}
+            <p className="text-sm text-gray-400">Lady</p>
+            <p className="text-lg font-medium text-white">
+              {guest.isLady ? <span className="text-pink-400">Yes</span> : "No"}
             </p>
           </div>
 
           {guest.isStudent && guest.untilWhen && (
             <div className="space-y-2">
-              <p className="text-sm text-gray-500 dark:text-gray-400">Student Until</p>
-              <p className="text-lg font-medium text-warm-charcoal dark:text-white">
+              <p className="text-sm text-gray-400">Student Until</p>
+              <p className="text-lg font-medium text-white">
                 {new Date(guest.untilWhen).toLocaleDateString()}
               </p>
             </div>

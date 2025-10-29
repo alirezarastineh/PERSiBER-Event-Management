@@ -28,21 +28,21 @@ export default function MemberCards({
         <motion.div
           key={member._id}
           variants={itemVariants}
-          className="bg-white dark:bg-gray-800/60 backdrop-blur-sm rounded-xl p-5 shadow-md border border-gray-100 dark:border-gray-700/50"
+          className="bg-gray-800/60 backdrop-blur-sm rounded-xl p-5 shadow-md border border-gray-700/50"
           exit={{ opacity: 0, height: 0 }}
           layout
         >
           <div className="flex justify-between items-center">
             <div className="flex items-center">
-              <div className="h-12 w-12 rounded-full bg-gradient-to-r from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-600 flex items-center justify-center text-lg font-bold text-gray-700 dark:text-gray-300">
+              <div className="h-12 w-12 rounded-full bg-gradient-to-r from-gray-700 to-gray-600 flex items-center justify-center text-lg font-bold text-gray-300">
                 {member.name.charAt(0).toUpperCase()}
               </div>
               <div className="ml-3">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                <h3 className="text-lg font-semibold text-white">
                   {member.name}
                 </h3>
                 {member.isStudent && (
-                  <span className="text-xs px-2 py-0.5 rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300">
+                  <span className="text-blue-300 px-2 py-0.5 rounded-full bg-blue-900/30 text-blue-800">
                     Student
                   </span>
                 )}
@@ -64,21 +64,21 @@ export default function MemberCards({
           {isAdminOrMaster && (
             <div className="grid grid-cols-2 gap-x-4 gap-y-2 mt-4">
               <div className="flex flex-col">
-                <span className="text-xs text-gray-500 dark:text-gray-400">Organizer</span>
-                <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                <span className="text-xs text-gray-400">Organizer</span>
+                <span className="text-sm font-medium text-gray-300">
                   {member.organizer || "N/A"}
                 </span>
               </div>
 
               <div className="flex flex-col">
-                <span className="text-xs text-gray-500 dark:text-gray-400">Inviter</span>
-                <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                <span className="text-xs text-gray-400">Inviter</span>
+                <span className="text-sm font-medium text-gray-300">
                   {member.invitedFrom || "N/A"}
                 </span>
               </div>
 
               <div className="flex items-center justify-between mt-2">
-                <span className="text-sm text-gray-500 dark:text-gray-400">Left</span>
+                <span className="text-sm text-gray-400">Left</span>
                 <ToggleSwitch
                   isActive={toggleStatuses[member._id]?.hasLeft}
                   onToggle={() => onToggleHasLeftStatus(member._id)}
@@ -90,7 +90,7 @@ export default function MemberCards({
               </div>
 
               <div className="flex items-center justify-between mt-2">
-                <span className="text-sm text-gray-500 dark:text-gray-400">Student</span>
+                <span className="text-sm text-gray-400">Student</span>
                 <ToggleSwitch
                   isActive={toggleStatuses[member._id]?.isStudent}
                   onToggle={() => onToggleStudentStatus(member._id)}
@@ -107,7 +107,7 @@ export default function MemberCards({
 
           {/* Admin/Master actions */}
           {isAdminOrMaster && (
-            <div className="flex space-x-2 mt-4 pt-4 border-t border-gray-100 dark:border-gray-700/30">
+            <div className="flex space-x-2 mt-4 pt-4 border-t border-gray-700/30">
               <motion.button
                 onClick={() => onEditMember(member)}
                 className="flex-1 px-4 py-2 rounded-lg bg-gradient-to-r from-rich-gold/90 to-accent-amber text-deep-navy font-medium text-sm shadow-sm flex items-center justify-center"

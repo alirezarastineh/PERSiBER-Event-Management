@@ -45,21 +45,21 @@ export default function QRCodePreview({
         {qrCodeUrl ? (
           <motion.div
             key="qrcode"
-            className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 flex flex-col items-center"
+            className="bg-gray-800 rounded-2xl shadow-xl p-8 flex flex-col items-center"
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.9 }}
             transition={{ duration: 0.5 }}
           >
-            <h2 className="text-2xl font-bold mb-6 text-warm-charcoal dark:text-white">
+            <h2 className="text-2xl font-bold mb-6 text-white">
               QR Code Preview
             </h2>
 
             {/* Guest Name Display - Only shows the current guest */}
             {currentGuest && (
               <div className="mb-4 text-center">
-                <span className="text-sm font-medium text-gray-500 dark:text-gray-400">GUEST</span>
-                <h3 className="text-xl font-bold text-warm-charcoal dark:text-white">
+                <span className="text-sm font-medium text-gray-400">GUEST</span>
+                <h3 className="text-xl font-bold text-white">
                   {currentGuest}
                 </h3>
               </div>
@@ -109,7 +109,7 @@ export default function QRCodePreview({
               </button>
 
               {/* Enhanced description with event details - Using currentGuest */}
-              <p className="mt-4 text-sm text-center text-gray-500 dark:text-gray-400">
+              <p className="mt-4 text-sm text-center text-gray-400">
                 PDF includes personalized invitation for{" "}
                 <span className="font-semibold">{currentGuest}</span> to the Private Summer Party
               </p>
@@ -118,15 +118,15 @@ export default function QRCodePreview({
         ) : (
           <motion.div
             key="placeholder"
-            className="bg-white/30 dark:bg-gray-800/30 rounded-2xl shadow-lg p-8 flex flex-col items-center justify-center min-h-[500px] backdrop-blur-sm border border-gray-200 dark:border-gray-700"
+            className="bg-gray-800/30 rounded-2xl shadow-lg p-8 flex flex-col items-center justify-center min-h-[500px] backdrop-blur-sm border border-gray-700"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
             <div className="text-center space-y-4">
-              <div className="inline-flex p-4 rounded-full bg-gray-100 dark:bg-gray-700">
+              <div className="inline-flex p-4 rounded-full bg-gray-700">
                 <svg
-                  className="w-16 h-16 text-gray-400 dark:text-gray-500"
+                  className="w-16 h-16 text-gray-500"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -140,10 +140,10 @@ export default function QRCodePreview({
                   />
                 </svg>
               </div>
-              <h3 className="text-xl font-medium text-gray-600 dark:text-gray-300">
+              <h3 className="text-xl font-medium text-gray-300">
                 No QR Code Generated Yet
               </h3>
-              <p className="text-gray-500 dark:text-gray-400 max-w-xs">
+              <p className="text-gray-400 max-w-xs">
                 Enter a guest name and generate your first QR code
               </p>
             </div>

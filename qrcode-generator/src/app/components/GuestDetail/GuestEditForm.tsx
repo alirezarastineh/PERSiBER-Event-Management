@@ -29,10 +29,10 @@ export default function GuestEditForm({
 
   return (
     <motion.div
-      className="pt-6 mt-6 border-t border-gray-100 dark:border-gray-700/30"
+      className="pt-6 mt-6 border-t border-gray-700/30"
       variants={slideUp}
     >
-      <h3 className="text-lg font-semibold mb-4 text-warm-charcoal dark:text-white">
+      <h3 className="text-lg font-semibold mb-4 text-white">
         Edit Guest Information
       </h3>
       <div className="space-y-4">
@@ -40,7 +40,7 @@ export default function GuestEditForm({
         <div>
           <label
             htmlFor="name"
-            className="block text-sm font-medium text-gray-500 dark:text-gray-400 mb-1"
+            className="block text-sm font-medium text-gray-400 mb-1"
           >
             Name
           </label>
@@ -49,7 +49,7 @@ export default function GuestEditForm({
             type="text"
             value={editData.name}
             onChange={(e) => onEditDataChange({ ...editData, name: e.target.value })}
-            className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-rich-gold dark:focus:ring-accent-amber focus:border-rich-gold dark:focus:border-accent-amber text-warm-charcoal dark:text-white transition-all duration-300"
+            className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-accent-amber focus:border-accent-amber text-white transition-all duration-300"
             whileFocus={{ scale: 1.01 }}
           />
         </div>
@@ -58,7 +58,7 @@ export default function GuestEditForm({
         <div className="relative">
           <label
             htmlFor="invitedFrom"
-            className="block text-sm font-medium text-gray-500 dark:text-gray-400 mb-1"
+            className="block text-sm font-medium text-gray-400 mb-1"
           >
             Inviter
           </label>
@@ -71,17 +71,17 @@ export default function GuestEditForm({
               onInvitedFromSearchChange(e.target.value);
               onShowDropdownChange(e.target.value !== "");
             }}
-            className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-rich-gold dark:focus:ring-accent-amber focus:border-rich-gold dark:focus:border-accent-amber text-warm-charcoal dark:text-white transition-all duration-300"
+            className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-accent-amber focus:border-accent-amber text-white transition-all duration-300"
             whileFocus={{ scale: 1.01 }}
           />
           {showDropdown && (
-            <div className="absolute z-10 bg-white dark:bg-gray-800 w-full border border-gray-200 dark:border-gray-700 rounded-lg mt-1 max-h-40 overflow-y-auto shadow-lg">
+            <div className="absolute z-10 bg-gray-800 w-full border border-gray-700 rounded-lg mt-1 max-h-40 overflow-y-auto shadow-lg">
               {filteredGuests
                 .filter((g) => g.name.toLowerCase().includes(invitedFromSearchTerm.toLowerCase()))
                 .map((g) => (
                   <button
                     key={g._id}
-                    className="cursor-pointer p-3 hover:bg-gray-100 dark:hover:bg-gray-700 text-left w-full text-warm-charcoal dark:text-white text-sm transition-colors duration-150"
+                    className="cursor-pointer p-3 hover:bg-gray-700 text-left w-full text-white text-sm transition-colors duration-150"
                     onClick={() => {
                       onEditDataChange({
                         ...editData,
@@ -105,7 +105,7 @@ export default function GuestEditForm({
             <div className="flex items-center justify-between">
               <label
                 htmlFor="isStudent"
-                className="text-sm font-medium text-gray-500 dark:text-gray-400"
+                className="text-sm font-medium text-gray-400"
               >
                 Student
               </label>
@@ -136,7 +136,7 @@ export default function GuestEditForm({
               >
                 <label
                   htmlFor="validUntil"
-                  className="block text-sm font-medium text-gray-500 dark:text-gray-400 mb-1"
+                  className="block text-sm font-medium text-gray-400 mb-1"
                 >
                   Valid Until
                 </label>
@@ -155,7 +155,7 @@ export default function GuestEditForm({
                       untilWhen: Number.isNaN(parsedDate.getTime()) ? null : parsedDate,
                     });
                   }}
-                  className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-rich-gold dark:focus:ring-accent-amber focus:border-rich-gold dark:focus:border-accent-amber text-warm-charcoal dark:text-white transition-all duration-300"
+                  className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-accent-amber focus:border-accent-amber text-white transition-all duration-300"
                 />
               </motion.div>
             )}
@@ -165,7 +165,7 @@ export default function GuestEditForm({
           <div className="flex items-center justify-between">
             <label
               htmlFor="isLady"
-              className="text-sm font-medium text-gray-500 dark:text-gray-400"
+              className="text-sm font-medium text-gray-400"
             >
               Lady
             </label>
@@ -188,7 +188,7 @@ export default function GuestEditForm({
           <div className="flex items-center justify-between col-span-1 md:col-span-2">
             <label
               htmlFor="freeEntry"
-              className="text-sm font-medium text-gray-500 dark:text-gray-400"
+              className="text-sm font-medium text-gray-400"
             >
               Free Entry
             </label>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Modal from "../Common/Modal";
 import ToggleSwitch from "../Common/ToggleSwitch";
@@ -19,6 +19,16 @@ export default function EditGuestModal({
   onAdjustDrinksCoupon,
   onShowAlert,
 }: Readonly<EditGuestModalProps>) {
+  // Local state for drinks coupon to avoid direct prop mutation
+  const [drinksCouponValue, setDrinksCouponValue] = useState<number>(0);
+
+  // Sync local state with guest prop when guest changes
+  useEffect(() => {
+    if (guest) {
+      setDrinksCouponValue(guest.drinksCoupon || 0);
+    }
+  }, [guest]);
+
   if (!guest) return null;
 
   const handleSave = () => {
@@ -34,7 +44,7 @@ export default function EditGuestModal({
     if (!guest) return;
     try {
       const originalCoupons = guest.drinksCoupon ?? 0;
-      const newCoupons = guest.drinksCoupon || 0;
+      const newCoupons = drinksCouponValue;
       const adjustment = newCoupons - originalCoupons;
 
       if (adjustment !== 0) {
@@ -55,7 +65,7 @@ export default function EditGuestModal({
             <div className="space-y-2">
               <label
                 htmlFor="guestName"
-                className="block text-sm font-medium text-warm-charcoal dark:text-gray-300"
+                className="block text-sm font-medium text-gray-300"
               >
                 Guest Name
               </label>
@@ -65,7 +75,7 @@ export default function EditGuestModal({
                 placeholder="Name"
                 value={editData.name ?? ""}
                 onChange={(e) => onEditDataChange({ ...editData, name: e.target.value })}
-                className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-rich-gold dark:focus:ring-accent-amber focus:border-rich-gold transition-all duration-300 text-warm-charcoal dark:text-white"
+                className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-accent-amber focus:border-rich-gold transition-all duration-300 text-white"
                 whileFocus={{ scale: 1.01 }}
               />
             </div>
@@ -74,7 +84,7 @@ export default function EditGuestModal({
             <div className="space-y-3">
               <label
                 htmlFor="drinksCoupon"
-                className="block text-sm font-medium text-warm-charcoal dark:text-gray-300"
+                className="block text-sm font-medium text-gray-300"
               >
                 Drinks Coupon
               </label>
@@ -83,13 +93,13 @@ export default function EditGuestModal({
                   id="drinksCoupon"
                   type="number"
                   min="0"
-                  value={guest.drinksCoupon || 0}
+                  value={drinksCouponValue === 0 ? "" : drinksCouponValue}
                   onChange={(e) => {
-                    const newValue = Number.parseInt(e.target.value, 10) || 0;
-                    // Update guest object for immediate visual feedback
-                    guest.drinksCoupon = newValue;
+                    const newValue = e.target.value === "" ? 0 : Number.parseInt(e.target.value, 10) || 0;
+                    // Update local state (immutable pattern)
+                    setDrinksCouponValue(newValue);
                   }}
-                  className="flex-1 px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-rich-gold dark:focus:ring-accent-amber focus:border-rich-gold dark:focus:border-accent-amber text-warm-charcoal dark:text-white"
+                  className="flex-1 px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-accent-amber focus:border-accent-amber text-white"
                   whileFocus={{ scale: 1.01 }}
                 />
                 <motion.button
@@ -106,7 +116,7 @@ export default function EditGuestModal({
             <div className="space-y-2 relative">
               <label
                 htmlFor="inviterSearch"
-                className="block text-sm font-medium text-warm-charcoal dark:text-gray-300"
+                className="block text-sm font-medium text-gray-300"
               >
                 Inviter
               </label>
@@ -119,11 +129,11 @@ export default function EditGuestModal({
                   onInvitedFromSearchChange(e.target.value);
                   onShowDropdownChange(e.target.value !== "");
                 }}
-                className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-rich-gold dark:focus:ring-accent-amber focus:border-rich-gold transition-all duration-300 text-warm-charcoal dark:text-white"
+                className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-accent-amber focus:border-rich-gold transition-all duration-300 text-white"
                 whileFocus={{ scale: 1.01 }}
               />
               {showDropdown && (
-                <div className="absolute z-10 bg-white dark:bg-gray-800 w-full border border-gray-200 dark:border-gray-700 rounded-lg mt-1 max-h-40 overflow-y-auto shadow-lg">
+                <div className="absolute z-10 bg-gray-800 w-full border border-gray-700 rounded-lg mt-1 max-h-40 overflow-y-auto shadow-lg">
                   {filteredGuests
                     ?.filter((g) =>
                       g.name.toLowerCase().includes(invitedFromSearchTerm.toLowerCase()),
@@ -131,7 +141,7 @@ export default function EditGuestModal({
                     .map((g) => (
                       <button
                         key={g._id}
-                        className="cursor-pointer p-3 hover:bg-gray-100 dark:hover:bg-gray-700 text-left w-full text-warm-charcoal dark:text-white text-sm transition-colors duration-150"
+                        className="cursor-pointer p-3 hover:bg-gray-700 text-left w-full text-white text-sm transition-colors duration-150"
                         onClick={() => {
                           onEditDataChange({
                             ...editData,
@@ -154,7 +164,7 @@ export default function EditGuestModal({
                 <div className="flex items-center justify-between">
                   <label
                     htmlFor="isStudent"
-                    className="text-sm font-medium text-warm-charcoal dark:text-gray-300"
+                    className="text-sm font-medium text-gray-300"
                   >
                     Student
                   </label>
@@ -179,7 +189,7 @@ export default function EditGuestModal({
                   >
                     <label
                       htmlFor="validUntil"
-                      className="block text-sm font-medium text-warm-charcoal dark:text-gray-300 mb-2"
+                      className="block text-sm font-medium text-gray-300 mb-2"
                     >
                       Valid Until
                     </label>
@@ -198,7 +208,7 @@ export default function EditGuestModal({
                           untilWhen: Number.isNaN(parsedDate.getTime()) ? null : parsedDate,
                         });
                       }}
-                      className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-rich-gold dark:focus:ring-accent-amber focus:border-rich-gold transition-all duration-300 text-warm-charcoal dark:text-white"
+                      className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-accent-amber focus:border-rich-gold transition-all duration-300 text-white"
                     />
                   </motion.div>
                 )}
@@ -208,7 +218,7 @@ export default function EditGuestModal({
               <div className="flex items-center justify-between">
                 <label
                   htmlFor="isLady"
-                  className="text-sm font-medium text-warm-charcoal dark:text-gray-300"
+                  className="text-sm font-medium text-gray-300"
                 >
                   Lady
                 </label>
@@ -223,7 +233,7 @@ export default function EditGuestModal({
               <div className="flex items-center justify-between sm:col-span-2">
                 <label
                   htmlFor="freeEntry"
-                  className="text-sm font-medium text-warm-charcoal dark:text-gray-300"
+                  className="text-sm font-medium text-gray-300"
                 >
                   Free Entry
                 </label>
@@ -254,7 +264,7 @@ export default function EditGuestModal({
               </motion.button>
               <motion.button
                 onClick={onClose}
-                className="w-full px-4 py-3 rounded-lg bg-gray-200 dark:bg-gray-700 text-warm-charcoal dark:text-white font-medium order-1 sm:order-2"
+                className="w-full px-4 py-3 rounded-lg bg-gray-700 text-white font-medium order-1 sm:order-2"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >

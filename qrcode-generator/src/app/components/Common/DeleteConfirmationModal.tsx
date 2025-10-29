@@ -15,9 +15,9 @@ export default function DeleteConfirmationModal({
       {isOpen && (
         <Modal isOpen={isOpen} onClose={onClose} title={title}>
           <div className="space-y-6">
-            <div className="flex items-center justify-center w-16 h-16 mx-auto rounded-full bg-red-100 dark:bg-red-900/30">
+            <div className="flex items-center justify-center w-16 h-16 mx-auto rounded-full bg-red-900/30">
               <svg
-                className="w-8 h-8 text-red-600 dark:text-red-500"
+                className="w-8 h-8 text-red-500"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -32,16 +32,16 @@ export default function DeleteConfirmationModal({
             </div>
 
             <div className="text-center">
-              <h3 className="text-lg font-medium text-warm-charcoal dark:text-white mb-2">
+              <h3 className="text-lg font-medium text-white mb-2">
                 {title}
               </h3>
-              <p className="text-gray-600 dark:text-gray-400">{message}</p>
+              <p className="text-gray-400">{message}</p>
             </div>
 
             <div className="flex gap-3 pt-3">
               <motion.button
                 onClick={onClose}
-                className="flex-1 px-4 py-3 rounded-lg bg-gray-200 dark:bg-gray-700 text-warm-charcoal dark:text-white font-medium"
+                className="flex-1 px-4 py-3 rounded-lg bg-gray-700 text-white font-medium"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >

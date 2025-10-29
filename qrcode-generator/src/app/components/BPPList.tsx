@@ -162,7 +162,7 @@ export default function BPPList() {
       >
         <Spinner xl />
         <motion.p
-          className="mt-6 text-gray-600 dark:text-gray-400 text-lg"
+          className="mt-6 text-gray-400 text-lg"
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3, duration: 0.5 }}
@@ -182,13 +182,13 @@ export default function BPPList() {
         transition={{ duration: 0.5 }}
       >
         <motion.div
-          className="w-20 h-20 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center mb-6"
+          className="w-20 h-20 rounded-full bg-red-900/30 flex items-center justify-center mb-6"
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ delay: 0.2, duration: 0.5 }}
         >
           <svg
-            className="w-10 h-10 text-red-600 dark:text-red-400"
+            className="w-10 h-10 text-red-400"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -202,7 +202,7 @@ export default function BPPList() {
           </svg>
         </motion.div>
         <motion.h2
-          className="text-2xl font-bold text-warm-charcoal dark:text-white mb-2"
+          className="text-2xl font-bold text-white mb-2"
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3, duration: 0.5 }}
@@ -210,7 +210,7 @@ export default function BPPList() {
           Unable to Load Data
         </motion.h2>
         <motion.p
-          className="text-gray-600 dark:text-gray-400 mb-6"
+          className="text-gray-400 mb-6"
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4, duration: 0.5 }}
@@ -238,7 +238,7 @@ export default function BPPList() {
 
   return (
     <motion.div
-      className="min-h-screen bg-gradient-to-b from-soft-cream to-gray-100 dark:from-deep-navy dark:to-gray-900 transition-colors duration-500"
+      className="min-h-screen bg-gradient-to-b from-deep-navy to-gray-900 transition-colors duration-500"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.6 }}
@@ -267,7 +267,7 @@ export default function BPPList() {
             transition={{ delay: 0.3, duration: 0.8 }}
           />
           <motion.p
-            className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto"
+            className="text-lg text-gray-400 max-w-2xl mx-auto"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3, duration: 0.5 }}
@@ -298,14 +298,14 @@ export default function BPPList() {
         {/* Content Section - Table/List View */}
         {(filteredItems?.length ?? 0) === 0 ? (
           <motion.div
-            className="flex flex-col items-center justify-center py-16 px-4 text-center bg-white dark:bg-gray-800/30 backdrop-blur-sm rounded-2xl shadow-md border border-gray-100 dark:border-gray-700/30"
+            className="flex flex-col items-center justify-center py-16 px-4 text-center bg-gray-800/30 backdrop-blur-sm rounded-2xl shadow-md border border-gray-700/30"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <div className="w-20 h-20 rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center mb-6">
+            <div className="w-20 h-20 rounded-full bg-gray-700 flex items-center justify-center mb-6">
               <svg
-                className="w-10 h-10 text-gray-500 dark:text-gray-400"
+                className="w-10 h-10 text-gray-400"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -318,10 +318,10 @@ export default function BPPList() {
                 />
               </svg>
             </div>
-            <h3 className="text-xl font-medium text-warm-charcoal dark:text-white mb-2">
+            <h3 className="text-xl font-medium text-white mb-2">
               No BPP Attendees Found
             </h3>
-            <p className="text-gray-600 dark:text-gray-400 max-w-md">
+            <p className="text-gray-400 max-w-md">
               {searchTerm
                 ? `No results matching "${searchTerm}". Try a different search term.`
                 : "There are no BPP attendees in the system yet. Add your first attendee to get started."}
@@ -373,12 +373,12 @@ export default function BPPList() {
         >
           <div className="max-w-3xl mx-auto px-4">
             <div className="h-px bg-gradient-to-r from-transparent via-rich-gold/20 to-transparent mb-6"></div>
-            <p className="text-sm text-gray-600 dark:text-gray-400">
+            <p className="text-sm text-gray-400">
               The BPP list management system tracks attendance, status, and membership details for
               Black Persian Party events.
             </p>
             <div className="mt-4 flex flex-wrap justify-center gap-4">
-              <span className="inline-flex items-center text-xs text-gray-500 dark:text-gray-500">
+              <span className="inline-flex items-center text-xs text-gray-500">
                 <svg
                   className="w-4 h-4 mr-1 text-rich-gold/70"
                   fill="none"
@@ -394,7 +394,7 @@ export default function BPPList() {
                 </svg>
                 BPP member creation
               </span>
-              <span className="inline-flex items-center text-xs text-gray-500 dark:text-gray-500">
+              <span className="inline-flex items-center text-xs text-gray-500">
                 <svg
                   className="w-4 h-4 mr-1 text-rich-gold/70"
                   fill="none"
@@ -410,7 +410,7 @@ export default function BPPList() {
                 </svg>
                 Attendance tracking
               </span>
-              <span className="inline-flex items-center text-xs text-gray-500 dark:text-gray-500">
+              <span className="inline-flex items-center text-xs text-gray-500">
                 <svg
                   className="w-4 h-4 mr-1 text-rich-gold/70"
                   fill="none"
@@ -426,7 +426,7 @@ export default function BPPList() {
                 </svg>
                 Secure data
               </span>
-              <span className="inline-flex items-center text-xs text-gray-500 dark:text-gray-500">
+              <span className="inline-flex items-center text-xs text-gray-500">
                 <svg
                   className="w-4 h-4 mr-1 text-rich-gold/70"
                   fill="none"

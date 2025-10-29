@@ -41,12 +41,12 @@ export default function ToggleSwitch({
     if (colorScheme === "emerald") {
       return isActive
         ? "bg-gradient-to-r from-emerald-500 to-emerald-600"
-        : "bg-gray-300 dark:bg-gray-600";
+        : "bg-gray-600";
     }
 
     return isActive
       ? "bg-gradient-to-r from-rich-gold to-accent-amber"
-      : "bg-gray-300 dark:bg-gray-600";
+      : "bg-gray-600";
   };
 
   // Special case for attendance toggle (w-14 h-7 with w-5 h-5 toggle)
@@ -88,7 +88,7 @@ export default function ToggleSwitch({
     return (
       <div className="flex items-center justify-between">
         <motion.h2
-          className="text-xl font-bold text-warm-charcoal dark:text-white"
+          className="text-xl font-bold text-white"
           variants={variants}
         >
           {title}
@@ -102,7 +102,7 @@ export default function ToggleSwitch({
   if (label && layout === "stacked") {
     return (
       <div className="flex flex-col items-center space-y-2">
-        <span className="text-sm font-medium text-gray-600 dark:text-gray-400">{label}</span>
+        <span className="text-sm font-medium text-gray-400">{label}</span>
         {toggleButton}
       </div>
     );
