@@ -4,6 +4,9 @@ import path from "node:path";
 import sharp from "sharp";
 import mime from "mime";
 
+// Force dynamic rendering since we need request headers and URL parsing
+export const dynamic = "force-dynamic";
+
 // Handle favicon requests separately
 async function handleFaviconRequest(
   fileBuffer: Buffer,
