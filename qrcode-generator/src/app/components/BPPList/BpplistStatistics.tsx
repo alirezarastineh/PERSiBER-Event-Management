@@ -1,4 +1,3 @@
-import React from "react";
 import { motion } from "framer-motion";
 import StatisticsCard from "../Common/StatisticsCard";
 import { BpplistStatisticsProps } from "@/types/bpplist";

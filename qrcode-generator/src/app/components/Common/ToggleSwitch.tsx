@@ -1,4 +1,3 @@
-import React from "react";
 import { motion } from "framer-motion";
 import { ToggleSwitchProps } from "@/types/common";
 
@@ -39,14 +38,10 @@ export default function ToggleSwitch({
 
   const getColorClasses = () => {
     if (colorScheme === "emerald") {
-      return isActive
-        ? "bg-gradient-to-r from-emerald-500 to-emerald-600"
-        : "bg-gray-600";
+      return isActive ? "bg-gradient-to-r from-emerald-500 to-emerald-600" : "bg-gray-600";
     }
 
-    return isActive
-      ? "bg-gradient-to-r from-rich-gold to-accent-amber"
-      : "bg-gray-600";
+    return isActive ? "bg-gradient-to-r from-rich-gold to-accent-amber" : "bg-gray-600";
   };
 
   // Special case for attendance toggle (w-14 h-7 with w-5 h-5 toggle)
@@ -87,10 +82,7 @@ export default function ToggleSwitch({
   if (title && layout === "between") {
     return (
       <div className="flex items-center justify-between">
-        <motion.h2
-          className="text-xl font-bold text-white"
-          variants={variants}
-        >
+        <motion.h2 className="text-xl font-bold text-white" variants={variants}>
           {title}
         </motion.h2>
         {toggleButton}

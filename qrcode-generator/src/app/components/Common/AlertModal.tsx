@@ -1,4 +1,3 @@
-import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Modal from "./Modal";
 import { AlertModalProps } from "@/types/common";
@@ -92,9 +91,7 @@ export default function AlertModal({
             </div>
 
             <div className="text-center">
-              <h3 className="text-lg font-medium text-white mb-2">
-                {title}
-              </h3>
+              <h3 className="text-lg font-medium text-white mb-2">{title}</h3>
               <p className="text-gray-400">{message}</p>
             </div>
 

@@ -1,4 +1,3 @@
-import React from "react";
 import { motion } from "framer-motion";
 import Spinner from "../Common/Spinner";
 import { QRScannerViewProps } from "@/types/qr";
@@ -55,9 +54,7 @@ export default function QRScannerView({
                     />
                   </svg>
                 </div>
-                <h3 className="text-xl font-semibold mb-2 text-white">
-                  Scanner Not Available
-                </h3>
+                <h3 className="text-xl font-semibold mb-2 text-white">Scanner Not Available</h3>
                 <p className="text-sm md:text-base text-gray-400 max-w-md">
                   Your browser doesn&apos;t support the QR code scanner or camera access is blocked.
                   Please ensure you&apos;re using a modern browser and have granted camera

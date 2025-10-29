@@ -1,4 +1,3 @@
-import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { UserTableProps } from "@/types/auth";
 
@@ -22,15 +21,9 @@ export default function UserTable({
       <table className="w-full">
         <thead>
           <tr className="border-b border-gray-700/70">
-            <th className="px-6 py-5 text-left text-sm font-semibold text-white">
-              Username
-            </th>
-            <th className="px-6 py-5 text-left text-sm font-semibold text-white">
-              Role
-            </th>
-            <th className="px-6 py-5 text-right text-sm font-semibold text-white">
-              Actions
-            </th>
+            <th className="px-6 py-5 text-left text-sm font-semibold text-white">Username</th>
+            <th className="px-6 py-5 text-left text-sm font-semibold text-white">Role</th>
+            <th className="px-6 py-5 text-right text-sm font-semibold text-white">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -48,9 +41,7 @@ export default function UserTable({
                       {user.username.charAt(0).toUpperCase()}
                     </div>
                     <div className="ml-4">
-                      <div className="text-base font-medium text-gray-200">
-                        {user.username}
-                      </div>
+                      <div className="text-base font-medium text-gray-200">{user.username}</div>
                     </div>
                   </div>
                 </td>

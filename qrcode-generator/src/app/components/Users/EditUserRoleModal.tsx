@@ -1,4 +1,3 @@
-import React from "react";
 import { motion } from "framer-motion";
 import Modal from "../Common/Modal";
 import { EditUserRoleModalProps } from "@/types/auth";
@@ -15,10 +14,7 @@ export default function EditUserRoleModal({
     <Modal isOpen={isOpen} onClose={onClose} title="Edit User Role">
       <div className="space-y-5">
         <div className="space-y-2">
-          <label
-            htmlFor="roleSelect"
-            className="block text-sm font-medium text-gray-300"
-          >
+          <label htmlFor="roleSelect" className="block text-sm font-medium text-gray-300">
             Select Role
           </label>
           <select

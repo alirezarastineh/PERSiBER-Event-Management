@@ -1,4 +1,3 @@
-import React from "react";
 import { motion } from "framer-motion";
 import { GuestCardsProps } from "@/types/guests";
 import ToggleSwitch from "../Common/ToggleSwitch";
@@ -41,9 +40,7 @@ export default function GuestCards({
               >
                 {guest.name}
               </motion.h3>
-              <p className="text-sm text-gray-400">
-                Added by: {guest.addedBy ?? "N/A"}
-              </p>
+              <p className="text-sm text-gray-400">Added by: {guest.addedBy ?? "N/A"}</p>
             </div>
             <div>
               <ToggleSwitch
@@ -60,18 +57,14 @@ export default function GuestCards({
           <div className="grid grid-cols-2 gap-x-4 gap-y-2 mt-4">
             <div className="flex flex-col">
               <span className="text-xs text-gray-400">Drinks Coupon</span>
-              <span className="text-sm font-medium text-gray-300">
-                {guest.drinksCoupon || 0}
-              </span>
+              <span className="text-sm font-medium text-gray-300">{guest.drinksCoupon || 0}</span>
             </div>
 
             <div className="flex flex-col">
               <span className="text-xs text-gray-400">Free Entry</span>
               <span
                 className={`text-sm font-medium ${
-                  guest.freeEntry
-                    ? "text-amber-400"
-                    : "text-gray-300"
+                  guest.freeEntry ? "text-amber-400" : "text-gray-300"
                 }`}
               >
                 {guest.freeEntry ? "Yes" : "No"}
@@ -100,9 +93,7 @@ export default function GuestCards({
                   <span className="text-xs text-gray-400">Student</span>
                   <span
                     className={`text-sm font-medium ${
-                      guest.isStudent
-                        ? "text-blue-400"
-                        : "text-gray-300"
+                      guest.isStudent ? "text-blue-400" : "text-gray-300"
                     }`}
                   >
                     {guest.isStudent ? "Yes" : "No"}
@@ -113,9 +104,7 @@ export default function GuestCards({
                   <span className="text-xs text-gray-400">Lady</span>
                   <span
                     className={`text-sm font-medium ${
-                      guest.isLady
-                        ? "text-pink-400"
-                        : "text-gray-300"
+                      guest.isLady ? "text-pink-400" : "text-gray-300"
                     }`}
                   >
                     {guest.isLady ? "Yes" : "No"}

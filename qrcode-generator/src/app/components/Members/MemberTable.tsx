@@ -1,4 +1,3 @@
-import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MemberTableProps } from "@/types/members";
 import ToggleSwitch from "../Common/ToggleSwitch";
@@ -71,11 +70,9 @@ export default function MemberTable({
                       {member.name.charAt(0).toUpperCase()}
                     </div>
                     <div className="ml-4">
-                      <div className="text-base font-medium text-gray-200">
-                        {member.name}
-                      </div>
+                      <div className="text-base font-medium text-gray-200">{member.name}</div>
                       {member.isStudent && (
-                        <span className="text-blue-300 px-2 py-0.5 rounded-full bg-blue-900/30 text-blue-800">
+                        <span className="text-blue-300 px-2 py-0.5 rounded-full bg-blue-900/30">
                           Student
                         </span>
                       )}

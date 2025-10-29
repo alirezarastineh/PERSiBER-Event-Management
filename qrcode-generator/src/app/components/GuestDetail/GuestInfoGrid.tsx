@@ -1,4 +1,3 @@
-import React from "react";
 import { motion } from "framer-motion";
 import { GuestInfoGridProps } from "@/types/guests";
 import GuestDrinksCoupon from "./GuestDrinksCoupon";
@@ -32,9 +31,7 @@ export default function GuestInfoGrid({
 
       <div className="space-y-2">
         <p className="text-sm text-gray-400">Already Paid</p>
-        <p className="text-lg font-medium text-white">
-          {guest.alreadyPaid ? "Yes" : "No"}
-        </p>
+        <p className="text-lg font-medium text-white">{guest.alreadyPaid ? "Yes" : "No"}</p>
       </div>
 
       <div className="space-y-2">
@@ -49,19 +46,13 @@ export default function GuestInfoGrid({
         <>
           <div className="space-y-2">
             <p className="text-sm text-gray-400">Inviter</p>
-            <p className="text-lg font-medium text-white">
-              {guest.invitedFrom || "N/A"}
-            </p>
+            <p className="text-lg font-medium text-white">{guest.invitedFrom || "N/A"}</p>
           </div>
 
           <div className="space-y-2">
             <p className="text-sm text-gray-400">Student</p>
             <p className="text-lg font-medium text-white">
-              {guest.isStudent ? (
-                <span className="text-blue-400">Yes</span>
-              ) : (
-                "No"
-              )}
+              {guest.isStudent ? <span className="text-blue-400">Yes</span> : "No"}
             </p>
           </div>
 

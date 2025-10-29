@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import SearchInput from "../Common/SearchInput";
 import ToggleSwitch from "../Common/ToggleSwitch";
@@ -60,10 +60,7 @@ export default function GuestControlPanel({
         <div className="mt-6 pt-6 border-t border-gray-700/30">
           <div className="flex flex-col sm:flex-row gap-3">
             <div className="flex-grow">
-              <label
-                htmlFor="new-guest"
-                className="block text-sm font-medium text-gray-400 mb-2"
-              >
+              <label htmlFor="new-guest" className="block text-sm font-medium text-gray-400 mb-2">
                 Add New Guest
               </label>
               <motion.input

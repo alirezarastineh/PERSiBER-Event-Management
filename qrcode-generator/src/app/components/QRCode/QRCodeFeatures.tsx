@@ -1,4 +1,3 @@
-import React from "react";
 import { motion } from "framer-motion";
 
 export default function QRCodeFeatures() {
@@ -90,9 +89,7 @@ export default function QRCodeFeatures() {
           <div className="w-14 h-14 flex items-center justify-center rounded-full bg-gradient-to-r from-rich-gold/20 to-accent-amber/20 text-accent-amber mb-4">
             {feature.icon}
           </div>
-          <h3 className="text-xl font-bold mb-2 text-white">
-            {feature.title}
-          </h3>
+          <h3 className="text-xl font-bold mb-2 text-white">{feature.title}</h3>
           <p className="text-gray-400">{feature.desc}</p>
         </motion.div>
       ))}

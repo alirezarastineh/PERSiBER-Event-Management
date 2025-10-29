@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Modal from "../Common/Modal";
 import ToggleSwitch from "../Common/ToggleSwitch";
@@ -63,10 +63,7 @@ export default function EditGuestModal({
         <Modal isOpen={isOpen} onClose={onClose} title="Edit Guest">
           <div className="space-y-5">
             <div className="space-y-2">
-              <label
-                htmlFor="guestName"
-                className="block text-sm font-medium text-gray-300"
-              >
+              <label htmlFor="guestName" className="block text-sm font-medium text-gray-300">
                 Guest Name
               </label>
               <motion.input
@@ -82,10 +79,7 @@ export default function EditGuestModal({
 
             {/* Drinks Coupon Control */}
             <div className="space-y-3">
-              <label
-                htmlFor="drinksCoupon"
-                className="block text-sm font-medium text-gray-300"
-              >
+              <label htmlFor="drinksCoupon" className="block text-sm font-medium text-gray-300">
                 Drinks Coupon
               </label>
               <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-2">
@@ -95,7 +89,8 @@ export default function EditGuestModal({
                   min="0"
                   value={drinksCouponValue === 0 ? "" : drinksCouponValue}
                   onChange={(e) => {
-                    const newValue = e.target.value === "" ? 0 : Number.parseInt(e.target.value, 10) || 0;
+                    const newValue =
+                      e.target.value === "" ? 0 : Number.parseInt(e.target.value, 10) || 0;
                     // Update local state (immutable pattern)
                     setDrinksCouponValue(newValue);
                   }}
@@ -114,10 +109,7 @@ export default function EditGuestModal({
             </div>
 
             <div className="space-y-2 relative">
-              <label
-                htmlFor="inviterSearch"
-                className="block text-sm font-medium text-gray-300"
-              >
+              <label htmlFor="inviterSearch" className="block text-sm font-medium text-gray-300">
                 Inviter
               </label>
               <motion.input
@@ -162,10 +154,7 @@ export default function EditGuestModal({
               {/* Student Toggle */}
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
-                  <label
-                    htmlFor="isStudent"
-                    className="text-sm font-medium text-gray-300"
-                  >
+                  <label htmlFor="isStudent" className="text-sm font-medium text-gray-300">
                     Student
                   </label>
                   <ToggleSwitch
@@ -216,10 +205,7 @@ export default function EditGuestModal({
 
               {/* Lady Toggle */}
               <div className="flex items-center justify-between">
-                <label
-                  htmlFor="isLady"
-                  className="text-sm font-medium text-gray-300"
-                >
+                <label htmlFor="isLady" className="text-sm font-medium text-gray-300">
                   Lady
                 </label>
                 <ToggleSwitch
@@ -231,10 +217,7 @@ export default function EditGuestModal({
 
               {/* Free Entry Toggle */}
               <div className="flex items-center justify-between sm:col-span-2">
-                <label
-                  htmlFor="freeEntry"
-                  className="text-sm font-medium text-gray-300"
-                >
+                <label htmlFor="freeEntry" className="text-sm font-medium text-gray-300">
                   Free Entry
                 </label>
                 <ToggleSwitch

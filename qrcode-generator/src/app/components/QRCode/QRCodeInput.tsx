@@ -1,4 +1,3 @@
-import React from "react";
 import { motion } from "framer-motion";
 import Spinner from "../Common/Spinner";
 import { QRCodeInputProps } from "@/types/qr";
@@ -18,16 +17,11 @@ export default function QRCodeInput({
     >
       <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-rich-gold to-accent-amber rounded-t-2xl"></div>
 
-      <h2 className="text-2xl font-bold mb-6 text-white">
-        Guest Information
-      </h2>
+      <h2 className="text-2xl font-bold mb-6 text-white">Guest Information</h2>
 
       <div className="space-y-6">
         <div>
-          <label
-            htmlFor="guestName"
-            className="block text-sm font-medium text-gray-300 mb-2"
-          >
+          <label htmlFor="guestName" className="block text-sm font-medium text-gray-300 mb-2">
             Guest Name
           </label>
           <motion.div className="relative" whileFocus={{ scale: 1.02 }}>

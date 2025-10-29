@@ -1,4 +1,3 @@
-import React from "react";
 import { motion } from "framer-motion";
 import { BpplistCardsProps } from "@/types/bpplist";
 import ToggleSwitch from "../Common/ToggleSwitch";
@@ -40,7 +39,7 @@ export default function BpplistCards({
               <div className="ml-3">
                 <h3 className="text-lg font-semibold text-white">{item.name}</h3>
                 {item.isStudent && (
-                  <span className="text-blue-300 px-2 py-0.5 rounded-full bg-blue-900/30 text-blue-800">
+                  <span className="text-blue-300 px-2 py-0.5 rounded-full bg-blue-900/30">
                     Student
                   </span>
                 )}
@@ -63,9 +62,7 @@ export default function BpplistCards({
             <div className="grid grid-cols-2 gap-x-4 gap-y-2 mt-4">
               <div className="flex flex-col">
                 <span className="text-xs text-gray-400">Organizer</span>
-                <span className="text-sm font-medium text-gray-300">
-                  {item.organizer || "N/A"}
-                </span>
+                <span className="text-sm font-medium text-gray-300">{item.organizer || "N/A"}</span>
               </div>
 
               <div className="flex flex-col">

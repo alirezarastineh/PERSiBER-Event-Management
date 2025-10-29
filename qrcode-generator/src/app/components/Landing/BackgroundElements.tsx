@@ -1,5 +1,3 @@
-import React from "react";
-
 export default function BackgroundElements() {
   return (
     <div className="absolute inset-0 overflow-hidden z-0">

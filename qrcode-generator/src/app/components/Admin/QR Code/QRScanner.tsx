@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useQRScanner } from "@/app/hooks/qr/useQRScanner";
 import { AlertType } from "@/types/common";

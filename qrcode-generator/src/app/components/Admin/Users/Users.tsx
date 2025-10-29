@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import { motion } from "framer-motion";
 import { useUserManagement } from "@/app/hooks/useUserManagement";
 import { useAlert } from "@/app/hooks/useAlert";
@@ -12,6 +11,7 @@ import UserCards from "../../Users/UserCards";
 import UserEmptyState from "../../Users/UserEmptyState";
 import UserErrorState from "../../Users/UserErrorState";
 import EditUserRoleModal from "../../Users/EditUserRoleModal";
+import { useState } from "react";
 
 export default function Users() {
   // Custom hooks
@@ -42,8 +42,8 @@ export default function Users() {
   } = useAlert();
 
   // State for delete confirmation
-  const [showDeleteModal, setShowDeleteModal] = React.useState(false);
-  const [userIdToDelete, setUserIdToDelete] = React.useState<string | null>(null);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [userIdToDelete, setUserIdToDelete] = useState<string | null>(null);
 
   // Delete handlers
   const openDeleteModal = (userId: string) => {

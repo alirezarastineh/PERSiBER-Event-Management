@@ -1,4 +1,3 @@
-import React from "react";
 import { motion } from "framer-motion";
 import { GuestDrinksCouponProps } from "@/types/guests";
 
@@ -46,9 +45,7 @@ export default function GuestDrinksCoupon({
           </motion.button>
         </div>
       ) : (
-        <p className="text-lg font-medium text-white">
-          {guest.drinksCoupon || 0}
-        </p>
+        <p className="text-lg font-medium text-white">{guest.drinksCoupon || 0}</p>
       )}
     </div>
   );

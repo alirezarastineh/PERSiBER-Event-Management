@@ -1,4 +1,3 @@
-import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { UserCardsProps } from "@/types/auth";
 
@@ -33,9 +32,7 @@ export default function UserCards({
                   {user.username.charAt(0).toUpperCase()}
                 </div>
                 <div className="ml-3">
-                  <h3 className="text-lg font-semibold text-white">
-                    {user.username}
-                  </h3>
+                  <h3 className="text-lg font-semibold text-white">{user.username}</h3>
                 </div>
               </div>
               <span

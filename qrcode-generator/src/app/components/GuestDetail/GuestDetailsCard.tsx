@@ -1,18 +1,13 @@
-import React from "react";
 import { GuestDetailsCardProps } from "@/types/guests";
 
 export default function GuestDetailsCard({ guest }: Readonly<GuestDetailsCardProps>) {
   const getAttendedStatusBadgeColor = (status: string) => {
-    return status === "Yes"
-      ? "bg-green-900/30 text-green-400"
-      : "bg-amber-900/30 text-amber-400";
+    return status === "Yes" ? "bg-green-900/30 text-green-400" : "bg-amber-900/30 text-amber-400";
   };
 
   return (
     <div className="mt-4 p-4 bg-gray-800/50 rounded-lg border border-gray-700/50">
-      <h4 className="font-medium text-center mb-3 text-white">
-        Guest Details
-      </h4>
+      <h4 className="font-medium text-center mb-3 text-white">Guest Details</h4>
       <div className="space-y-2 text-sm">
         <div className="flex justify-between">
           <span className="text-gray-400">Name:</span>
@@ -31,28 +26,20 @@ export default function GuestDetailsCard({ guest }: Readonly<GuestDetailsCardPro
         {guest.invitedFrom && (
           <div className="flex justify-between">
             <span className="text-gray-400">Invited By:</span>
-            <span className="font-medium text-white">
-              {guest.invitedFrom}
-            </span>
+            <span className="font-medium text-white">{guest.invitedFrom}</span>
           </div>
         )}
         <div className="flex justify-between">
           <span className="text-gray-400">Drinks Coupon:</span>
-          <span className="font-medium text-white">
-            {guest.drinksCoupon || 0}
-          </span>
+          <span className="font-medium text-white">{guest.drinksCoupon || 0}</span>
         </div>
         <div className="flex justify-between">
           <span className="text-gray-400">Free Entry:</span>
-          <span className="font-medium text-white">
-            {guest.freeEntry ? "Yes" : "No"}
-          </span>
+          <span className="font-medium text-white">{guest.freeEntry ? "Yes" : "No"}</span>
         </div>
         <div className="flex justify-between">
           <span className="text-gray-400">Student:</span>
-          <span className="font-medium text-white">
-            {guest.isStudent ? "Yes" : "No"}
-          </span>
+          <span className="font-medium text-white">{guest.isStudent ? "Yes" : "No"}</span>
         </div>
       </div>
     </div>

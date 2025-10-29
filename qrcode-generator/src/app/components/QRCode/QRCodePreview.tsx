@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { QRCodePreviewProps } from "@/types/qr";
@@ -51,17 +51,13 @@ export default function QRCodePreview({
             exit={{ opacity: 0, scale: 0.9 }}
             transition={{ duration: 0.5 }}
           >
-            <h2 className="text-2xl font-bold mb-6 text-white">
-              QR Code Preview
-            </h2>
+            <h2 className="text-2xl font-bold mb-6 text-white">QR Code Preview</h2>
 
             {/* Guest Name Display - Only shows the current guest */}
             {currentGuest && (
               <div className="mb-4 text-center">
                 <span className="text-sm font-medium text-gray-400">GUEST</span>
-                <h3 className="text-xl font-bold text-white">
-                  {currentGuest}
-                </h3>
+                <h3 className="text-xl font-bold text-white">{currentGuest}</h3>
               </div>
             )}
 
@@ -140,9 +136,7 @@ export default function QRCodePreview({
                   />
                 </svg>
               </div>
-              <h3 className="text-xl font-medium text-gray-300">
-                No QR Code Generated Yet
-              </h3>
+              <h3 className="text-xl font-medium text-gray-300">No QR Code Generated Yet</h3>
               <p className="text-gray-400 max-w-xs">
                 Enter a guest name and generate your first QR code
               </p>

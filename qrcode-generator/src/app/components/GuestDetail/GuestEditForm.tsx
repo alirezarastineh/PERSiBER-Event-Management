@@ -1,4 +1,3 @@
-import React from "react";
 import { motion } from "framer-motion";
 import ToggleSwitch from "../Common/ToggleSwitch";
 import { GuestEditFormProps } from "@/types/guests";
@@ -28,20 +27,12 @@ export default function GuestEditForm({
   };
 
   return (
-    <motion.div
-      className="pt-6 mt-6 border-t border-gray-700/30"
-      variants={slideUp}
-    >
-      <h3 className="text-lg font-semibold mb-4 text-white">
-        Edit Guest Information
-      </h3>
+    <motion.div className="pt-6 mt-6 border-t border-gray-700/30" variants={slideUp}>
+      <h3 className="text-lg font-semibold mb-4 text-white">Edit Guest Information</h3>
       <div className="space-y-4">
         {/* Name Input */}
         <div>
-          <label
-            htmlFor="name"
-            className="block text-sm font-medium text-gray-400 mb-1"
-          >
+          <label htmlFor="name" className="block text-sm font-medium text-gray-400 mb-1">
             Name
           </label>
           <motion.input
@@ -56,10 +47,7 @@ export default function GuestEditForm({
 
         {/* Invited From Searchable Input */}
         <div className="relative">
-          <label
-            htmlFor="invitedFrom"
-            className="block text-sm font-medium text-gray-400 mb-1"
-          >
+          <label htmlFor="invitedFrom" className="block text-sm font-medium text-gray-400 mb-1">
             Inviter
           </label>
           <motion.input
@@ -103,10 +91,7 @@ export default function GuestEditForm({
           {/* Is Student Toggle */}
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <label
-                htmlFor="isStudent"
-                className="text-sm font-medium text-gray-400"
-              >
+              <label htmlFor="isStudent" className="text-sm font-medium text-gray-400">
                 Student
               </label>
               <ToggleSwitch
@@ -163,10 +148,7 @@ export default function GuestEditForm({
 
           {/* Is Lady Toggle */}
           <div className="flex items-center justify-between">
-            <label
-              htmlFor="isLady"
-              className="text-sm font-medium text-gray-400"
-            >
+            <label htmlFor="isLady" className="text-sm font-medium text-gray-400">
               Lady
             </label>
             <ToggleSwitch
@@ -186,10 +168,7 @@ export default function GuestEditForm({
 
           {/* Free Entry Toggle */}
           <div className="flex items-center justify-between col-span-1 md:col-span-2">
-            <label
-              htmlFor="freeEntry"
-              className="text-sm font-medium text-gray-400"
-            >
+            <label htmlFor="freeEntry" className="text-sm font-medium text-gray-400">
               Free Entry
             </label>
             <ToggleSwitch

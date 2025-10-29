@@ -1,4 +1,3 @@
-import React from "react";
 import { motion } from "framer-motion";
 import { SearchInputProps } from "@/types/common";
 
@@ -12,10 +11,7 @@ export default function SearchInput({
 }: Readonly<SearchInputProps>) {
   return (
     <div className={className}>
-      <label
-        htmlFor={id}
-        className="block text-sm font-medium text-gray-400 mb-2"
-      >
+      <label htmlFor={id} className="block text-sm font-medium text-gray-400 mb-2">
         {label}
       </label>
       <div className="relative">

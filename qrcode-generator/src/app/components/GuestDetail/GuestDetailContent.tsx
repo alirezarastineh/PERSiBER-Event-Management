@@ -1,4 +1,3 @@
-import React from "react";
 import { motion } from "framer-motion";
 import { GuestDetailContentProps } from "@/types/guests";
 import ToggleSwitch from "../Common/ToggleSwitch";

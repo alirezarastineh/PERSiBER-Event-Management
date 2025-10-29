@@ -1,4 +1,3 @@
-import React from "react";
 import { motion } from "framer-motion";
 import { MemberCardsProps } from "@/types/members";
 import ToggleSwitch from "../Common/ToggleSwitch";
@@ -38,11 +37,9 @@ export default function MemberCards({
                 {member.name.charAt(0).toUpperCase()}
               </div>
               <div className="ml-3">
-                <h3 className="text-lg font-semibold text-white">
-                  {member.name}
-                </h3>
+                <h3 className="text-lg font-semibold text-white">{member.name}</h3>
                 {member.isStudent && (
-                  <span className="text-blue-300 px-2 py-0.5 rounded-full bg-blue-900/30 text-blue-800">
+                  <span className="text-blue-300 px-2 py-0.5 rounded-full bg-blue-900/30">
                     Student
                   </span>
                 )}

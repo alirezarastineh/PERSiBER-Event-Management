@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import SearchInput from "../Common/SearchInput";
 import { CreateMemberDto, MemberControlPanelProps } from "@/types/members";
@@ -53,15 +53,10 @@ export default function MemberControlPanel({
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2, duration: 0.5 }}
         >
-          <h2 className="text-xl font-bold mb-4 text-white">
-            Add New Member
-          </h2>
+          <h2 className="text-xl font-bold mb-4 text-white">Add New Member</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             <div className="space-y-3">
-              <label
-                htmlFor="member-name"
-                className="block text-sm font-medium text-gray-400"
-              >
+              <label htmlFor="member-name" className="block text-sm font-medium text-gray-400">
                 Member Name
               </label>
               <motion.input
@@ -81,10 +76,7 @@ export default function MemberControlPanel({
             </div>
 
             <div className="space-y-3">
-              <label
-                htmlFor="member-organizer"
-                className="block text-sm font-medium text-gray-400"
-              >
+              <label htmlFor="member-organizer" className="block text-sm font-medium text-gray-400">
                 Organizer
               </label>
               <motion.select

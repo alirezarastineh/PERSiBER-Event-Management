@@ -1,4 +1,3 @@
-import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Modal from "../Common/Modal";
 import ToggleSwitch from "../Common/ToggleSwitch";
@@ -25,10 +24,7 @@ export default function EditBpplistModal({
         <Modal isOpen={isOpen} onClose={onClose} title="Edit BPP Attendee">
           <div className="space-y-5">
             <div className="space-y-2">
-              <label
-                htmlFor="attendeeName"
-                className="block text-sm font-medium text-gray-300"
-              >
+              <label htmlFor="attendeeName" className="block text-sm font-medium text-gray-300">
                 Attendee Name
               </label>
               <motion.input
@@ -43,10 +39,7 @@ export default function EditBpplistModal({
             </div>
 
             <div className="space-y-2">
-              <label
-                htmlFor="organizer"
-                className="block text-sm font-medium text-gray-300"
-              >
+              <label htmlFor="organizer" className="block text-sm font-medium text-gray-300">
                 Organizer
               </label>
               <motion.select
@@ -116,10 +109,7 @@ export default function EditBpplistModal({
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
               {/* Attended Status */}
               <div className="space-y-2">
-                <label
-                  htmlFor="attendedStatus"
-                  className="block text-sm font-medium text-gray-300"
-                >
+                <label htmlFor="attendedStatus" className="block text-sm font-medium text-gray-300">
                   Attended Status
                 </label>
                 <select
@@ -137,10 +127,7 @@ export default function EditBpplistModal({
               {/* Left Status Toggle */}
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <label
-                    htmlFor="hasLeft"
-                    className="text-sm font-medium text-gray-300"
-                  >
+                  <label htmlFor="hasLeft" className="text-sm font-medium text-gray-300">
                     Has Left
                   </label>
                   <ToggleSwitch
@@ -162,10 +149,7 @@ export default function EditBpplistModal({
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <label
-                    htmlFor="isStudent"
-                    className="text-sm font-medium text-gray-300"
-                  >
+                  <label htmlFor="isStudent" className="text-sm font-medium text-gray-300">
                     Student
                   </label>
                   <ToggleSwitch
@@ -190,10 +174,7 @@ export default function EditBpplistModal({
                   transition={{ duration: 0.3 }}
                   className="space-y-2"
                 >
-                  <label
-                    htmlFor="validUntil"
-                    className="block text-sm font-medium text-gray-300"
-                  >
+                  <label htmlFor="validUntil" className="block text-sm font-medium text-gray-300">
                     Valid Until
                   </label>
                   <input

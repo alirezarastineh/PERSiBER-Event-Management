@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import { motion } from "framer-motion";
 import { useAppSelector } from "@/redux/hooks";
 import Spinner from "./Common/Spinner";
@@ -318,9 +317,7 @@ export default function BPPList() {
                 />
               </svg>
             </div>
-            <h3 className="text-xl font-medium text-white mb-2">
-              No BPP Attendees Found
-            </h3>
+            <h3 className="text-xl font-medium text-white mb-2">No BPP Attendees Found</h3>
             <p className="text-gray-400 max-w-md">
               {searchTerm
                 ? `No results matching "${searchTerm}". Try a different search term.`

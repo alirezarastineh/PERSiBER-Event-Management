@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { useAppSelector } from "@/redux/hooks";
@@ -211,9 +210,7 @@ export default function Guests() {
             d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
           />
         </svg>
-        <h2 className="text-2xl font-bold text-red-400 mb-2">
-          Error Loading Guests
-        </h2>
+        <h2 className="text-2xl font-bold text-red-400 mb-2">Error Loading Guests</h2>
         <p className="text-red-300">
           We couldn&apos;t retrieve the guest data. Please try again later.
         </p>
@@ -305,9 +302,7 @@ export default function Guests() {
                   ></path>
                 </svg>
               </div>
-              <h2 className="text-2xl font-bold text-white mb-2">
-                No Guests Found
-              </h2>
+              <h2 className="text-2xl font-bold text-white mb-2">No Guests Found</h2>
               <p className="text-gray-400 max-w-md mx-auto">
                 {searchTerm
                   ? "No guests match your search criteria."
@@ -354,18 +349,14 @@ export default function Guests() {
             animate="visible"
             transition={{ delay: 0.4 }}
           >
-            <h2 className="text-2xl font-bold mb-6 text-white">
-              Detailed Statistics
-            </h2>
+            <h2 className="text-2xl font-bold mb-6 text-white">Detailed Statistics</h2>
             <div className="bg-gray-800/60 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-gray-700/50">
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
                 <motion.div
                   variants={itemVariants}
                   className="p-4 rounded-xl bg-gradient-to-r from-gray-800/70 to-gray-800/50 shadow-sm border border-gray-700/30"
                 >
-                  <h3 className="text-sm font-medium text-gray-400 mb-1">
-                    Total Guests
-                  </h3>
+                  <h3 className="text-sm font-medium text-gray-400 mb-1">Total Guests</h3>
                   <p className="text-3xl font-bold text-rich-gold">
                     {guestsData.statistics.totalCount}
                   </p>
@@ -375,9 +366,7 @@ export default function Guests() {
                   variants={itemVariants}
                   className="p-4 rounded-xl bg-gradient-to-r from-gray-800/70 to-gray-800/50 shadow-sm border border-gray-700/30"
                 >
-                  <h3 className="text-sm font-medium text-gray-400 mb-1">
-                    Attended
-                  </h3>
+                  <h3 className="text-sm font-medium text-gray-400 mb-1">Attended</h3>
                   <p className="text-3xl font-bold text-rich-gold">
                     {guestsData.statistics.attendedCount}
                   </p>
@@ -389,9 +378,7 @@ export default function Guests() {
                       variants={itemVariants}
                       className="p-4 rounded-xl bg-gradient-to-r from-gray-800/70 to-gray-800/50 shadow-sm border border-gray-700/30"
                     >
-                      <h3 className="text-sm font-medium text-gray-400 mb-1">
-                        Students
-                      </h3>
+                      <h3 className="text-sm font-medium text-gray-400 mb-1">Students</h3>
                       <p className="text-3xl font-bold text-rich-gold">
                         {guestsData.statistics.studentsCount ?? 0}
                       </p>
@@ -401,9 +388,7 @@ export default function Guests() {
                       variants={itemVariants}
                       className="p-4 rounded-xl bg-gradient-to-r from-gray-800/70 to-gray-800/50 shadow-sm border border-gray-700/30"
                     >
-                      <h3 className="text-sm font-medium text-gray-400 mb-1">
-                        Ladies
-                      </h3>
+                      <h3 className="text-sm font-medium text-gray-400 mb-1">Ladies</h3>
                       <p className="text-3xl font-bold text-rich-gold">
                         {guestsData.statistics.ladiesCount ?? 0}
                       </p>
@@ -413,9 +398,7 @@ export default function Guests() {
                       variants={itemVariants}
                       className="p-4 rounded-xl bg-gradient-to-r from-gray-800/70 to-gray-800/50 shadow-sm border border-gray-700/30"
                     >
-                      <h3 className="text-sm font-medium text-gray-400 mb-1">
-                        Drinks Coupons
-                      </h3>
+                      <h3 className="text-sm font-medium text-gray-400 mb-1">Drinks Coupons</h3>
                       <p className="text-3xl font-bold text-rich-gold">
                         {guestsData.statistics.drinksCouponsCount ?? 0}
                       </p>
@@ -425,9 +408,7 @@ export default function Guests() {
                       variants={itemVariants}
                       className="p-4 rounded-xl bg-gradient-to-r from-gray-800/70 to-gray-800/50 shadow-sm border border-gray-700/30"
                     >
-                      <h3 className="text-sm font-medium text-gray-400 mb-1">
-                        Free Entry
-                      </h3>
+                      <h3 className="text-sm font-medium text-gray-400 mb-1">Free Entry</h3>
                       <p className="text-3xl font-bold text-rich-gold">
                         {guestsData.statistics.freeEntryCount ?? 0}
                       </p>
