@@ -194,7 +194,7 @@ export default function GuestEditForm({
         <div className="flex gap-4 pt-6">
           <motion.button
             onClick={onSave}
-            className="flex-1 px-6 py-3 rounded-lg bg-gradient-to-r from-rich-gold to-accent-amber text-deep-navy font-medium shadow-md"
+            className="flex-1 px-6 py-3 rounded-lg bg-linear-to-r from-rich-gold to-accent-amber text-deep-navy font-medium shadow-md"
             whileHover={{
               scale: 1.02,
               boxShadow: "0 5px 15px rgba(212, 175, 55, 0.25)",
@@ -206,7 +206,7 @@ export default function GuestEditForm({
 
           <motion.button
             onClick={onDelete}
-            className="flex-1 px-6 py-3 rounded-lg bg-gradient-to-r from-warm-charcoal to-deep-navy text-soft-cream border border-rich-gold/30 font-medium shadow-md"
+            className="flex-1 px-6 py-3 rounded-lg bg-linear-to-r from-warm-charcoal to-deep-navy text-soft-cream border border-rich-gold/30 font-medium shadow-md"
             whileHover={{
               scale: 1.02,
               boxShadow: "0 5px 15px rgba(212, 175, 55, 0.1)",

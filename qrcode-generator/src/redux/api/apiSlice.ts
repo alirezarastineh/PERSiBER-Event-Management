@@ -52,7 +52,7 @@ const refreshToken = async (api: any, extraOptions: any) => {
     extraOptions,
   );
 
-  if (refreshResult.data && (refreshResult.data as AuthResponse).accessToken) {
+  if ((refreshResult.data as AuthResponse)?.accessToken) {
     const { accessToken, refreshToken, user } = refreshResult.data as AuthResponse;
     globalThis.window.localStorage.setItem("accessToken", accessToken);
     globalThis.window.localStorage.setItem("refreshToken", refreshToken);
@@ -73,7 +73,7 @@ const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQue
 
   let result = await baseQuery(args, api, extraOptions);
 
-  if (result.error && result.error.status === 401) {
+  if (result.error?.status === 401) {
     if (mutex.isLocked()) {
       await mutex.waitForUnlock();
       result = await baseQuery(args, api, extraOptions);

@@ -19,7 +19,7 @@ export default function GuestDetailHeader({ guestName }: Readonly<GuestDetailHea
       </motion.h1>
 
       <motion.div
-        className="h-1 w-24 bg-gradient-to-r from-rich-gold to-accent-amber rounded-full mx-auto"
+        className="h-1 w-24 bg-linear-to-r from-rich-gold to-accent-amber rounded-full mx-auto"
         initial={{ width: 0 }}
         animate={{ width: 96 }}
         transition={{ delay: 0.3, duration: 0.8 }}

@@ -42,7 +42,7 @@ const QRCodeComponent = () => {
 
   return (
     <motion.div
-      className="min-h-screen bg-gradient-to-b from-deep-navy to-gray-900 px-4 py-16"
+      className="min-h-screen bg-linear-to-b from-deep-navy to-gray-900 px-4 py-16"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.8 }}
@@ -65,7 +65,7 @@ const QRCodeComponent = () => {
           </motion.h1>
 
           <motion.div
-            className="h-1 w-24 bg-gradient-to-r from-rich-gold to-accent-amber rounded-full mx-auto"
+            className="h-1 w-24 bg-linear-to-r from-rich-gold to-accent-amber rounded-full mx-auto"
             initial={{ width: 0 }}
             animate={{ width: 96 }}
             transition={{ delay: 0.6, duration: 0.8 }}

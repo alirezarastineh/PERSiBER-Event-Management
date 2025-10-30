@@ -74,7 +74,7 @@ export default function AuthFormPanel({
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.9, duration: 0.5 }}
         >
-          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-rich-gold to-accent-amber rounded-t-2xl"></div>
+          <div className="absolute top-0 left-0 right-0 h-1 bg-linear-to-r from-rich-gold to-accent-amber rounded-t-2xl"></div>
 
           <Form
             config={formConfig}

@@ -57,7 +57,7 @@ export function MobileNavItem({
       onClick={onClick}
       className={`w-full flex items-center p-3.5 rounded-xl transition-all duration-300 ${
         isActive
-          ? "bg-gradient-to-r from-amber-500/10 to-amber-600/10 text-white border border-amber-500/20"
+          ? "bg-linear-to-r from-amber-500/10 to-amber-600/10 text-white border border-amber-500/20"
           : "bg-zinc-800/30 hover:bg-zinc-800/50 text-gray-200 border border-transparent"
       }`}
       variants={variants}
@@ -67,7 +67,7 @@ export function MobileNavItem({
       <span
         className={`flex items-center justify-center size-9 rounded-lg mr-3 ${
           isActive
-            ? "bg-gradient-to-r from-amber-500/20 to-amber-600/20 text-white"
+            ? "bg-linear-to-r from-amber-500/20 to-amber-600/20 text-white"
             : "bg-zinc-700/50 text-gray-300"
         }`}
       >

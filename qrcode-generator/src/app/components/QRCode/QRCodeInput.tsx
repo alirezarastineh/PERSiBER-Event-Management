@@ -15,7 +15,7 @@ export default function QRCodeInput({
       animate={{ opacity: 1, x: 0 }}
       transition={{ delay: 0.3, duration: 0.7 }}
     >
-      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-rich-gold to-accent-amber rounded-t-2xl"></div>
+      <div className="absolute top-0 left-0 right-0 h-1 bg-linear-to-r from-rich-gold to-accent-amber rounded-t-2xl"></div>
 
       <h2 className="text-2xl font-bold mb-6 text-white">Guest Information</h2>
 
@@ -44,7 +44,7 @@ export default function QRCodeInput({
         <motion.button
           onClick={onGenerate}
           disabled={loading}
-          className="w-full py-4 px-6 rounded-lg bg-gradient-to-r from-rich-gold to-accent-amber text-deep-navy font-semibold text-lg tracking-wide shadow-lg transition-all duration-300"
+          className="w-full py-4 px-6 rounded-lg bg-linear-to-r from-rich-gold to-accent-amber text-deep-navy font-semibold text-lg tracking-wide shadow-lg transition-all duration-300"
           whileHover={{
             scale: 1.03,
             boxShadow: "0 10px 25px -5px rgba(212, 175, 55, 0.4)",

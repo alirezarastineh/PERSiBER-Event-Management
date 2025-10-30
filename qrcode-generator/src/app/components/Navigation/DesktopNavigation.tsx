@@ -98,7 +98,7 @@ export default function DesktopNavigation({
                   variants={desktopItemVariants}
                 />
 
-                <div className="h-8 w-px mx-2 bg-gradient-to-b from-transparent via-amber-500/20 to-transparent" />
+                <div className="h-8 w-px mx-2 bg-linear-to-b from-transparent via-amber-500/20 to-transparent" />
               </>
             )}
 
@@ -177,7 +177,7 @@ export default function DesktopNavigation({
               variants={desktopItemVariants}
             />
 
-            <div className="h-8 w-px mx-2 bg-gradient-to-b from-transparent via-amber-500/20 to-transparent" />
+            <div className="h-8 w-px mx-2 bg-linear-to-b from-transparent via-amber-500/20 to-transparent" />
 
             {/* Logout button */}
             <motion.button
@@ -187,8 +187,8 @@ export default function DesktopNavigation({
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              <span className="absolute inset-0 bg-gradient-to-r from-rose-800/90 to-red-900/90 rounded-lg" />
-              <span className="absolute inset-0 rounded-lg opacity-0 group-hover:opacity-30 bg-gradient-to-r from-rose-700 to-red-800 blur-md transition-opacity duration-300" />
+              <span className="absolute inset-0 bg-linear-to-r from-rose-800/90 to-red-900/90 rounded-lg" />
+              <span className="absolute inset-0 rounded-lg opacity-0 group-hover:opacity-30 bg-linear-to-r from-rose-700 to-red-800 blur-md transition-opacity duration-300" />
               <span className="relative flex items-center text-rose-100">
                 <svg
                   className="size-4.5 mr-1.5"
@@ -215,8 +215,8 @@ export default function DesktopNavigation({
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
-            <span className="absolute inset-0 bg-gradient-to-r from-amber-500 to-amber-600 rounded-lg" />
-            <span className="absolute inset-0 rounded-lg opacity-0 group-hover:opacity-40 bg-gradient-to-r from-amber-400 to-amber-600 blur-md transition-opacity duration-300" />
+            <span className="absolute inset-0 bg-linear-to-r from-amber-500 to-amber-600 rounded-lg" />
+            <span className="absolute inset-0 rounded-lg opacity-0 group-hover:opacity-40 bg-linear-to-r from-amber-400 to-amber-600 blur-md transition-opacity duration-300" />
             <span className="relative flex items-center text-zinc-900 font-medium">
               <svg
                 className="size-4.5 mr-1.5"

@@ -33,7 +33,7 @@ export default function BpplistCards({
         >
           <div className="flex justify-between items-center">
             <div className="flex items-center">
-              <div className="h-12 w-12 rounded-full bg-gradient-to-r from-gray-700 to-gray-600 flex items-center justify-center text-lg font-bold text-gray-300">
+              <div className="h-12 w-12 rounded-full bg-linear-to-r from-gray-700 to-gray-600 flex items-center justify-center text-lg font-bold text-gray-300">
                 {item.name.charAt(0).toUpperCase()}
               </div>
               <div className="ml-3">
@@ -103,7 +103,7 @@ export default function BpplistCards({
             <div className="flex space-x-2 mt-4 pt-4 border-t border-gray-700/30">
               <motion.button
                 onClick={() => onEditItem(item)}
-                className="flex-1 px-4 py-2 rounded-lg bg-gradient-to-r from-rich-gold/90 to-accent-amber text-deep-navy font-medium text-sm shadow-sm flex items-center justify-center"
+                className="flex-1 px-4 py-2 rounded-lg bg-linear-to-r from-rich-gold/90 to-accent-amber text-deep-navy font-medium text-sm shadow-sm flex items-center justify-center"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
@@ -119,7 +119,7 @@ export default function BpplistCards({
               </motion.button>
               <motion.button
                 onClick={() => onDeleteItem(item._id)}
-                className="flex-1 px-4 py-2 rounded-lg bg-gradient-to-r from-warm-charcoal to-deep-navy text-soft-cream border border-rich-gold/30 font-medium text-sm shadow-sm flex items-center justify-center"
+                className="flex-1 px-4 py-2 rounded-lg bg-linear-to-r from-warm-charcoal to-deep-navy text-soft-cream border border-rich-gold/30 font-medium text-sm shadow-sm flex items-center justify-center"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >

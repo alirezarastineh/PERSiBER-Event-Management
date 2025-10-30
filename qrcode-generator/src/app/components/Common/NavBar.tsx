@@ -62,8 +62,8 @@ export default function NavBar() {
         <div
           className={`absolute inset-0 transition-all duration-500 ${
             scrolled
-              ? "bg-gradient-to-r from-zinc-900/95 to-zinc-800/95 backdrop-blur-xl shadow-xl"
-              : "bg-gradient-to-r from-zinc-900/80 to-zinc-800/80 backdrop-blur-md"
+              ? "bg-linear-to-r from-zinc-900/95 to-zinc-800/95 backdrop-blur-xl shadow-xl"
+              : "bg-linear-to-r from-zinc-900/80 to-zinc-800/80 backdrop-blur-md"
           }`}
         />
 
@@ -74,7 +74,7 @@ export default function NavBar() {
           animate={{ scaleX: 1 }}
           transition={{ delay: 0.3, duration: 0.5 }}
         >
-          <div className="h-full bg-gradient-to-r from-transparent via-amber-500/30 to-transparent" />
+          <div className="h-full bg-linear-to-r from-transparent via-amber-500/30 to-transparent" />
         </motion.div>
 
         {/* Navbar content */}

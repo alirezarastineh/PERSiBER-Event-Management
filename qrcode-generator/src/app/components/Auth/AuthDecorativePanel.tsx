@@ -15,7 +15,7 @@ export default function AuthDecorativePanel({
       animate={{ opacity: 1, x: 0 }}
       transition={{ delay: 0.3, duration: 0.8 }}
     >
-      <div className="absolute inset-0 bg-gradient-to-br from-deep-navy to-warm-charcoal z-0">
+      <div className="absolute inset-0 bg-linear-to-br from-deep-navy to-warm-charcoal z-0">
         <div
           className="absolute inset-0 opacity-10 bg-cover bg-center"
           style={{

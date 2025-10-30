@@ -46,7 +46,7 @@ export default function DeleteConfirmationModal({
               </motion.button>
               <motion.button
                 onClick={onConfirm}
-                className="flex-1 px-4 py-3 rounded-lg bg-gradient-to-r from-warm-charcoal to-deep-navy text-soft-cream border border-rich-gold/30 font-medium shadow-md"
+                className="flex-1 px-4 py-3 rounded-lg bg-linear-to-r from-warm-charcoal to-deep-navy text-soft-cream border border-rich-gold/30 font-medium shadow-md"
                 whileHover={{
                   scale: 1.02,
                   boxShadow: "0 5px 15px rgba(212, 175, 55, 0.1)",

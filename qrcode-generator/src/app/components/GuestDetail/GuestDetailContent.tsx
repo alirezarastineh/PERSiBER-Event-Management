@@ -84,7 +84,7 @@ export default function GuestDetailContent({
           <div className="flex justify-center mt-6 pt-6 border-t border-gray-700/30">
             <motion.button
               onClick={goBack}
-              className="px-6 py-3 rounded-lg bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-500 hover:to-gray-600 text-white font-medium shadow-md"
+              className="px-6 py-3 rounded-lg bg-linear-to-r from-gray-600 to-gray-700 hover:from-gray-500 hover:to-gray-600 text-white font-medium shadow-md"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >

@@ -149,7 +149,7 @@ export default function GuestTable({
                     <div className="flex justify-end space-x-2">
                       <motion.button
                         onClick={() => onEditGuest(guest)}
-                        className="px-3 py-1.5 rounded-lg bg-gradient-to-r from-rich-gold/90 to-accent-amber text-deep-navy font-medium text-xs shadow-sm"
+                        className="px-3 py-1.5 rounded-lg bg-linear-to-r from-rich-gold/90 to-accent-amber text-deep-navy font-medium text-xs shadow-sm"
                         whileHover={{
                           scale: 1.05,
                           boxShadow: "0 3px 10px rgba(212, 175, 55, 0.2)",
@@ -161,7 +161,7 @@ export default function GuestTable({
                       </motion.button>
                       <motion.button
                         onClick={() => onDeleteGuest(guest._id)}
-                        className="px-3 py-1.5 rounded-lg bg-gradient-to-r from-warm-charcoal to-deep-navy text-soft-cream border border-rich-gold/30 font-medium text-xs shadow-sm"
+                        className="px-3 py-1.5 rounded-lg bg-linear-to-r from-warm-charcoal to-deep-navy text-soft-cream border border-rich-gold/30 font-medium text-xs shadow-sm"
                         whileHover={{
                           scale: 1.05,
                           boxShadow: "0 3px 10px rgba(212, 175, 55, 0.1)",

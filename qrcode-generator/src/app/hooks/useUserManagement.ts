@@ -74,7 +74,7 @@ export const useUserManagement = () => {
   const getRoleBadgeClass = (role: string) => {
     switch (role) {
       case "master":
-        return "bg-gradient-to-r from-rich-gold to-accent-amber text-deep-navy";
+        return "bg-linear-to-r from-rich-gold to-accent-amber text-deep-navy";
       case "admin":
         return "bg-blue-900/30 text-blue-300";
       default:

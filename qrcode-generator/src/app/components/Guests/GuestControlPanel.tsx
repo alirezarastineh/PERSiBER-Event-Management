@@ -81,7 +81,7 @@ export default function GuestControlPanel({
             <div className="flex items-end">
               <motion.button
                 onClick={handleAddGuest}
-                className="px-6 py-3 rounded-lg bg-gradient-to-r from-rich-gold to-accent-amber text-deep-navy font-medium shadow-md w-full sm:w-auto whitespace-nowrap"
+                className="px-6 py-3 rounded-lg bg-linear-to-r from-rich-gold to-accent-amber text-deep-navy font-medium shadow-md w-full sm:w-auto whitespace-nowrap"
                 whileHover={{
                   scale: 1.03,
                   boxShadow: "0 5px 15px rgba(212, 175, 55, 0.3)",

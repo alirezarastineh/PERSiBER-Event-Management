@@ -219,7 +219,7 @@ export default function BPPList() {
         </motion.p>
         <motion.button
           onClick={() => globalThis.location.reload()}
-          className="px-6 py-3 rounded-lg bg-gradient-to-r from-rich-gold to-accent-amber text-deep-navy font-medium"
+          className="px-6 py-3 rounded-lg bg-linear-to-r from-rich-gold to-accent-amber text-deep-navy font-medium"
           whileHover={{
             scale: 1.03,
             boxShadow: "0 5px 15px rgba(212, 175, 55, 0.2)",
@@ -237,7 +237,7 @@ export default function BPPList() {
 
   return (
     <motion.div
-      className="min-h-screen bg-gradient-to-b from-deep-navy to-gray-900 transition-colors duration-500"
+      className="min-h-screen bg-linear-to-b from-deep-navy to-gray-900 transition-colors duration-500"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.6 }}
@@ -260,7 +260,7 @@ export default function BPPList() {
           </motion.h1>
 
           <motion.div
-            className="h-1 w-24 bg-gradient-to-r from-rich-gold to-accent-amber rounded-full mx-auto"
+            className="h-1 w-24 bg-linear-to-r from-rich-gold to-accent-amber rounded-full mx-auto"
             initial={{ width: 0 }}
             animate={{ width: 96 }}
             transition={{ delay: 0.3, duration: 0.8 }}
@@ -369,7 +369,7 @@ export default function BPPList() {
           transition={{ delay: 0.8, duration: 0.5 }}
         >
           <div className="max-w-3xl mx-auto px-4">
-            <div className="h-px bg-gradient-to-r from-transparent via-rich-gold/20 to-transparent mb-6"></div>
+            <div className="h-px bg-linear-to-r from-transparent via-rich-gold/20 to-transparent mb-6"></div>
             <p className="text-sm text-gray-400">
               The BPP list management system tracks attendance, status, and membership details for
               Black Persian Party events.

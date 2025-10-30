@@ -99,7 +99,7 @@ export default function EditGuestModal({
                 />
                 <motion.button
                   onClick={handleUpdateDrinksCoupon}
-                  className="w-full sm:w-auto px-4 py-3 rounded-lg bg-gradient-to-r from-rich-gold to-accent-amber text-deep-navy font-medium shadow-md whitespace-nowrap"
+                  className="w-full sm:w-auto px-4 py-3 rounded-lg bg-linear-to-r from-rich-gold to-accent-amber text-deep-navy font-medium shadow-md whitespace-nowrap"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.98 }}
                 >
@@ -236,7 +236,7 @@ export default function EditGuestModal({
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-6">
               <motion.button
                 onClick={handleSave}
-                className="w-full px-4 py-3 rounded-lg bg-gradient-to-r from-rich-gold to-accent-amber text-deep-navy font-medium shadow-md order-2 sm:order-1"
+                className="w-full px-4 py-3 rounded-lg bg-linear-to-r from-rich-gold to-accent-amber text-deep-navy font-medium shadow-md order-2 sm:order-1"
                 whileHover={{
                   scale: 1.02,
                   boxShadow: "0 5px 15px rgba(212, 175, 55, 0.25)",

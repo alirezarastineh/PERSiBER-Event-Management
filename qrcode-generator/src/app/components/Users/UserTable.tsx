@@ -37,7 +37,7 @@ export default function UserTable({
               >
                 <td className="px-6 py-5 whitespace-nowrap">
                   <div className="flex items-center">
-                    <div className="flex-shrink-0 h-10 w-10 rounded-full bg-gradient-to-r from-gray-700 to-gray-600 flex items-center justify-center overflow-hidden">
+                    <div className="flex-shrink-0 h-10 w-10 rounded-full bg-linear-to-r from-gray-700 to-gray-600 flex items-center justify-center overflow-hidden">
                       {user.username.charAt(0).toUpperCase()}
                     </div>
                     <div className="ml-4">
@@ -59,7 +59,7 @@ export default function UserTable({
                     {canEditUser(user.role) && (
                       <motion.button
                         onClick={() => onEditUser(user._id, user.role)}
-                        className="px-4 py-2 rounded-lg bg-gradient-to-r from-rich-gold/90 to-accent-amber text-deep-navy font-medium shadow-sm"
+                        className="px-4 py-2 rounded-lg bg-linear-to-r from-rich-gold/90 to-accent-amber text-deep-navy font-medium shadow-sm"
                         whileHover={{
                           scale: 1.05,
                           boxShadow: "0 5px 15px rgba(212, 175, 55, 0.3)",
@@ -73,7 +73,7 @@ export default function UserTable({
                     {canDeleteUser(user.role) && (
                       <motion.button
                         onClick={() => onDeleteUser(user._id)}
-                        className="px-4 py-2 rounded-lg bg-gradient-to-r from-warm-charcoal to-deep-navy text-soft-cream border border-rich-gold/30 font-medium shadow-sm"
+                        className="px-4 py-2 rounded-lg bg-linear-to-r from-warm-charcoal to-deep-navy text-soft-cream border border-rich-gold/30 font-medium shadow-sm"
                         whileHover={{
                           scale: 1.05,
                           boxShadow: "0 5px 15px rgba(212, 175, 55, 0.2)",

@@ -84,7 +84,7 @@ export default function Spinner({
     return (
       <motion.div
         className={cn(
-          "flex justify-center items-center min-h-[70vh] bg-gradient-to-b from-deep-navy to-gray-900",
+          "flex justify-center items-center min-h-[70vh] bg-linear-to-b from-deep-navy to-gray-900",
           className,
         )}
         initial={{ opacity: 0 }}

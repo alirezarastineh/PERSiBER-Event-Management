@@ -96,7 +96,7 @@ export default function QRScannerInstructions({
             <motion.div
               key={instruction.step}
               variants={itemVariants}
-              className="bg-gradient-to-r from-gray-800/70 to-gray-800/50 rounded-xl p-4 md:p-5 shadow-sm border border-gray-700/30"
+              className="bg-linear-to-r from-gray-800/70 to-gray-800/50 rounded-xl p-4 md:p-5 shadow-sm border border-gray-700/30"
             >
               <div className="bg-rich-gold/20 p-2 md:p-3 rounded-full w-10 h-10 md:w-12 md:h-12 flex items-center justify-center mx-auto mb-2 md:mb-3">
                 {instruction.icon}

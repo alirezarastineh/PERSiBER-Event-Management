@@ -35,7 +35,7 @@ export default function EditUserRoleModal({
           <motion.button
             onClick={onSave}
             disabled={isLoading || !selectedRole}
-            className="flex-1 px-4 py-3 rounded-lg bg-gradient-to-r from-rich-gold to-accent-amber text-deep-navy font-medium shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex-1 px-4 py-3 rounded-lg bg-linear-to-r from-rich-gold to-accent-amber text-deep-navy font-medium shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
             whileHover={{
               scale: isLoading || !selectedRole ? 1 : 1.02,
               boxShadow:

@@ -32,7 +32,7 @@ async function bootstrap(): Promise<void> {
       configService.get<string>('FRONTEND_URL'),
       configService.get<string>('BACKEND_URL'),
       'https://persiber.vercel.app', // Production frontend URL
-    ].filter((url): url is string => Boolean(url));
+    ].filter(Boolean) as string[];
     allowedOrigins.push(...envOrigins);
   }
 

@@ -77,7 +77,7 @@ export default function Modal({
             }}
           >
             {/* Gold accent bar */}
-            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-rich-gold to-accent-amber" />
+            <div className="absolute top-0 left-0 right-0 h-1 bg-linear-to-r from-rich-gold to-accent-amber" />
 
             {/* Header */}
             <div className="relative flex justify-between items-center p-4 sm:p-6 border-b border-gray-700/20">

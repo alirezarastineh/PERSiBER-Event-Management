@@ -101,7 +101,7 @@ export default function AlertModal({
             <div className="flex gap-3 pt-3 justify-center">
               <motion.button
                 onClick={onClose}
-                className="px-6 py-3 rounded-lg bg-gradient-to-r from-rich-gold to-accent-amber text-deep-navy font-medium shadow-md min-w-[120px]"
+                className="px-6 py-3 rounded-lg bg-linear-to-r from-rich-gold to-accent-amber text-deep-navy font-medium shadow-md min-w-[120px]"
                 whileHover={{
                   scale: 1.02,
                   boxShadow: "0 5px 15px rgba(212, 175, 55, 0.25)",

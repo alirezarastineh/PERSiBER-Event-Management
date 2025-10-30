@@ -38,10 +38,10 @@ export default function ToggleSwitch({
 
   const getColorClasses = () => {
     if (colorScheme === "emerald") {
-      return isActive ? "bg-gradient-to-r from-emerald-500 to-emerald-600" : "bg-gray-600";
+      return isActive ? "bg-linear-to-r from-emerald-500 to-emerald-600" : "bg-gray-600";
     }
 
-    return isActive ? "bg-gradient-to-r from-rich-gold to-accent-amber" : "bg-gray-600";
+    return isActive ? "bg-linear-to-r from-rich-gold to-accent-amber" : "bg-gray-600";
   };
 
   // Special case for attendance toggle (w-14 h-7 with w-5 h-5 toggle)

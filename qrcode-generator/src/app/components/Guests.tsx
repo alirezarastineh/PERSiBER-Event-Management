@@ -220,7 +220,7 @@ export default function Guests() {
 
   return (
     <motion.div
-      className="min-h-screen bg-gradient-to-b from-deep-navy to-gray-900 transition-colors duration-500"
+      className="min-h-screen bg-linear-to-b from-deep-navy to-gray-900 transition-colors duration-500"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.6 }}
@@ -243,7 +243,7 @@ export default function Guests() {
           </motion.h1>
 
           <motion.div
-            className="h-1 w-24 bg-gradient-to-r from-rich-gold to-accent-amber rounded-full mx-auto"
+            className="h-1 w-24 bg-linear-to-r from-rich-gold to-accent-amber rounded-full mx-auto"
             initial={{ width: 0 }}
             animate={{ width: 96 }}
             transition={{ delay: 0.3, duration: 0.8 }}
@@ -354,7 +354,7 @@ export default function Guests() {
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
                 <motion.div
                   variants={itemVariants}
-                  className="p-4 rounded-xl bg-gradient-to-r from-gray-800/70 to-gray-800/50 shadow-sm border border-gray-700/30"
+                  className="p-4 rounded-xl bg-linear-to-r from-gray-800/70 to-gray-800/50 shadow-sm border border-gray-700/30"
                 >
                   <h3 className="text-sm font-medium text-gray-400 mb-1">Total Guests</h3>
                   <p className="text-3xl font-bold text-rich-gold">
@@ -364,7 +364,7 @@ export default function Guests() {
 
                 <motion.div
                   variants={itemVariants}
-                  className="p-4 rounded-xl bg-gradient-to-r from-gray-800/70 to-gray-800/50 shadow-sm border border-gray-700/30"
+                  className="p-4 rounded-xl bg-linear-to-r from-gray-800/70 to-gray-800/50 shadow-sm border border-gray-700/30"
                 >
                   <h3 className="text-sm font-medium text-gray-400 mb-1">Attended</h3>
                   <p className="text-3xl font-bold text-rich-gold">
@@ -376,7 +376,7 @@ export default function Guests() {
                   <>
                     <motion.div
                       variants={itemVariants}
-                      className="p-4 rounded-xl bg-gradient-to-r from-gray-800/70 to-gray-800/50 shadow-sm border border-gray-700/30"
+                      className="p-4 rounded-xl bg-linear-to-r from-gray-800/70 to-gray-800/50 shadow-sm border border-gray-700/30"
                     >
                       <h3 className="text-sm font-medium text-gray-400 mb-1">Students</h3>
                       <p className="text-3xl font-bold text-rich-gold">
@@ -386,7 +386,7 @@ export default function Guests() {
 
                     <motion.div
                       variants={itemVariants}
-                      className="p-4 rounded-xl bg-gradient-to-r from-gray-800/70 to-gray-800/50 shadow-sm border border-gray-700/30"
+                      className="p-4 rounded-xl bg-linear-to-r from-gray-800/70 to-gray-800/50 shadow-sm border border-gray-700/30"
                     >
                       <h3 className="text-sm font-medium text-gray-400 mb-1">Ladies</h3>
                       <p className="text-3xl font-bold text-rich-gold">
@@ -396,7 +396,7 @@ export default function Guests() {
 
                     <motion.div
                       variants={itemVariants}
-                      className="p-4 rounded-xl bg-gradient-to-r from-gray-800/70 to-gray-800/50 shadow-sm border border-gray-700/30"
+                      className="p-4 rounded-xl bg-linear-to-r from-gray-800/70 to-gray-800/50 shadow-sm border border-gray-700/30"
                     >
                       <h3 className="text-sm font-medium text-gray-400 mb-1">Drinks Coupons</h3>
                       <p className="text-3xl font-bold text-rich-gold">
@@ -406,7 +406,7 @@ export default function Guests() {
 
                     <motion.div
                       variants={itemVariants}
-                      className="p-4 rounded-xl bg-gradient-to-r from-gray-800/70 to-gray-800/50 shadow-sm border border-gray-700/30"
+                      className="p-4 rounded-xl bg-linear-to-r from-gray-800/70 to-gray-800/50 shadow-sm border border-gray-700/30"
                     >
                       <h3 className="text-sm font-medium text-gray-400 mb-1">Free Entry</h3>
                       <p className="text-3xl font-bold text-rich-gold">
@@ -463,7 +463,7 @@ export default function Guests() {
         transition={{ delay: 0.8, duration: 0.5 }}
       >
         <div className="max-w-3xl mx-auto px-4">
-          <div className="h-px bg-gradient-to-r from-transparent via-rich-gold/20 to-transparent mb-6"></div>
+          <div className="h-px bg-linear-to-r from-transparent via-rich-gold/20 to-transparent mb-6"></div>
           <p className="text-sm text-gray-400">
             The guest management system allows you to track attendees, manage discounts, and
             maintain comprehensive event statistics.

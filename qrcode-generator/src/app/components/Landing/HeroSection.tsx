@@ -19,7 +19,7 @@ export default function HeroSection({
         {/* Content Column */}
         <motion.div className="order-2 lg:order-1 space-y-8" variants={itemVariants}>
           <motion.div
-            className="h-1 w-20 bg-gradient-to-r from-amber-400 to-amber-600 rounded-full"
+            className="h-1 w-20 bg-linear-to-r from-amber-400 to-amber-600 rounded-full"
             initial={{ width: 0 }}
             animate={{ width: 80 }}
             transition={{ delay: 1, duration: 0.6 }}
@@ -44,7 +44,7 @@ export default function HeroSection({
             {/* Modified Link to conditionally redirect based on auth state */}
             <Link href={isAuthenticated ? "/guests" : "/auth/login?redirect=/guests"}>
               <motion.div
-                className="px-8 py-4 bg-gradient-to-r from-rich-gold to-accent-amber text-deep-navy rounded-md font-medium text-lg inline-flex items-center justify-center transition-all duration-300 shadow-lg hover:shadow-xl cursor-pointer"
+                className="px-8 py-4 bg-linear-to-r from-rich-gold to-accent-amber text-deep-navy rounded-md font-medium text-lg inline-flex items-center justify-center transition-all duration-300 shadow-lg hover:shadow-xl cursor-pointer"
                 whileHover={{
                   scale: 1.02,
                   boxShadow: "0 10px 25px rgba(212, 175, 55, 0.25)",

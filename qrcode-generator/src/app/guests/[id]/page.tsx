@@ -88,7 +88,7 @@ export default function GuestDetail() {
     <>
       <Heading title={guest.name} />
       <motion.div
-        className="min-h-screen bg-gradient-to-b from-deep-navy to-gray-900 transition-colors duration-500"
+        className="min-h-screen bg-linear-to-b from-deep-navy to-gray-900 transition-colors duration-500"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6 }}

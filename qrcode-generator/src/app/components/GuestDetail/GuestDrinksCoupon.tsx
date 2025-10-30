@@ -37,7 +37,7 @@ export default function GuestDrinksCoupon({
           />
           <motion.button
             onClick={handleUpdateDrinksCoupon}
-            className="whitespace-nowrap px-3 py-2 rounded-lg bg-gradient-to-r from-rich-gold to-accent-amber text-deep-navy font-medium shadow-md text-sm"
+            className="whitespace-nowrap px-3 py-2 rounded-lg bg-linear-to-r from-rich-gold to-accent-amber text-deep-navy font-medium shadow-md text-sm"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.98 }}
           >

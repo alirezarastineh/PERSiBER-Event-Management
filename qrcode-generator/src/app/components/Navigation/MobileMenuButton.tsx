@@ -23,21 +23,21 @@ export default function MobileMenuButton({
 
       <div className="relative w-8 h-5 flex flex-col justify-between items-center">
         <motion.span
-          className="w-full h-0.5 bg-gradient-to-r from-amber-400 to-amber-600 rounded-full"
+          className="w-full h-0.5 bg-linear-to-r from-amber-400 to-amber-600 rounded-full"
           animate={{
             opacity: isMenuOpen ? 0 : 1,
           }}
           transition={{ duration: 0.3 }}
         />
         <motion.span
-          className="w-full h-0.5 bg-gradient-to-r from-amber-400 to-amber-600 rounded-full"
+          className="w-full h-0.5 bg-linear-to-r from-amber-400 to-amber-600 rounded-full"
           animate={{
             opacity: isMenuOpen ? 0 : 1,
           }}
           transition={{ duration: 0.3, delay: 0.1 }}
         />
         <motion.span
-          className="w-full h-0.5 bg-gradient-to-r from-amber-400 to-amber-600 rounded-full"
+          className="w-full h-0.5 bg-linear-to-r from-amber-400 to-amber-600 rounded-full"
           animate={{
             opacity: isMenuOpen ? 0 : 1,
           }}

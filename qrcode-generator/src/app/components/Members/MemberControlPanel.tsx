@@ -102,7 +102,7 @@ export default function MemberControlPanel({
           <div className="mt-5">
             <motion.button
               onClick={handleAddMember}
-              className="w-full sm:w-auto px-6 py-3 rounded-lg bg-gradient-to-r from-rich-gold to-accent-amber text-deep-navy font-medium shadow-md"
+              className="w-full sm:w-auto px-6 py-3 rounded-lg bg-linear-to-r from-rich-gold to-accent-amber text-deep-navy font-medium shadow-md"
               whileHover={{
                 scale: 1.02,
                 boxShadow: "0 5px 15px rgba(212, 175, 55, 0.3)",

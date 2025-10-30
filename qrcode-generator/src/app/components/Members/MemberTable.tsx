@@ -66,7 +66,7 @@ export default function MemberTable({
               >
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="flex items-center">
-                    <div className="flex-shrink-0 h-10 w-10 rounded-full bg-gradient-to-r from-gray-700 to-gray-600 flex items-center justify-center overflow-hidden text-gray-300 font-medium">
+                    <div className="flex-shrink-0 h-10 w-10 rounded-full bg-linear-to-r from-gray-700 to-gray-600 flex items-center justify-center overflow-hidden text-gray-300 font-medium">
                       {member.name.charAt(0).toUpperCase()}
                     </div>
                     <div className="ml-4">
@@ -128,7 +128,7 @@ export default function MemberTable({
                     <div className="flex justify-end space-x-2">
                       <motion.button
                         onClick={() => onEditMember(member)}
-                        className="px-3 py-1.5 rounded-lg bg-gradient-to-r from-rich-gold/90 to-accent-amber text-deep-navy font-medium text-xs shadow-sm"
+                        className="px-3 py-1.5 rounded-lg bg-linear-to-r from-rich-gold/90 to-accent-amber text-deep-navy font-medium text-xs shadow-sm"
                         whileHover={{
                           scale: 1.05,
                           boxShadow: "0 3px 10px rgba(212, 175, 55, 0.2)",
@@ -139,7 +139,7 @@ export default function MemberTable({
                       </motion.button>
                       <motion.button
                         onClick={() => onDeleteMember(member._id)}
-                        className="px-3 py-1.5 rounded-lg bg-gradient-to-r from-warm-charcoal to-deep-navy text-soft-cream border border-rich-gold/30 font-medium text-xs shadow-sm"
+                        className="px-3 py-1.5 rounded-lg bg-linear-to-r from-warm-charcoal to-deep-navy text-soft-cream border border-rich-gold/30 font-medium text-xs shadow-sm"
                         whileHover={{
                           scale: 1.05,
                           boxShadow: "0 3px 10px rgba(212, 175, 55, 0.1)",

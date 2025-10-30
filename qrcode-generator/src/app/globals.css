@@ -128,7 +128,7 @@
   }
 
   .gradient-text {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-amber-500 to-amber-700;
+    @apply bg-clip-text text-transparent bg-linear-to-r from-amber-500 to-amber-700;
   }
 
   /* Elegant form elements */
@@ -141,7 +141,7 @@
 
   /* Rich dividers */
   .divider {
-    @apply h-px w-full bg-gradient-to-r from-transparent via-gray-600 to-transparent my-6;
+    @apply h-px w-full bg-linear-to-r from-transparent via-gray-600 to-transparent my-6;
   }
 
   /* Animations */

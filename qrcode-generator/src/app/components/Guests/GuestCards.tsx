@@ -118,7 +118,7 @@ export default function GuestCards({
             <div className="flex space-x-2 mt-4 pt-4 border-t border-gray-700/30">
               <motion.button
                 onClick={() => onEditGuest(guest)}
-                className="flex-1 px-4 py-2 rounded-lg bg-gradient-to-r from-rich-gold/90 to-accent-amber text-deep-navy font-medium text-sm shadow-sm flex items-center justify-center"
+                className="flex-1 px-4 py-2 rounded-lg bg-linear-to-r from-rich-gold/90 to-accent-amber text-deep-navy font-medium text-sm shadow-sm flex items-center justify-center"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 disabled={guest.name === "Master"}
@@ -135,7 +135,7 @@ export default function GuestCards({
               </motion.button>
               <motion.button
                 onClick={() => onDeleteGuest(guest._id)}
-                className="flex-1 px-4 py-2 rounded-lg bg-gradient-to-r from-warm-charcoal to-deep-navy text-soft-cream border border-rich-gold/30 font-medium text-sm shadow-sm flex items-center justify-center"
+                className="flex-1 px-4 py-2 rounded-lg bg-linear-to-r from-warm-charcoal to-deep-navy text-soft-cream border border-rich-gold/30 font-medium text-sm shadow-sm flex items-center justify-center"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 disabled={guest.name === "Master"}

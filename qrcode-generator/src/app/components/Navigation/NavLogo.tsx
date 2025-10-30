@@ -52,7 +52,7 @@ export default function NavLogo({ onLogoClick }: Readonly<NavLogoProps>) {
       <div className="relative">
         {/* Glow effect */}
         <motion.div
-          className="absolute -inset-3 rounded-full bg-gradient-to-r from-amber-400/20 to-amber-600/20 blur-lg"
+          className="absolute -inset-3 rounded-full bg-linear-to-r from-amber-400/20 to-amber-600/20 blur-lg"
           variants={glowVariants}
         />
         <Image

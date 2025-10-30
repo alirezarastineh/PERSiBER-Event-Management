@@ -343,7 +343,7 @@ export default function MobileMenu({
                 ) : (
                   <motion.button
                     onClick={() => handleMenuItemClick(handleLoginRedirect)}
-                    className="w-full flex items-center p-4 mb-3 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 text-zinc-900 font-medium"
+                    className="w-full flex items-center p-4 mb-3 rounded-xl bg-linear-to-r from-amber-500 to-amber-600 text-zinc-900 font-medium"
                     variants={itemVariants}
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
@@ -374,7 +374,7 @@ export default function MobileMenu({
                 >
                   <motion.button
                     onClick={() => handleMenuItemClick(handleLogout)}
-                    className="w-full flex items-center justify-center p-4 rounded-xl bg-gradient-to-r from-rose-800/80 to-red-900/80 text-rose-100 font-medium border border-rose-800/30"
+                    className="w-full flex items-center justify-center p-4 rounded-xl bg-linear-to-r from-rose-800/80 to-red-900/80 text-rose-100 font-medium border border-rose-800/30"
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                   >
