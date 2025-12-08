@@ -25,10 +25,7 @@ export default function Spinner({
       <div className={cn("relative", sizeClass)}>
         {/* Background ring */}
         <div
-          className={cn(
-            "absolute inset-0 rounded-full border-2 border-gray-700",
-            sizeClass,
-          )}
+          className={cn("absolute inset-0 rounded-full border-2 border-gray-700", sizeClass)}
         ></div>
 
         {/* Primary spinning ring */}
@@ -61,10 +58,7 @@ export default function Spinner({
         {/* Enhanced glow effect for larger sizes */}
         {(size.lg || size.xl) && (
           <motion.div
-            className={cn(
-              "absolute inset-0 rounded-full bg-rich-gold/20 blur-sm",
-              sizeClass,
-            )}
+            className={cn("absolute inset-0 rounded-full bg-rich-gold/20 blur-sm", sizeClass)}
             animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.6, 0.3] }}
             transition={{
               duration: 2.5,

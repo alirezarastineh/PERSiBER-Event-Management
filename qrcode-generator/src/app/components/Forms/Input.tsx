@@ -13,10 +13,7 @@ export default function Input({
   return (
     <div className="w-full mb-4">
       <div className="flex justify-between items-center">
-        <label
-          htmlFor={labelId}
-          className="block text-sm font-medium text-white"
-        >
+        <label htmlFor={labelId} className="block text-sm font-medium text-white">
           {label}
         </label>
         {link && (

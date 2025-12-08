@@ -20,8 +20,10 @@
   );
 
   /* Typography */
-  --font-primary: "Inter", system-ui, -apple-system, sans-serif;
-  --font-heading: "Inter", system-ui, -apple-system, sans-serif;
+  --font-primary:
+    "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-heading:
+    "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 
   /* Spacing */
   --space-unit: 0.25rem;
@@ -36,9 +38,19 @@
 }
 
 /*
-  Border color compatibility for Tailwind CSS v4
+  Base layer - Cross-browser compatible defaults
 */
 @layer base {
+  /* Box sizing reset */
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+    /* Remove tap highlight on mobile browsers */
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Border color compatibility for Tailwind CSS v4 */
   *,
   ::after,
   ::before,
@@ -47,10 +59,35 @@
     border-color: var(--color-gray-200, currentcolor);
   }
 
+  /* HTML root element */
   html {
     font-family: var(--font-primary);
+    /* Smooth scrolling with fallback */
+    scroll-behavior: smooth;
+    /* Fix iOS Safari font rendering */
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    /* Prevent iOS text inflation */
+    -moz-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
   }
 
+  /* Support for prefers-reduced-motion */
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  /* Headings */
   h1,
   h2,
   h3,
@@ -63,37 +100,106 @@
     line-height: 1.2;
   }
 
-  /* Enhanced focus states for accessibility */
+  /* Enhanced focus states for accessibility - cross-browser */
   *:focus-visible {
     outline: 2px solid var(--color-rich-gold);
     outline-offset: 2px;
   }
+
+  /* Fallback for browsers that don't support focus-visible */
+  @supports not selector(:focus-visible) {
+    *:focus {
+      outline: 2px solid var(--color-rich-gold);
+      outline-offset: 2px;
+    }
+  }
+
+  /* Images - cross-browser responsive */
+  img,
+  picture,
+  video,
+  canvas,
+  svg {
+    display: block;
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Form inputs - prevent iOS zoom on focus */
+  input,
+  textarea,
+  select {
+    font-size: 16px; /* Minimum 16px prevents iOS zoom */
+  }
+
+  /* Remove default button styles for cross-browser consistency */
+  button {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    font: inherit;
+  }
 }
 
+/*
+  Utility for balanced text wrapping
+*/
 @utility text-balance {
   text-wrap: balance;
 }
 
+/*
+  Utilities layer - Cross-browser compatible styles
+*/
 @layer utilities {
   :root {
     /* Fixed dark theme - constant dark blue background, no gradient */
     --foreground-rgb: 240, 240, 235;
     --background-rgb: 26, 26, 46;
+
+    /* Safe area insets for notched devices */
+    --safe-area-inset-top: env(safe-area-inset-top, 0px);
+    --safe-area-inset-right: env(safe-area-inset-right, 0px);
+    --safe-area-inset-bottom: env(safe-area-inset-bottom, 0px);
+    --safe-area-inset-left: env(safe-area-inset-left, 0px);
   }
 
+  /* Body styles */
   body {
     background-color: rgb(var(--background-rgb));
     color: rgb(var(--foreground-rgb));
+    /* Advanced typography features */
     font-feature-settings:
       "salt" 1,
       "ss01" 1,
       "ss02" 1;
+    /* Improve text rendering */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    /* Enable smooth scrolling on iOS */
+    -webkit-overflow-scrolling: touch;
+    /* Prevent horizontal overflow */
+    overflow-x: hidden;
   }
 
-  /* Elegant buttons */
+  /* Elegant buttons with cross-browser support */
   button {
     @apply bg-custom-button text-white font-medium px-4 py-2 rounded-md shadow-md;
+    /* Cross-browser transitions */
+    -webkit-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    -moz-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    -ms-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    -o-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    /* Minimum touch target size for accessibility */
+    min-height: 44px;
+    min-width: 44px;
+    /* Remove iOS default button styling */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
   }
 
   button:hover {
@@ -102,16 +208,34 @@
   }
 
   button:active {
-    @apply transform scale-[0.98] shadow-sm;
+    @apply shadow-sm;
+    /* Cross-browser transform */
+    -webkit-transform: scale(0.98);
+    -moz-transform: scale(0.98);
+    -ms-transform: scale(0.98);
+    transform: scale(0.98);
   }
 
   button:focus-visible {
     @apply ring-2 ring-offset-2 ring-custom-button;
   }
 
-  /* Luxury UI elements */
+  /* Disabled button state */
+  button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  /* Luxury UI elements with cross-browser backdrop-filter */
   .card {
     @apply bg-gray-800 rounded-xl shadow-md overflow-hidden;
+    /* Cross-browser transitions */
+    -webkit-transition:
+      transform 0.3s ease,
+      box-shadow 0.3s ease;
+    -moz-transition:
+      transform 0.3s ease,
+      box-shadow 0.3s ease;
     transition:
       transform 0.3s ease,
       box-shadow 0.3s ease;
@@ -119,6 +243,9 @@
 
   .card:hover {
     @apply shadow-lg;
+    -webkit-transform: translateY(-4px);
+    -moz-transform: translateY(-4px);
+    -ms-transform: translateY(-4px);
     transform: translateY(-4px);
   }
 
@@ -127,8 +254,22 @@
     @apply border-l-4 border-custom-button;
   }
 
+  /* Gradient text with cross-browser support */
   .gradient-text {
-    @apply bg-clip-text text-transparent bg-linear-to-r from-amber-500 to-amber-700;
+    background: linear-gradient(to right, #d4af37, #b8860b);
+    /* Webkit prefix for Safari */
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+
+  /* Fallback for browsers without background-clip support */
+  @supports not (background-clip: text) {
+    .gradient-text {
+      background: none;
+      color: #d4af37;
+    }
   }
 
   /* Elegant form elements */
@@ -136,17 +277,49 @@
   select,
   textarea {
     @apply bg-gray-700 border border-gray-600 rounded-md px-4 py-2 focus:ring-2 focus:ring-custom-button focus:border-custom-button;
+    /* Cross-browser transitions */
+    -webkit-transition: all 0.2s ease;
+    -moz-transition: all 0.2s ease;
     transition: all 0.2s ease;
+    /* Remove iOS default styling */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    /* Minimum touch target */
+    min-height: 44px;
   }
 
-  /* Rich dividers */
+  /* Select arrow for cross-browser consistency */
+  select {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%239ca3af' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right 0.5rem center;
+    background-repeat: no-repeat;
+    background-size: 1.5em 1.5em;
+    padding-right: 2.5rem;
+  }
+
+  /* Rich dividers with cross-browser gradient */
   .divider {
-    @apply h-px w-full bg-linear-to-r from-transparent via-gray-600 to-transparent my-6;
+    @apply h-px w-full my-6;
+    background: linear-gradient(to right, transparent, #4b5563, transparent);
+    /* Webkit prefix */
+    background: -webkit-linear-gradient(left, transparent, #4b5563, transparent);
   }
 
-  /* Animations */
+  /* Animations with cross-browser support */
   .fade-in {
+    -webkit-animation: fadeIn 0.5s ease forwards;
+    -moz-animation: fadeIn 0.5s ease forwards;
     animation: fadeIn 0.5s ease forwards;
+  }
+
+  @-webkit-keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
   }
 
   @keyframes fadeIn {
@@ -159,7 +332,22 @@
   }
 
   .slide-up {
+    -webkit-animation: slideUp 0.6s ease forwards;
+    -moz-animation: slideUp 0.6s ease forwards;
     animation: slideUp 0.6s ease forwards;
+  }
+
+  @-webkit-keyframes slideUp {
+    from {
+      opacity: 0;
+      -webkit-transform: translateY(20px);
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      -webkit-transform: translateY(0);
+      transform: translateY(0);
+    }
   }
 
   @keyframes slideUp {
@@ -171,5 +359,212 @@
       opacity: 1;
       transform: translateY(0);
     }
+  }
+
+  /* Cross-browser backdrop-filter utility */
+  .backdrop-blur-compat {
+    /* Fallback background */
+    background-color: rgba(31, 41, 55, 0.9);
+    /* Webkit prefix for Safari */
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+  }
+
+  /* For browsers that support backdrop-filter */
+  @supports (backdrop-filter: blur(8px)) or (-webkit-backdrop-filter: blur(8px)) {
+    .backdrop-blur-compat {
+      background-color: rgba(31, 41, 55, 0.7);
+    }
+  }
+
+  /* Safe area padding utilities */
+  .safe-area-inset-top {
+    padding-top: var(--safe-area-inset-top);
+  }
+
+  .safe-area-inset-bottom {
+    padding-bottom: var(--safe-area-inset-bottom);
+  }
+
+  .safe-area-inset-left {
+    padding-left: var(--safe-area-inset-left);
+  }
+
+  .safe-area-inset-right {
+    padding-right: var(--safe-area-inset-right);
+  }
+
+  /* iOS Safari specific fixes */
+  @supports (-webkit-touch-callout: none) {
+    /* Fix for 100vh on iOS Safari */
+    .min-h-screen {
+      min-height: -webkit-fill-available;
+    }
+
+    /* Fix position fixed on iOS */
+    .fixed {
+      position: -webkit-sticky;
+      position: fixed;
+    }
+
+    /* Fix for input zoom on iOS */
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    input[type="tel"],
+    input[type="number"],
+    textarea,
+    select {
+      font-size: 16px !important;
+    }
+  }
+
+  /* Firefox specific fixes */
+  @-moz-document url-prefix() {
+    /* Fix for Firefox scrollbar */
+    * {
+      scrollbar-width: thin;
+      scrollbar-color: #4b5563 transparent;
+    }
+  }
+
+  /* Custom scrollbar for Webkit browsers */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #4b5563;
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #6b7280;
+  }
+
+  /* Hide scrollbar but keep functionality (useful for some UI elements) */
+  .scrollbar-hide {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none; /* Chrome, Safari and Opera */
+  }
+
+  /* Touch action for better mobile UX */
+  .touch-pan-x {
+    touch-action: pan-x;
+    -ms-touch-action: pan-x;
+  }
+
+  .touch-pan-y {
+    touch-action: pan-y;
+    -ms-touch-action: pan-y;
+  }
+
+  .touch-manipulation {
+    touch-action: manipulation;
+    -ms-touch-action: manipulation;
+  }
+
+  /* Prevent text selection on interactive elements */
+  .select-none {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+
+  /* Hardware acceleration helper */
+  .gpu-accelerated {
+    -webkit-transform: translateZ(0);
+    -moz-transform: translateZ(0);
+    -ms-transform: translateZ(0);
+    transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -webkit-perspective: 1000px;
+    perspective: 1000px;
+  }
+
+  /* Flex gap fallback for older browsers */
+  @supports not (gap: 1rem) {
+    .flex-gap-fallback > * + * {
+      margin-left: 1rem;
+    }
+
+    .flex-gap-fallback-y > * + * {
+      margin-top: 1rem;
+    }
+  }
+
+  /* Grid gap fallback */
+  @supports not (gap: 1rem) {
+    .grid-gap-fallback {
+      margin: -0.5rem;
+    }
+
+    .grid-gap-fallback > * {
+      margin: 0.5rem;
+    }
+  }
+}
+
+/*
+  Print styles for better printing support
+*/
+@media print {
+  *,
+  *::before,
+  *::after {
+    background: transparent !important;
+    color: #000 !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  a,
+  a:visited {
+    text-decoration: underline;
+  }
+
+  a[href]::after {
+    content: " (" attr(href) ")";
+  }
+
+  pre,
+  blockquote {
+    page-break-inside: avoid;
+  }
+
+  thead {
+    display: table-header-group;
+  }
+
+  tr,
+  img {
+    page-break-inside: avoid;
+  }
+
+  img {
+    max-width: 100% !important;
+  }
+
+  p,
+  h2,
+  h3 {
+    orphans: 3;
+    widows: 3;
+  }
+
+  h2,
+  h3 {
+    page-break-after: avoid;
   }
 }
