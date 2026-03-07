@@ -3,7 +3,8 @@
 import { ToastContainer } from "react-toastify";
 import useVerify from "../hooks/auth/use-verify";
 import "react-toastify/dist/ReactToastify.css";
-import "../styles/custom-toasts.css"; // We'll create this file
+import "../styles/custom-toasts.css"; // Custom toast styles
+import "./polyfills"; // Cross-browser polyfills - load early
 
 export default function Setup() {
   useVerify();

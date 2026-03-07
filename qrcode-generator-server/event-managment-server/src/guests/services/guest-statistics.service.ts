@@ -57,7 +57,7 @@ export class GuestStatisticsService {
           },
         ])
         .exec()
-        .then(result => (result[0] ? result[0].totalDrinks : 0));
+        .then((result) => (result[0] ? result[0].totalDrinks : 0));
       const freeEntryCount = await this.guestModel
         .countDocuments({ freeEntry: true })
         .exec();
