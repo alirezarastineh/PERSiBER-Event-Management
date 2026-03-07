@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { FilterQuery, Model, UpdateQuery } from 'mongoose';
+import { Model, QueryFilter, UpdateQuery } from 'mongoose';
 
 import { CreateMemberDto } from '../dto/create-member.dto/create-member.dto.js';
 import {
@@ -50,13 +50,13 @@ export class MemberCrudService {
   }
 
   async countDocuments(
-    filter: FilterQuery<MemberDocument> = {},
+    filter: QueryFilter<MemberDocument> = {},
   ): Promise<number> {
     return this.memberModel.countDocuments(filter).exec();
   }
 
   async updateMany(
-    filter: FilterQuery<MemberDocument>,
+    filter: QueryFilter<MemberDocument>,
     update: UpdateQuery<MemberDocument>,
   ): Promise<void> {
     await this.memberModel.updateMany(filter, update);

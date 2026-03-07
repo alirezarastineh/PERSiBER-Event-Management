@@ -10,6 +10,7 @@
     "target": "ESNext",
     "lib": ["ESNext"],
     "sourceMap": true,
+    "rootDir": "./src",
     "outDir": "./dist",
     "incremental": true,
     "skipLibCheck": true,
