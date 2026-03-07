@@ -37,7 +37,7 @@ export default function UserTable({
               >
                 <td className="px-6 py-5 whitespace-nowrap">
                   <div className="flex items-center">
-                    <div className="flex-shrink-0 h-10 w-10 rounded-full bg-linear-to-r from-gray-700 to-gray-600 flex items-center justify-center overflow-hidden">
+                    <div className="shrink-0 h-10 w-10 rounded-full bg-linear-to-r from-gray-700 to-gray-600 flex items-center justify-center overflow-hidden">
                       {user.username.charAt(0).toUpperCase()}
                     </div>
                     <div className="ml-4">

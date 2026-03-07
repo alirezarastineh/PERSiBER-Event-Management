@@ -19,7 +19,7 @@ export default function LandingPage() {
     >
       <Heading title="PERSiBER" />
 
-      <section className="relative flex-grow flex flex-col items-center justify-center px-6 md:px-12">
+      <section className="relative grow flex flex-col items-center justify-center px-6 md:px-12">
         {/* Background Elements */}
         <BackgroundElements />
 

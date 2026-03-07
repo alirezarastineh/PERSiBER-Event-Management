@@ -59,7 +59,7 @@ export default function GuestControlPanel({
       {canAddGuests && (
         <div className="mt-6 pt-6 border-t border-gray-700/30">
           <div className="flex flex-col sm:flex-row gap-3">
-            <div className="flex-grow">
+            <div className="grow">
               <label htmlFor="new-guest" className="block text-sm font-medium text-gray-400 mb-2">
                 Add New Guest
               </label>

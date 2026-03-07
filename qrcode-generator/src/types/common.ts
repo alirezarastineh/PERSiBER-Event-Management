@@ -1,4 +1,4 @@
-import { ReactNode, ChangeEvent, FormEvent } from "react";
+import { ReactNode, ChangeEvent, SyntheticEvent } from "react";
 
 export type AlertType = "success" | "error" | "warning" | "info";
 
@@ -96,6 +96,6 @@ export interface FormProps {
   config: InputProps[];
   isLoading: boolean;
   btnText: string;
-  onSubmit: (e: FormEvent<HTMLFormElement>) => void;
+  onSubmit: (e: SyntheticEvent<HTMLFormElement, SubmitEvent>) => void;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
 }

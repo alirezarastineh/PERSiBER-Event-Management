@@ -146,7 +146,9 @@ export class AuthController {
       const payload = this.jwtService.verify(token);
       return { valid: true, payload };
     } catch (error) {
-      this.logger.error('JWT Verification Error:', error.message);
+      const errorMessage =
+        error instanceof Error ? error.message : 'Unknown verification error';
+      this.logger.error('JWT Verification Error:', errorMessage);
       throw new UnauthorizedException('Invalid or expired token');
     }
   }

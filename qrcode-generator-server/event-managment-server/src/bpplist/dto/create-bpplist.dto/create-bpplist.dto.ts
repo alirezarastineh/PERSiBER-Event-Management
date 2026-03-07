@@ -8,7 +8,7 @@ import {
 
 export class CreateBpplistDto {
   @IsString()
-  readonly name: string;
+  readonly name!: string;
 
   @IsOptional()
   @IsString()

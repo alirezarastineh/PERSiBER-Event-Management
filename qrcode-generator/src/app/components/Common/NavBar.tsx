@@ -69,7 +69,7 @@ export default function NavBar() {
 
         {/* Bottom border */}
         <motion.div
-          className="absolute bottom-0 left-0 right-0 h-[1px]"
+          className="absolute bottom-0 left-0 right-0 h-px"
           initial={{ scaleX: 0 }}
           animate={{ scaleX: 1 }}
           transition={{ delay: 0.3, duration: 0.5 }}

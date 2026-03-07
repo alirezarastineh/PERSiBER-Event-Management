@@ -126,6 +126,6 @@ export default [
 
   // Ignore patterns
   {
-    ignores: ['node_modules/', 'dist/', 'eslint.config.js'],
+    ignores: ['node_modules/', 'dist/', 'eslint.config.js', '.eslintrc.cjs'],
   },
 ];

@@ -10,19 +10,16 @@ export interface UserDocument extends Document<unknown, User> {
 
 @Schema()
 export class User {
-  _id: Types.ObjectId;
+  _id!: Types.ObjectId;
 
   @Prop({ required: true, unique: true })
-  username: string;
+  username!: string;
 
   @Prop({ required: true })
-  password: string;
+  password!: string;
 
   @Prop({ default: 'user' })
-  role: string;
+  role!: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
-
-// Add index for frequently queried username field
-UserSchema.index({ username: 1 });

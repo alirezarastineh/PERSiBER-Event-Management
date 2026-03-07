@@ -2,7 +2,7 @@ import { useLoginMutation } from "@/redux/features/auth/authApiSlice";
 import { setAuth } from "@/redux/features/auth/authSlice";
 import { useAppDispatch } from "@/redux/hooks";
 import { useRouter } from "next/navigation";
-import { ChangeEvent, FormEvent, useState } from "react";
+import { ChangeEvent, SyntheticEvent, useState } from "react";
 import { toast } from "react-toastify";
 
 export default function useLogin() {
@@ -25,7 +25,9 @@ export default function useLogin() {
     }));
   };
 
-  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (
+    e: SyntheticEvent<HTMLFormElement, SubmitEvent>,
+  ) => {
     e.preventDefault();
 
     try {

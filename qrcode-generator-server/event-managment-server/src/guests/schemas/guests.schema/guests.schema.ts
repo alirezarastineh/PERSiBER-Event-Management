@@ -19,37 +19,37 @@ export interface GuestDocument extends Document<unknown, Guest> {
 @Schema()
 export class Guest {
   @Prop({ required: true })
-  name: string;
+  name!: string;
 
   @Prop({ default: true })
-  alreadyPaid: boolean;
+  alreadyPaid!: boolean;
 
   @Prop({ default: false })
-  freeEntry: boolean;
+  freeEntry!: boolean;
 
   @Prop({ default: 0 })
-  drinksCoupon: number;
+  drinksCoupon!: number;
 
   @Prop({ default: 'Still Not', enum: ['Still Not', 'Yes'] })
-  attended: string;
+  attended!: string;
 
   @Prop({ type: Date, default: null })
-  attendedAt: Date | null;
+  attendedAt!: Date | null;
 
   @Prop({ default: '' })
-  invitedFrom: string;
+  invitedFrom!: string;
 
   @Prop({ default: false })
-  isStudent: boolean;
+  isStudent!: boolean;
 
   @Prop({ default: false })
-  isLady: boolean;
+  isLady!: boolean;
 
   @Prop({ type: Date, default: null })
-  untilWhen: Date | null;
+  untilWhen!: Date | null;
 
   @Prop({ required: false })
-  addedBy: string;
+  addedBy?: string;
 }
 
 export const GuestSchema = SchemaFactory.createForClass(Guest);

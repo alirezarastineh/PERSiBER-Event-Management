@@ -1,6 +1,6 @@
 import { useRegisterMutation } from "@/redux/features/auth/authApiSlice";
 import { useRouter } from "next/navigation";
-import { ChangeEvent, FormEvent, useState } from "react";
+import { ChangeEvent, SyntheticEvent, useState } from "react";
 import { toast } from "react-toastify";
 
 export default function useRegister() {
@@ -22,7 +22,9 @@ export default function useRegister() {
     }));
   };
 
-  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (
+    e: SyntheticEvent<HTMLFormElement, SubmitEvent>,
+  ) => {
     e.preventDefault();
 
     try {

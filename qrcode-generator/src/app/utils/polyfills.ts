@@ -26,8 +26,8 @@ interface ArrayLikeObject<T> {
 
 /** Extended Element prototype for legacy browsers */
 interface LegacyElementPrototype {
-  msMatchesSelector?: (selector: string) => boolean;
-  webkitMatchesSelector?: (selector: string) => boolean;
+  msMatchesSelector?: Element["matches"];
+  webkitMatchesSelector?: Element["matches"];
 }
 
 /** Extended globalThis for polyfills */

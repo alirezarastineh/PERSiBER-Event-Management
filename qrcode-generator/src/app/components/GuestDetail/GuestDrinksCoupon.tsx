@@ -32,7 +32,7 @@ export default function GuestDrinksCoupon({
             type="number"
             min="0"
             defaultValue={guest.drinksCoupon || 0}
-            className="w-full max-w-[120px] px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-accent-amber focus:border-accent-amber text-white transition-all duration-300 text-center"
+            className="w-full max-w-30 px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-accent-amber focus:border-accent-amber text-white transition-all duration-300 text-center"
             whileFocus={{ scale: 1.01 }}
           />
           <motion.button

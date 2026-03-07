@@ -1,3 +1,6 @@
 {
-  "cSpell.words": ["bpplist", "Dancefloor", "Kourosh", "Sobhan"]
+  "cSpell.words": ["bpplist", "Dancefloor", "Kourosh", "Sobhan"],
+  "css.customData": [".vscode/tailwindcss-custom-data.json"],
+  "scss.customData": [".vscode/tailwindcss-custom-data.json"],
+  "less.customData": [".vscode/tailwindcss-custom-data.json"]
 }

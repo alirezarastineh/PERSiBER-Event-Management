@@ -17,35 +17,35 @@ export interface MemberDocument extends Document<unknown, Member> {
 @Schema()
 export class Member {
   @Prop({ required: true })
-  name: string;
+  name!: string;
 
   @Prop({ default: 'No', enum: ['No', 'Yes'] })
-  attended: string;
+  attended!: string;
 
   @Prop({ type: Date, default: null })
-  attendedAt: Date | null;
+  attendedAt!: Date | null;
 
   @Prop({
     default: '',
     enum: ['Kourosh', 'Sobhan', 'Mutual'],
     required: true,
   })
-  organizer: string;
+  organizer!: string;
 
   @Prop({ default: '' })
-  invitedFrom: string;
+  invitedFrom!: string;
 
   @Prop({ default: 0 })
-  membersInvited: number;
+  membersInvited!: number;
 
   @Prop({ default: false })
-  hasLeft: boolean;
+  hasLeft!: boolean;
 
   @Prop({ default: false })
-  isStudent: boolean;
+  isStudent!: boolean;
 
   @Prop({ type: Date, default: null })
-  untilWhen: Date | null;
+  untilWhen!: Date | null;
 }
 
 export const MemberSchema = SchemaFactory.createForClass(Member);

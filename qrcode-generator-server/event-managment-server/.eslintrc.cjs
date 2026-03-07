@@ -28,7 +28,7 @@ module.exports = {
     jest: true,
     es2022: true,
   },
-  ignorePatterns: ['.eslintrc.js', 'dist/', 'node_modules/'],
+  ignorePatterns: ['.eslintrc.cjs', 'dist/', 'node_modules/'],
   rules: {
     // TypeScript specific rules
     '@typescript-eslint/interface-name-prefix': 'off',

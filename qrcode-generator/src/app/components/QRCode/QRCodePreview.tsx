@@ -114,7 +114,7 @@ export default function QRCodePreview({
         ) : (
           <motion.div
             key="placeholder"
-            className="bg-gray-800/30 rounded-2xl shadow-lg p-8 flex flex-col items-center justify-center min-h-[500px] backdrop-blur-sm border border-gray-700"
+            className="bg-gray-800/30 rounded-2xl shadow-lg p-8 flex flex-col items-center justify-center min-h-125 backdrop-blur-sm border border-gray-700"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}

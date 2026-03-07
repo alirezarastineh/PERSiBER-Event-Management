@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, ReactNode } from "react";
+import { ChangeEvent, ReactNode, SyntheticEvent } from "react";
 
 export interface User {
   _id: string;
@@ -108,7 +108,9 @@ export interface AuthFormPanelProps {
   readonly formConfig: FormConfig[];
   readonly isLoading: boolean;
   readonly btnText: string;
-  readonly onSubmit: (e: FormEvent<HTMLFormElement>) => void;
+  readonly onSubmit: (
+    e: SyntheticEvent<HTMLFormElement, SubmitEvent>,
+  ) => void;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 

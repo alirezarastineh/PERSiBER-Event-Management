@@ -2,7 +2,7 @@ import { IsString, IsOptional, IsBoolean, IsDateString } from 'class-validator';
 
 export class CreateGuestDto {
   @IsString()
-  readonly name: string;
+  readonly name!: string;
 
   @IsOptional()
   @IsBoolean()

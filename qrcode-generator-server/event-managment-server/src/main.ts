@@ -6,11 +6,7 @@ import {
 } from '@nestjs/platform-fastify';
 
 import { AppModule } from './app.module.js';
-
-// Custom error type for Fastify error handler
-interface FastifyError extends Error {
-  statusCode?: number;
-}
+import { AllExceptionsFilter } from './common/filters/all-exceptions.filter.js';
 
 async function bootstrap(): Promise<void> {
   const fastifyAdapter = new FastifyAdapter({
@@ -26,6 +22,7 @@ async function bootstrap(): Promise<void> {
   const configService = app.get(ConfigService);
 
   const isProduction = process.env.NODE_ENV === 'production';
+  app.useGlobalFilters(new AllExceptionsFilter(isProduction));
 
   const frontendUrl = isProduction
     ? configService.get<string>('FRONTEND_URL_PRODUCTION')
@@ -181,28 +178,6 @@ async function bootstrap(): Promise<void> {
     }
 
     return payload;
-  });
-
-  // Handle errors gracefully for better cross-browser error responses
-  fastifyInstance.setErrorHandler((err: FastifyError, _request, reply) => {
-    const statusCode = err.statusCode ?? 500;
-
-    // Log errors in development
-    if (!isProduction) {
-      // eslint-disable-next-line no-console
-      console.error('Server error:', err);
-    }
-
-    // Send consistent error response format
-    reply.status(statusCode).send({
-      statusCode,
-      error: err.name || 'Internal Server Error',
-      message:
-        isProduction && statusCode === 500
-          ? 'An unexpected error occurred'
-          : err.message,
-      timestamp: new Date().toISOString(),
-    });
   });
 
   const port = configService.get<number>('PORT', 8000);
