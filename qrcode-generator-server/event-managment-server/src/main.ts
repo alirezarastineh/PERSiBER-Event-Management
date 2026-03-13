@@ -36,14 +36,14 @@ async function bootstrap(): Promise<void> {
     const envOrigins = [
       configService.get<string>('FRONTEND_URL'),
       configService.get<string>('BACKEND_URL'),
-      'https://persiber.vercel.app', // Production frontend URL
+      'https://persiber-legacy.vercel.app', // Production frontend URL
     ].filter(Boolean) as string[];
     allowedOrigins.push(...envOrigins);
   }
 
   // Always include production URL in allowed origins for safety
-  if (!allowedOrigins.includes('https://persiber.vercel.app')) {
-    allowedOrigins.push('https://persiber.vercel.app');
+  if (!allowedOrigins.includes('https://persiber-legacy.vercel.app')) {
+    allowedOrigins.push('https://persiber-legacy.vercel.app');
   }
 
   // In development, also allow localhost variants
